@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ModuleBreadcrumb{% endblock %}
+
+{% block body %}
+    <h1>ModuleBreadcrumb</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ module_breadcrumb.id }}</td>
+            </tr>
+            <tr>
+                <th>Label</th>
+                <td>{{ module_breadcrumb.label }}</td>
+            </tr>
+            <tr>
+                <th>Route</th>
+                <td>{{ module_breadcrumb.route }}</td>
+            </tr>
+            <tr>
+                <th>Icon</th>
+                <td>{{ module_breadcrumb.icon }}</td>
+            </tr>
+            <tr>
+                <th>SortOrder</th>
+                <td>{{ module_breadcrumb.sortOrder }}</td>
+            </tr>
+            <tr>
+                <th>RouteParameters</th>
+                <td>{{ module_breadcrumb.routeParameters ? module_breadcrumb.routeParameters|json_encode : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_module_breadcrumb_index') }}">back to list</a>
+
+    <a href="{{ path('app_module_breadcrumb_edit', {'id': module_breadcrumb.id}) }}">edit</a>
+
+    {{ include('module_breadcrumb/_delete_form.html.twig') }}
+{% endblock %}

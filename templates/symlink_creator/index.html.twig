@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SymlinkCreator index{% endblock %}
+
+{% block body %}
+    <h1>SymlinkCreator index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>SourcePath</th>
+                <th>SourceDestination</th>
+                <th>SymlinkCreated</th>
+                <th>SymlinkCreatedBy</th>
+                <th>SymlinkStatus</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for symlink_creator in symlink_creators %}
+            <tr>
+                <td>{{ symlink_creator.id }}</td>
+                <td>{{ symlink_creator.sourcePath }}</td>
+                <td>{{ symlink_creator.sourceDestination }}</td>
+                <td>{{ symlink_creator.symlinkCreated ? symlink_creator.symlinkCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ symlink_creator.symlinkCreatedBy }}</td>
+                <td>{{ symlink_creator.symlinkStatus }}</td>
+                <td>
+                    <a href="{{ path('app_symlink_creator_show', {'id': symlink_creator.id}) }}">show</a>
+                    <a href="{{ path('app_symlink_creator_edit', {'id': symlink_creator.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_symlink_creator_new') }}">Create new</a>
+{% endblock %}

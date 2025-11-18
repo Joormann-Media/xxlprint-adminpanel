@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New SecurityAccessLog{% endblock %}
+
+{% block body %}
+    <h1>Create new SecurityAccessLog</h1>
+
+    {{ include('security_access_log/_form.html.twig') }}
+
+    <a href="{{ path('app_security_access_log_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,77 @@
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Website Einstellungen</h5>
+    </div>
+    <div class="card-body">
+
+        <div class="mb-3">
+            {{ form_label(form.websiteMode, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.websiteMode, {'attr': {'class': 'form-select', 'id': 'websiteMode'}}) }}
+            {{ form_errors(form.websiteMode) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.lastUpdate, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.lastUpdate, {'attr': {'class': 'form-control', 'readonly': true, 'value': "now"|date("Y-m-d H:i:s")}}) }}
+            {{ form_errors(form.lastUpdate) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.lastUpdateBy, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.lastUpdateBy, {'attr': {'class': 'form-control', 'readonly': true, 'value': app.user.username}}) }}
+            {{ form_errors(form.lastUpdateBy) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.activeUntil, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.activeUntil, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.activeUntil) }}
+        </div>
+
+        <div class="mb-3" id="websiteMessageField">
+            {{ form_label(form.WebsiteMessageId, null, {'label_attr': {'class': 'form-label'}}) }}
+            <div class="input-group">
+                {{ form_widget(form.WebsiteMessageId, { 'attr': { 'class': 'form-control' } }) }}
+            </div>
+            {{ form_errors(form.WebsiteMessageId) }}
+        </div>
+
+    </div>
+    <div class="card-footer text-end">
+        <button class="btn btn-success">
+            <i class="bi bi-check-circle"></i> {{ button_label|default('Speichern') }}
+        </button>
+    </div>
+</div>
+
+{{ form_end(form) }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const websiteModeField = document.getElementById('websiteMode');
+        const websiteMessageField = document.getElementById('websiteMessageField');
+        const websiteMessageSelect = document.querySelector('[name="websiteSettings[WebsiteMessageId]"]'); // Das Feld für WebsiteMessageId
+
+        // Funktion, die überprüft, ob der "Aktiv"-Status gesetzt ist
+        function toggleWebsiteMessageField() {
+            if (websiteModeField.value === 'active') {
+                // Wenn "Aktiv" ausgewählt, wird das WebsiteMessage-Feld ausgeblendet und auf null gesetzt
+                websiteMessageField.style.display = 'none';
+                websiteMessageSelect.value = '0'; // Setzt den Wert auf null
+            } else {
+                // Ansonsten wird das WebsiteMessage-Feld angezeigt
+                websiteMessageField.style.display = 'block';
+            }
+        }
+
+        // Initiale Sichtbarkeitsprüfung
+        toggleWebsiteMessageField();
+
+        // Event-Listener, um bei Änderung von websiteMode das Feld zu aktualisieren
+        websiteModeField.addEventListener('change', function () {
+            toggleWebsiteMessageField();
+        });
+    });
+</script>

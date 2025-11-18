@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ConcessionManager{% endblock %}
+
+{% block body %}
+    <h1>Create new ConcessionManager</h1>
+
+    {{ include('concession_manager/_form.html.twig') }}
+
+    <a href="{{ path('app_concession_manager_index') }}">back to list</a>
+{% endblock %}

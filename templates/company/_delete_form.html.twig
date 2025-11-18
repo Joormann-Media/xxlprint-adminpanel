@@ -1,0 +1,7 @@
+<form method="post" action="{{ path('app_company_delete', {'id': company.id}) }}" 
+      onsubmit="return confirm('❗️ Firma wirklich löschen?');" class="d-inline">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ company.id) }}">
+    <button class="btn btn-outline-danger btn-sm" title="Löschen">
+        <i class="bi bi-trash"></i>
+    </button>
+</form>

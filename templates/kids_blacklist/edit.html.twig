@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit KidsBlacklist{% endblock %}
+
+{% block body %}
+    <h1>Edit KidsBlacklist</h1>
+
+    {{ include('kids_blacklist/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_kids_blacklist_index') }}">back to list</a>
+
+    {{ include('kids_blacklist/_delete_form.html.twig') }}
+{% endblock %}

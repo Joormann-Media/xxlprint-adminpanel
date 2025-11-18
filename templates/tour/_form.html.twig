@@ -1,0 +1,74 @@
+{{ form_start(form) }}
+
+<div class="mb-3">
+    {{ form_row(form.name) }}
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.description) }}
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.school) }}
+</div>
+
+<div class="mb-3" id="schoolkids-container">
+    {{ form_label(form.schoolkids) }}
+    <div id="schoolkids-list">
+        {{ form_widget(form.schoolkids) }}
+    </div>
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.stopPoints) }}
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.schedules) }}
+</div>
+
+<button class="btn btn-primary">Speichern</button>
+
+{{ form_end(form) }}
+
+{# --- AJAX-JS für Live-Reload der Kinder-Liste --- #}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const schoolSelect = document.getElementById('tour_school');
+    const kidsContainer = document.getElementById('schoolkids-list');
+
+    if(schoolSelect) {
+        schoolSelect.addEventListener('change', function() {
+            const schoolId = this.value;
+            if (!schoolId) {
+                kidsContainer.innerHTML = '<em>Bitte zuerst eine Schule wählen.</em>';
+                return;
+            }
+
+            fetch('/schoolkids/api/schoolkids/by-school/' + schoolId)
+
+                .then(resp => resp.json())
+                .then(data => {
+                    let html = '';
+                    if (data.length === 0) {
+                        html = '<em>Keine Kinder gefunden.</em>';
+                    } else {
+                        data.forEach(kid => {
+                            const checkboxId = 'kid_' + kid.id;
+                            html += `
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="tour[schoolkids][]" value="${kid.id}" id="${checkboxId}">
+                                    <label class="form-check-label" for="${checkboxId}">${kid.label}</label>
+                                </div>
+                            `;
+                        });
+                    }
+                    kidsContainer.innerHTML = html;
+                })
+                .catch(() => {
+                    kidsContainer.innerHTML = '<em>Fehler beim Laden der Kinder!</em>';
+                });
+        });
+    }
+});
+</script>

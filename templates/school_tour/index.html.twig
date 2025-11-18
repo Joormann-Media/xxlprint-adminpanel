@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Schultouren{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h2 class="mb-0"><i class="bi bi-bus-front"></i> Schultouren</h2>
+        <a href="{{ path('app_school_tour_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Neue Tour
+        </a>
+    </div>
+
+    {% if school_tours is not empty %}
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Tourname</th>
+                                <th>Typ</th>
+                                <th>Schule</th>
+                                <th>Start</th>
+                                <th>Ziel</th>
+                                <th>Zeit</th>
+                                <th>Distanz</th>
+                                <th>Begleitung</th>
+                                <th>Betriebstage</th>
+                                <th>Status</th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for tour in school_tours %}
+                            <tr>
+                                <td>{{ tour.id }}</td>
+                                <td>{{ tour.name }}</td>
+                                <td>
+                                    {% if tour.type == 'outbound' %}
+                                        <span class="badge bg-primary">Hinfahrt</span>
+                                    {% else %}
+                                        <span class="badge bg-info">Rückfahrt</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ tour.school.name }}</td>
+                                <td>
+                                    <small>{{ tour.startAddress }}</small><br>
+                                    <span class="text-muted">{{ tour.startTime ? tour.startTime|date('H:i') : '-' }}</span>
+                                </td>
+                                <td>
+                                    <small>{{ tour.endAddress }}</small><br>
+                                    <span class="text-muted">{{ tour.endTime ? tour.endTime|date('H:i') : '-' }}</span>
+                                </td>
+                                <td>
+                                    {% if tour.duration %}
+                                        <i class="bi bi-clock"></i> {{ (tour.duration / 60)|round(0, 'floor') }} min
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if tour.distance %}
+                                        <i class="bi bi-signpost"></i> {{ tour.distance|number_format(1, ',', '.') }} km
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if tour.companionRequirement %}
+                                        <span class="badge bg-secondary">
+                                            {{ tour.companionRequirement.value }}
+                                        </span>
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if tour.operatingDays is not empty %}
+                                        {% for day in tour.operatingDays %}
+                                            <span class="badge bg-light text-dark">{{ day|capitalize }}</span>
+                                        {% endfor %}
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge bg-{{ tour.status == 'ACTIVE' ? 'success' : (tour.status == 'PENDING_WIP' ? 'warning text-dark' : 'secondary') }}">
+                                        {{ tour.status.value }}
+                                    </span>
+                                </td>
+                                <td class="text-nowrap">
+                                    <a href="{{ path('app_school_tour_show', {id: tour.id}) }}" class="btn btn-sm btn-outline-secondary">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ path('app_school_tour_edit', {id: tour.id}) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    {{ include('school_tour/_delete_form.html.twig', {tour: tour}) }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info">Noch keine Touren angelegt.</div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Passwort/PIN zurücksetzen{% endblock %}
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-danger text-white">
+                    <i class="bi bi-person-lock"></i> {{ page_title }} (User: {{ user.username|default(user.email) }})
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    <div class="mb-3">
+                        {{ form_label(form.plainPassword) }}
+                        {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.plainPassword) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.userpin) }}
+                        {{ form_widget(form.userpin, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.userpin) }}
+                    </div>
+                    <div class="text-end mt-4">
+                        <button class="btn btn-danger"><i class="bi bi-save"></i> Reset</button>
+                        <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary ms-2">
+                            <i class="bi bi-arrow-left"></i> Abbrechen
+                        </a>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

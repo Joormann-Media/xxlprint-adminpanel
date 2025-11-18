@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Scripting{% endblock %}
+
+{% block body %}
+    <h1>Create new Scripting</h1>
+
+    {{ include('scripting/_form.html.twig') }}
+
+    <a href="{{ path('app_scripting_index') }}">back to list</a>
+{% endblock %}

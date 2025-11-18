@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New DownloadToken{% endblock %}
+
+{% block body %}
+    <h1>Create new DownloadToken</h1>
+
+    {{ include('download_token/_form.html.twig') }}
+
+    <a href="{{ path('app_download_token_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,1485 @@
+.CustomForms_Style {
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 256px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    border-radius: 25px;
+    border: 5px solid #000000; /* Blaue Farbe #005A9F und 4px Strichstärke */
+}
+.header-container {
+    background-color: #000000; /* Hintergrundfarbe schwarz */
+    color: #FFFFFF !important; /* Schriftfarbe weiß */
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    font-size: 10px;
+    display: flex;
+
+
+}
+.CustomBox-Shadow {
+-webkit-box-shadow: 5px 5px 15px 5px #000000; 
+box-shadow: 5px 5px 15px 5px #000000;
+}
+.CustomForms_Style_BAckUp {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 256px;
+    height: auto;
+}
+.CustomForms_Style_Tiny {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    height: auto;
+}
+
+.CustomDuration_Style_Horizon {
+    display: flex;
+    justify-content: center; /* Zentriert den Container horizontal */
+}
+
+.CustomDuration_Style_Horizon p {
+    margin-left: 25px; /* Abstand zwischen den Elementen */
+}
+
+.invisible-content {
+    visibility: hidden; /* Macht den Inhalt unsichtbar */
+    display: none; /* Entfernt das Element aus dem Layout und gibt den Platz frei */
+}
+.Custom-css-input {
+     padding: 5px !important;
+     font-size: 16px !important;
+     border-width: 2px !important;
+     border-color: #CCCCCC !important;
+     background-color: #FFFFFF !important;
+     color: #000000 !important;
+     border-style: solid !important;
+     border-radius: 20px !important;
+     box-shadow: 0px 0px 5px rgba(66,66,66,.75) !important; 
+     text-shadow: 0px 0px 5px rgba(66,66,66,.75) !important;
+     padding-left: 25px; /* Padding links */
+     min-width: 250px; /* Mindestbreite auf 250px setzen */
+}
+ .Custom-css-input:focus {
+     outline:none;
+}
+.Custom-Css-Input-NoBorder {
+    border: none; /* Kein Rahmen */
+}
+.Custom-Box-layout {
+  display: flex;
+  gap: 25px;
+
+  align-items: center;
+}
+.form-field_api {
+    height: 100px; /* Höhe des Formularfeldes auf 125px festlegen */
+}
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.flex-items:nth-child(1) {
+  display: block;
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  align-self: auto;
+  order: 0;
+}
+
+.flex-items:nth-child(2) {
+  display: block;
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  align-self: auto;
+  order: 0;
+}
+.horizontal-center {
+            display: flex;
+            justify-content: center;
+        }
+.Custom-Form-Content {
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    border: none; /* Kein sichtbarer Rahmen */
+    border-radius: 25px; /* Abrundung der Ecken um 25px */
+    padding: 25px; /* Innenabstand von 25px */
+    background-color: #BDCFDF; /* Hintergrundfarbe BDCFDF */
+    display: flex; /* Fügt Flexibilität hinzu */
+    justify-content: center; /* Zentriert den Inhalt horizontal */
+    align-items: center; /* Zentriert den Inhalt vertikal */
+    position: fixed; /* Positionierung relativ zum Bildschirm */
+    top: 50%; /* Zentrierung vertikal */
+    left: 50%; /* Zentrierung horizontal */
+    transform: translate(-50%, -50%); /* Zentrierung relativ zur eigenen Größe */
+    width: 75%; /* Breite ist 75% der verfügbaren Bildschirmbreite */
+    overflow-y: auto; /* Ermöglicht das Scrollen, wenn der Inhalt die Höhe überschreitet */
+    max-height: 90vh; /* Begrenzt die Höhe auf 90% der Bildschirmhöhe */
+}
+        
+.Custom-Headline {
+    max-width: 100%;
+    font-size: 48px;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.header_background {
+    background-color: black;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    height: 70px;
+    display: flex; /* Hinzugefügt */
+    align-items: center; /* Hinzugefügt */
+}
+.header_background img {
+    
+    filter: none;
+}
+.header_logo {
+    background-color: white;
+    border: 5px solid black;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+z-index: 10000;
+    box-sizing: border-box;
+    width: auto;
+}
+.header_logo_img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    height: 45px;
+z-index: 9999;
+}
+.Custom-css-input_profile {
+    font-size: 15px;
+    border-width: 2px;
+    border-color: #CCCCCC;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-style: solid;
+    border-radius: 15px;
+    box-shadow: 0px 0px 5px rgba(66,66,66,.75);
+    text-shadow: 0px 0px 5px rgba(66,66,66,.75);
+    height: 20px; /* Änderung: Automatische Höhe */
+    display: flex; /* Flexbox-Layout */
+    align-items: center; /* Vertikal zentrierte Ausrichtung */
+    justify-content: center; /* Horizontal zentrierte Ausrichtung */
+    resize: none; /* Deaktiviert das Skalieren des Textfeldes */
+}
+
+.Custom-css-input_profile:focus {
+    outline: none;
+}
+.choose-profile-pic-btn{
+   height: 20px;
+   font-size: 15px;
+    display: flex; /* Flexbox-Layout */
+    align-items: center; /* Vertikal zentrierte Ausrichtung */
+    justify-content: center; /* Horizontal zentrierte Ausrichtung */
+    resize: none; /* Deaktiviert das Skalieren des Textfeldes */
+width: auto;
+}
+.upload-popup {
+    display: block;
+}
+
+.upload-popup.show {
+    display: block;
+    /* Hier können Sie weitere Stile hinzufügen, um das Pop-up zu positionieren und zu stylen */
+}
+.upload-popup.show {
+    visibility: visible;
+}
+.Custom-Header_User {
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    padding: 5px;
+    font-size: 16px;
+    border-width: 2px;
+    border-color: #CCCCCC;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-style: solid;
+    border-radius: 15px;
+    box-shadow: 0px 0px 5px rgba(66,66,66,.75);
+    text-shadow: 0px 0px 5px rgba(66,66,66,.75);
+    /* Zentriere den Inhalt horizontal */
+    display: flex;
+    justify-content: center;
+
+    /* Setze vertikalen Abstand */
+    align-items: center;
+    /* Neue Eigenschaften für die Positionierung */
+    position: fixed; /* Element bleibt beim Scrollen an seiner Position */
+    top: 15px; /* Abstand zum oberen Rand des Bildschirms */
+    padding-top: 5px;
+    right: 20px; /* Abstand zum rechten Rand des Bildschirms */
+
+    /* Zentriere den Inhalt horizontal */
+    display: flex;
+    justify-content: center;
+
+    /* Setze vertikalen Abstand */
+    align-items: center;
+
+    /* Setze horizontalen Abstand zwischen den Bildern */
+    gap: 3px;
+    z-index: 9999; /* Stellt sicher, dass der Container im Vordergrund erscheint */
+}
+
+.Custom-Header_User img {
+    /* Begrenze die maximale Breite auf 30 Pixel */
+    max-width: 30px;
+    /* Automatische Skalierung bei Beibehaltung des Seitenverhältnisses */
+    height: auto;
+    /* Zentriere den Inhalt horizontal */
+    display: flex;
+    justify-content: center;
+
+    /* Setze vertikalen Abstand */
+    align-items: center;
+}
+.Custom_Footer_Box_1 {
+    background: #000000;
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    -webkit-box-shadow: 5px 5px 15px 5px #000000;
+    box-shadow: 5px 5px 15px 5px #000000;
+    font-size: 16px;
+    border-width: 2px;
+    border-color: #CCCCCC;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-style: solid;
+    border-radius: 25px;
+    box-shadow: 0px 0px 5px rgba(66, 66, 66, 0.75);
+    text-shadow: 0px 0px 5px rgba(66, 66, 66, 0.75);
+    height: 25px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+.footer-container {
+    background: #000000;
+    color: #FFFFFF; /* Textfarbe */
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 20px; /* Innenabstand */
+    text-align: center; /* Zentriert den Text */
+    z-index: 9999; /* Stellt sicher, dass der Container über anderen Elementen liegt */
+}
+.footer_background {
+    background-color: black !important;
+    color: #FFFFFF !important;
+    font-family: 'Calibri', sans-serif !important;
+        font-weight: bold !important;
+    position: fixed !important;
+    width: 100% !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    height: 30px !important; /* Entfernt das Leerzeichen */
+    display: flex !important; /* Hinzugefügt */
+    align-items: center !important; /* Hinzugefügt */
+    z-index: 9999 !important;
+}
+
+.header_module_name {
+    background: #000000 !important;
+    color: #FFFFFF !important; /* Textfarbe */
+    font-family: 'Calibri', sans-serif !important;
+    font-weight: bold !important;
+    top: 5px !important; /* Abstand vom oberen Rand */
+    font-size: 20px !important;
+    height: 0px !important;
+    
+    right: 50% !important; /* Abstand vom rechten Rand */
+    padding-top: 0px !important;
+    transform: translateX(50%) !important; /* Zentrierung horizontal */
+    z-index: 10000 !important; /* Stellt sicher, dass der Container im Vordergrund erscheint */
+    display: flex !important; /* Ermöglicht die Verwendung von Flexbox-Layout */
+    flex-direction: column !important; /* Elemente werden in einer Spalte angeordnet */
+    align-items: center !important; /* Zentriert die Elemente horizontal */
+    border-radius: 20px !important; 
+    -webkit-border-radius: 20px !important; 
+    -moz-border-radius: 20px !important;
+    border: none !important; /* Rahmen entfernt */
+}
+
+
+
+.table-striped tbody tr:nth-child(odd) {
+    background-color: #f8f9fa; /* Hintergrundfarbe für ungerade Zeilen */
+}
+
+.table-striped tbody tr:nth-child(even) {
+    background-color: #e9ecef; /* Hintergrundfarbe für gerade Zeilen */
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    width: 250px; /* Breite des Footers anpassen */
+}
+
+.footer-content {
+    text-align: right;
+}
+
+.footer-menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-menu ul li {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.footer-menu ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+.custom-menu {
+	display: none;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.custom-menu-item:hover .custom-menu {
+        display: block;
+}
+.header-container {
+    
+    color: #FFFFFF; /* Textfarbe */
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    font-size: 10px;
+    position: fixed;
+    left: 0; /* Startet am linken Bildschirmrand */
+    top: 160px; /* Zentriert den Container vertikal */
+    width: 100%; /* So breit wie der Bildschirm */
+    height: 25px; /* Begrenzt die Höhe auf 25px */
+    padding: 0px 0px 10px 10px; /* Innenabstand */
+    text-align: left; /* Links ausgerichtet */
+    z-index: 9950; /* Stellt sicher, dass der Container über anderen Elementen liegt */
+    display: flex; /* Fügt Flexibilität hinzu */
+    justify-content: flex-start; /* Listet den Inhalt linksbündig auf */
+    flex-wrap: wrap; /* Erlaubt den Elementen, auf die nächste Zeile zu springen, wenn der Platz nicht ausreicht */
+    border-bottom-left-radius: 15px; /* Rundet die untere linke Ecke ab */
+    border-bottom-right-radius: 15px; /* Rundet die untere rechte Ecke ab */
+
+}
+.Custom-menu-hoover{
+	background: rgb(2,0,36);
+	background: -moz-linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(159,159,163,1) 53%, rgba(2,0,36,1) 100%);
+	background: -webkit-linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(159,159,163,1) 53%, rgba(2,0,36,1) 100%);
+	background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(159,159,163,1) 53%, rgba(2,0,36,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#020024",endColorstr="#020024",GradientType=1);
+}
+.custom_generator_download_button {
+    background: #FFFFFF;
+    height: 32px; /* Höhe orientiert sich am Inhalt */
+    width: 32px; /* Breite orientiert sich am Inhalt */
+    border-top-left-radius: 15px; /* Rundet die untere linke Ecke ab */
+    border-top-right-radius: 15px; /* Rundet die untere rechte Ecke ab */
+
+}
+.custom_qrcode_size {
+    max-width: 200px; /* Begrenzt die Breite auf maximal 150px */
+    max-height: 200px; /* Begrenzt die Höhe auf maximal 150px */
+    object-fit: contain; /* Skaliert das Bild proportional, um in den Container zu passen */
+}
+
+.custom_qrcode_size img {
+    width: 100%; /* Skaliert die Breite des Bildes auf die volle Breite des Containers */
+    height: auto; /* Skaliert die Höhe des Bildes proportional zur Breite */
+}
+.custom_qrcode_size_download {
+    max-width: 75%; /* Begrenzt die Breite auf maximal 40px */
+    max-height: auto; /* Begrenzt die Höhe auf maximal 40px */
+    object-fit: contain; /* Skaliert das Bild proportional, um in den Container zu passen */
+    display: flex; /* Fügt Flexibilität hinzu */
+flex-direction: row;
+    justify-content: space-around; /* Verteilt die Elemente gleichmäßig */
+}
+
+.custom_qrcode_size_download img {
+    width: 100%; /* Skaliert die Breite des Bildes auf die volle Breite des Containers */
+    height: auto; /* Skaliert die Höhe des Bildes proportional zur Breite */
+}
+.Custom_Header_Navbar {
+    background: #000000;
+    color: #FFFFFF; /* Textfarbe */
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    font-size: 10px;
+    position: fixed;
+    left: 0; /* Startet am linken Bildschirmrand */
+    top: 60px; /* Zentriert den Container vertikal */
+    width: 100%; /* So breit wie der Bildschirm */
+    height: 25px; /* Begrenzt die Höhe auf 25px */
+    padding: 0px 0px 10px 10px; /* Innenabstand */
+    text-align: left; /* Links ausgerichtet */
+    z-index: 9998; /* Stellt sicher, dass der Container über anderen Elementen liegt */
+    display: flex; /* Fügt Flexibilität hinzu */
+    justify-content: flex-start; /* Listet den Inhalt linksbündig auf */
+    flex-wrap: wrap; /* Erlaubt den Elementen, auf die nächste Zeile zu springen, wenn der Platz nicht ausreicht */
+    border-bottom-left-radius: 15px; /* Rundet die untere linke Ecke ab */
+    border-bottom-right-radius: 15px; /* Rundet die untere rechte Ecke ab */
+
+}
+.Custom_Navbar {
+    position: relative;
+}
+
+.Custom_Navbar .menu {
+    background: #000000;
+    color: #FFFFFF; /* Textfarbe */
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+
+    position: absolute;
+    top: 100%; /* Positioniert die Liste direkt unterhalb des Menü-Namens */
+    left: 0;
+    padding: 0;
+    margin: 0;
+
+    border: none; /* Kein Rand */
+    border-top-left-radius: 15px; /* Rundet die obere linke Ecke ab */
+    border-top-right-radius: 15px; /* Rundet die obere rechte Ecke ab */
+    list-style: none; /* Keine Aufzählungszeichen */
+    text-align: left; /* Links ausgerichtet */
+    display: none; /* Versteckt das Untermenü standardmäßig */
+}
+
+.Custom_Navbar .menu-item {
+    display: inline-block;
+    margin-right: 15px; /* Abstand zwischen den Menünamen */
+    position: relative;
+}
+
+.Custom_Navbar .menu-item:hover .menu {
+    display: block; /* Zeigt das Untermenü an, wenn über das Menü-Namen gehovert wird */
+}
+
+/* Stellt sicher, dass Hyperlinks die Schriftfarbe Weiß haben und nicht unterstrichen sind */
+.Custom_Navbar .menu a:link, 
+.Custom_Navbar .menu a:visited, 
+.Custom_Navbar .menu a:hover, 
+.Custom_Navbar .menu a:active {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+.Custom_Generator_Button {
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+
+    width: auto;  /* Die Breite des Buttons wird automatisch auf den Inhalt angepasst */
+    height: auto;  /* Die Höhe des Buttons wird automatisch auf den Inhalt angepasst */
+    color: white;  /* Die Schriftfarbe ist weiß */
+    font-size: 15px;  /* Die Schriftgröße ist 15px */
+    background-color: black;  /* Der Hintergrund des Buttons ist schwarz */
+    border-radius: 15px;  /* Die Ecken des Buttons sind um 15px abgerundet */
+    padding: 5px 5px;  /* Fügt etwas Polsterung hinzu, damit der Text nicht zu nah am Rand des Buttons ist */
+-webkit-box-shadow: 5px 5px 15px 5px #000000; 
+box-shadow: 5px 5px 15px 5px #000000;
+
+}
+.Custom_Pin_Field {
+  width: auto;
+  padding-left: 5px;
+  padding-right: 5px;
+  width: initial; /* reset width set by .form-control */
+}
+.Custom_Container_Content_left {
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: left; /* Der Inhalt ist linksbündig */
+    display: block; /* Der Inhalt erscheint untereinander */
+}
+.Custom_Container_Content_Center {
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: center; /* Der Inhalt ist zentriert */
+    display: block; /* Der Inhalt erscheint untereinander */
+}
+.Custom_Container_Content_Horizon {
+    display: flex; /* Verwendet Flexbox, um die Elemente horizontal anzuordnen */
+    
+    gap: 5px; /* Fügt einen Abstand von 5px zwischen den Elementen hinzu */
+}
+.Custom-Headline_Modul {
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    font-size: 48px;
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column; /* Ändert die Richtung der Flexbox zu einer Spalte */
+    align-items: flex-end; /* Richtet die Elemente am Ende der Vertikalen aus */
+    background-color: #FFFFFF;
+    border-radius: 25px;
+    border: 5px solid #000000; /* Blaue Farbe #005A9F und 4px Strichstärke */
+    width: auto;
+    height: auto;
+    padding: 0 5px; /* Fügt einen Puffer von 5px nach links und rechts hinzu */
+}
+table.blueTable {
+  font-family: 'Calibri', sans-serif;
+  border: 1px solid #1C6EA4;
+  background-color: #EEEEEE;
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+table.blueTable td, table.blueTable th {
+  border: 1px solid #AAAAAA;
+  padding: 3px 2px;
+}
+table.blueTable tbody td {
+  font-size: 13px;
+}
+table.blueTable tr:nth-child(even) {
+  background: #D0E4F5;
+}
+table.blueTable thead {
+  background: #1C6EA4;
+  background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  border-bottom: 2px solid #444444;
+}
+table.blueTable thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #FFFFFF;
+  border-left: 2px solid #D0E4F5;
+}
+table.blueTable thead th:first-child {
+  border-left: none;
+}
+
+table.blueTable tfoot {
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFFFFF;
+  background: #D0E4F5;
+  background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  border-top: 2px solid #444444;
+}
+table.blueTable tfoot td {
+  font-size: 14px;
+}
+table.blueTable tfoot .links {
+  text-align: right;
+}
+table.blueTable tfoot .links a{
+  display: inline-block;
+  background: #1C6EA4;
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+.container_scroll {
+    width: 100%;
+    height: 200px;
+    overflow: auto;
+}
+/* Allgemeiner Stil für Buttons */
+button.open_times_button {
+    font-family: 'Calibri', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button.open_times_button:hover {
+    opacity: 0.8;
+}
+
+/* Spezifische Regeln für Buttons mit Icons */
+button.open_times_button.edit-button {
+    background-color: #f0f8ff;
+    color: #333;
+    background-image: url('/gfx/SystemGFX/Icons/StandardIcons/edit.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 16px 16px;
+    padding-left: 30px; /* Platz für das Icon */
+}
+
+button.open_times_button.save-button {
+    background-color: #dff0d8;
+    color: #3c763d;
+    background-image: url('/gfx/SystemGFX/Icons/StandardIcons/ok_arrow.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 16px 16px;
+    padding-left: 30px;
+}
+
+button.open_times_button.cancel-button {
+    background-color: #f2dede;
+    color: #a94442;
+    background-image: url('/gfx/SystemGFX/Icons/StandardIcons/cancel.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 16px 16px;
+    padding-left: 30px;
+}
+table.standardTable {
+  font-family: 'Calibri', sans-serif;
+  border: 1px solid #1C6EA4;
+  background-color: #EEEEEE;
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+table.standardTable td, table.standardTable th {
+  border: 1px solid #AAAAAA;
+  padding: 3px 2px;
+}
+table.standardTable tbody td {
+  font-size: 14px;
+}
+table.standardTable tr:nth-child(even) {
+  background: #D0E4F5;
+}
+table.standardTable thead {
+  background: #1C6EA4;
+  background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  border-bottom: 2px solid #444444;
+}
+table.standardTable thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #FFFFFF;
+  border-left: 2px solid #D0E4F5;
+}
+table.standardTable thead th:first-child {
+  border-left: none;
+}
+
+table.standardTable tfoot {
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFFFFF;
+  background: #D0E4F5;
+  background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  border-top: 2px solid #444444;
+}
+table.standardTable tfoot td {
+  font-size: 14px;
+}
+table.standardTable tfoot .links {
+  text-align: right;
+}
+table.standardTable tfoot .links a{
+  display: inline-block;
+  background: #1C6EA4;
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+/* public/css/menu.css */
+
+/* Wrapper für das gesamte Layout */
+.xxl-wrapper {
+    display: flex;
+    flex-direction: column;  /* Layout in vertikaler Richtung */
+    min-height: 100vh;       /* Damit der Footer immer am Ende bleibt */
+}
+
+/* Header-Bereich */
+.xxl-header {
+    background-color: transparent;  /* Hintergrund transparent */
+    color: white;
+    padding: 20px;
+    text-align: center;
+    z-index: 1000;
+}
+
+/* Hauptinhalt (Main) */
+.xxl-content {
+    flex: 1;                 /* Der Main-Bereich nimmt den verfügbaren Platz ein */
+    padding: 20px;
+    background-color: transparent;  /* Hintergrund transparent */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer-Bereich */
+.xxl-footer {
+    background-color: transparent;  /* Hintergrund transparent */
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+/* Zentrales Container mit Begrenzung der maximalen Breite */
+.xxl-container {
+    max-width: 1200px;
+    margin: 0 auto;  /* Zentriert das Container */
+    padding: 20px;
+    width: 100%;  /* Setzt die Breite auf 100%, aber max. 1200px */
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+    .xxl-wrapper {
+        flex-direction: column;  /* Auf kleinen Geräten wird alles vertikal gestapelt */
+    }
+
+    .xxl-container {
+        padding: 10px;  /* Weniger Abstand auf kleinen Bildschirmen */
+    }
+}
+
+.editable {
+    border: 1px dashed transparent;
+    padding: 5px;
+}
+
+.editable:focus {
+    border: 1px dashed #007bff;
+    outline: none;
+    background-color: #f8f9fa;
+}
+.baselayout {
+    width: 100%;
+  
+    display: flex;
+    gap: 16px;
+  }
+  
+  .grow1 { flex-grow: 1; }
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.flex-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.container_center {
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    /* Remove absolute positioning */
+    /* position: absolute; */
+    /* top: 50%; */
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
+    min-height: 256px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    border-radius: 25px;
+    border: 4px solid #000000; /* Blaue Farbe #005A9F und 4px Strichstärke */
+    padding-top: 15px;    /* 15px Abstand nach oben */
+    padding-bottom: 15px; /* 15px Abstand nach unten */
+    padding-left: 25px;   /* 25px Abstand nach links */
+    padding-right: 25px;  /* 25px Abstand nach rechts */
+}
+
+.profile-picture {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+/* PicUpl Container */
+/* Beispielhafte Styling-Anpassungen */
+.picUpl-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.picUpl-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+}
+
+.picUpl-preview-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.picUpl-editor-container {
+    margin-top: 20px;
+}
+
+.picUpl-canvas-container {
+    margin-top: 20px;
+}
+
+.picUpl-live-preview-container {
+    margin-top: 20px;
+}
+#picUpl-livePreviewImage {
+    max-width: 100%;
+    height: auto;
+}
+.RegisterMainLayout {
+    display: flex; /* Flexbox aktivieren */
+    gap: 15px; /* Abstand zwischen den Boxen */
+    justify-content: center; /* Zentriert die Boxen horizontal im Layout */
+    align-items: flex-start; /* Richtet die Boxen oben aus, sodass keine Verschiebung bei ungleichem Inhalt entsteht */
+}
+
+.RegisterBoxes1 {
+    font-family: 'Calibri', sans-serif !important;
+    color: black; /* Schriftfarbe schwarz */
+    background-color: white; /* Hintergrund weiß */
+    border-radius: 20px; /* Eckradius 20px */
+    border: 4px solid black; /* Rahmen 4px schwarz */
+    padding: 15px 20px; /* Abstand zwischen Inhalt und Rahmen */
+    margin: 0; /* Kein zusätzlicher Rand */
+    width: 300px; /* Einheitliche Breite für alle Boxen */
+    min-height: 150px; /* Mindesthöhe, um die Boxen gleich hoch zu machen */
+    box-sizing: border-box; /* Einschließen von Padding und Border in die Breite/Höhe */
+    display: flex; /* Flexbox innerhalb der Box */
+    flex-direction: column; /* Inhalt vertikal anordnen */
+    justify-content: center; /* Inhalt innerhalb der Box horizontal zentrieren */
+    align-items: center; /* Inhalt innerhalb der Box vertikal zentrieren */
+}
+.RegisterBoxes3 {
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    color: black; /* Schriftfarbe schwarz */
+    background-color: white; /* Hintergrund weiß */
+    border-radius: 20px; /* Eckradius 20px */
+    border: 4px solid black; /* Rahmen 4px schwarz */
+    padding: 15px 20px; /* Abstand zwischen Inhalt und Rahmen */
+    margin: 0; /* Kein zusätzlicher Rand */
+    width: 300px; /* Einheitliche Breite für alle Boxen */
+    min-height: 150px; /* Mindesthöhe, um die Boxen gleich hoch zu machen */
+    box-sizing: border-box; /* Einschließen von Padding und Border in die Breite/Höhe */
+    display: flex; /* Flexbox innerhalb der Box */
+    flex-direction: column; /* Inhalt vertikal anordnen */
+    justify-content: center; /* Inhalt innerhalb der Box horizontal zentrieren */
+    align-items: center; /* Inhalt inn
+    color: white; /* Schriftfarbe schwarz */
+    background-color: black; /* Hintergrund weiß */
+    
+}
+.RegisterBoxes2 {
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    color: white; /* Schriftfarbe schwarz */
+    background-color: black; /* Hintergrund weiß */
+    width: calc(100% + 40px);
+       /* Flexbox für zentrierten Inhalt */
+       display: flex;
+       justify-content: center; /* Horizontal zentrieren */
+       align-items: center; /* Vertikal zentrieren */
+       text-align: center; /* Text zentrieren */
+    
+}
+.InfoBoxContainer {
+    font-family: 'Calibri', sans-serif;
+    color: black; /* Schriftfarbe schwarz */
+    background-color: white; /* Hintergrund weiß */
+    border-radius: 20px; /* Eckradius 20px */
+    border: 4px solid black; /* Rahmen 4px schwarz */
+    padding: 15px 20px; /* Abstand zwischen Inhalt und Rahmen */
+    margin: 0; /* Kein zusätzlicher Rand */
+    width: auto; /* Einheitliche Breite für alle Boxen */
+    min-height: 150px; /* Mindesthöhe, um die Boxen gleich hoch zu machen */
+    box-sizing: border-box; /* Einschließen von Padding und Border in die Breite/Höhe */
+    display: flex; /* Flexbox innerhalb der Box */
+    flex-direction: column; /* Inhalt vertikal anordnen */
+    justify-content: center; /* Inhalt innerhalb der Box horizontal zentrieren */
+    align-items: center; /* Inhalt innerhalb der Box vertikal zentrieren */
+}
+.FixedBlackBar {
+    background-color: black; /* Hintergrundfarbe schwarz */
+    height: 50px; /* Feste Höhe von 50px */
+    width: calc(100% + 40px); /* Breite des Containers + 40px (20px links + 20px rechts) */
+    margin: -15px -15px 0 -15px; /* Gleiche den 15px-Padding oben, links und rechts aus */
+    position: relative; /* Positionierung relativ zum übergeordneten Container */
+    border-radius: 15px 15px 0 0; /* Runde Ecken oben */
+    font-family: 'Calibri', sans-serif;
+    font-weight: bolder;
+    top: 0; /* Oben anordnen */
+    
+    color: white; /* Schriftfarbe weiß */
+    
+    /* Flexbox für zentrierten Inhalt */
+    display: flex;
+    justify-content: center; /* Horizontal zentrieren */
+    align-items: center; /* Vertikal zentrieren */
+    text-align: center; /* Text zentrieren */
+}
+.FixedBlackBar2 {
+    background-color: black; /* Hintergrundfarbe schwarz */
+    height: 50px; /* Feste Höhe von 50px */
+    width: calc(100% + 40px); /* Breite des Containers + 40px (20px links + 20px rechts) */
+    margin: -15px -15px 0 -15px; /* Gleiche den 15px-Padding oben, links und rechts aus */
+    position: relative; /* Positionierung relativ zum übergeordneten Container */
+    border-radius: 15px 15px 0 0; /* Runde Ecken oben */
+    font-family: 'Calibri', sans-serif;
+    font-weight: bolder;
+    top: 0; /* Oben anordnen */
+    
+    color: white; /* Schriftfarbe weiß */
+    
+    /* Flexbox für zentrierten Inhalt */
+    display: flex;
+    justify-content: center; /* Horizontal zentrieren */
+    align-items: center; /* Vertikal zentrieren */
+    text-align: center; /* Text zentrieren */
+}
+.InfoBoxNewform-container {
+    display: flex;
+    justify-content: center; /* Zentriert horizontal */
+    align-items: flex-start; /* Beide Boxen oben ausrichten */
+    gap: 15px; /* Abstand zwischen den Containern */
+    max-width: 900px; /* Optional: Begrenzung der maximalen Breite */
+    margin: 0 auto; /* Sorgt für zentrierte Position */
+    height: 100vh; /* Volle Bildschirmhöhe für vertikale Zentrierung */
+    font-weight: bold   /* Fettgedruckter Text */;
+}
+
+.InfoBoxNewform-left {
+    width: 30%; /* Linke Spalte */
+}
+
+.InfoBoxNewform-right {
+    width: auto; /* Rechte Spalte */
+}
+.input-group {
+    position: relative !important;
+}
+
+.eye-icon {
+    position: absolute !important;
+    right: -45px !important; /* Adjusted to ensure visibility */
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    font-size: 16px !important; /* Ensure the icons are the same size */
+    line-height: 1 !important; /* Align the icons with the input field */
+}
+
+.dice-icon {
+    position: absolute !important;
+    right: -35px !important; /* Adjusted to ensure visibility */
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    font-size: 16px !important; /* Ensure the icons are the same size */
+    line-height: 1 !important; /* Align the icons with the input field */
+    background-color: transparent !important;
+    border: none !important;
+}
+
+.eye-icon::before {
+    content: '👁' !important; /* Auge geöffnet */
+}
+
+.eye-icon.active::before {
+    content: '👁️‍🗨️' !important; /* Auge durchgestrichen */
+}
+
+.dice-icon::before {
+    content: '🎲' !important; /* Würfel-Symbol */
+}
+
+.uniform-width {
+    width: 100%; /* Set all input fields to the same width */
+    text-align: left; /* Ensure text is left-aligned */
+}
+.helpLogoRegister {
+    width: 20px; /* Setzt die Breite auf 20px */
+    height: auto; /* Skaliert die Höhe proportional */
+    vertical-align: middle; /* Verhindert, dass das Bild vom Text nach unten rutscht */
+}
+.modal {
+    display: flex !important;
+    align-items: center;  /* Vertikal zentrieren */
+    justify-content: center; /* Horizontal zentrieren */
+}
+
+.modal-dialog {
+    transform: translate(0, 0); /* Falls Bootstrap es verschiebt */
+    display: flex !important;
+    align-items: center; /* Vertikal zentrieren */
+    justify-content: center; /* Horizontal zentrieren */
+    z-index: 1050; /* Bootstrap Modals haben einen hohen z-index, wir setzen ihn sicher hoch */
+    max-height: 70vh !important; /* Begrenze die maximale Höhe auf 70% der Viewport-Höhe */
+    max-width: 80vw !important; /* Optionale Begrenzung der Breite */
+}
+
+.modal-content {
+    max-height: 70vh !important; /* Begrenze die maximale Höhe des Modals */
+    max-width: 100% !important; /* Stellt sicher, dass das Modal nicht breiter wird */
+    overflow: hidden !important; /* Verhindert überlaufenden Inhalt */
+    border-radius: 12px !important; /* Abgerundete Ecken für modernes Design */
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header,
+.modal-footer {
+    position: sticky !important;
+    background: white !important;
+    z-index: 10 !important;
+}
+
+.modal-header {
+    top: 0 !important;
+}
+
+.modal-footer {
+    bottom: 0 !important;
+}
+
+.modal-body {
+    max-height: 55vh !important; /* Höhe des scrollbaren Bereichs */
+    overflow-y: auto !important; /* Ermöglicht vertikales Scrollen */
+    padding: 20px !important; /* Abstand für besseren Lesekomfort */
+}
+
+
+#infoBoxModal.d-none {
+    display: none !important;
+}
+.helpLogoRegister {
+    width: 30px;  /* Größe des Icons */
+    cursor: pointer;  /* Mauszeiger soll anzeigen, dass es klickbar ist */
+    margin-right: 10px;  /* Abstand zwischen den Icons */
+    display: inline-block;  /* Icons nebeneinander anzeigen */
+}
+
+.helpLogoRegister:hover {
+    opacity: 0.7;  /* Leichter Hover-Effekt */
+
+    
+}
+.btn.btn-lg.btn-primary.custom-btn {
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+    font-family: 'Calibri', sans-serif !important;
+    font-weight: bold !important;
+    border: 2px solid #000000 !important; /* Schwarzer Rahmen */
+    border-radius: 10px !important; /* Abgerundete Ecken */
+}
+
+/* registerTable */
+div.TableIpInfoData {
+    background-color: #EEEEEE !important;
+    width: 100% !important;
+    text-align: left !important;
+    border-collapse: collapse !important;
+  }
+  
+  .divTable.TableIpInfoData .divTableCell, .divTable.TableIpInfoData .divTableHead {
+    border: 0px solid #AAAAAA !important;
+    padding: 2px 2px !important;
+  }
+  
+  .divTable.TableIpInfoData .divTableBody .divTableCell {
+    font-size: 13px !important;
+    font-family: 'Calibri', sans-serif;
+    color: black !important;
+  }
+  
+  .divTable.TableIpInfoData .divTableRow:nth-child(even) {
+    background: #E7E7E7 !important;
+  }
+  
+  .divTable.TableIpInfoData .divTableHeading {
+    background: #000000 !important;
+    background: -moz-linear-gradient(top, #404040 0%, #191919 66%, #000000 100%) !important;
+    background: -webkit-linear-gradient(top, #404040 0%, #191919 66%, #000000 100%) !important;
+    background: linear-gradient(to bottom, #404040 0%, #191919 66%, #000000 100%) !important;
+  }
+  
+  .divTable.TableIpInfoData .divTableHeading .divTableHead {
+    font-size: 15px !important;
+    font-weight: bold !important;
+    color: black !important;
+    border-left: 3px solid #D0E4F5 !important;
+  }
+  
+  .divTable.TableIpInfoData .divTableHeading .divTableHead:first-child {
+    border-left: none !important;
+  }
+  
+  .TableIpInfoData .tableFootStyle {
+    font-size: 14px !important;
+  }
+  
+  .TableIpInfoData .tableFootStyle .links {
+    text-align: right !important;
+  }
+  
+  .TableIpInfoData .tableFootStyle .links a {
+    display: inline-block !important;
+    background: #1C6EA4 !important;
+    color: #FFFFFF !important;
+    padding: 2px 8px !important;
+    border-radius: 5px !important;
+  }
+  
+  .TableIpInfoData.outerTableFooter {
+    border-top: none !important;
+  }
+  
+  .TableIpInfoData.outerTableFooter .tableFootStyle {
+    padding: 3px 5px !important;
+  }
+  
+  /* DivTable.com */
+  .divTable { display: table !important; }
+  .divTableRow { display: table-row !important; }
+  .divTableHeading { display: table-header-group !important; }
+  .divTableCell, .divTableHead { display: table-cell !important; }
+  .divTableHeading { display: table-header-group !important; }
+  .divTableFoot { display: table-footer-group !important; }
+  .divTableBody { display: table-row-group !important; }
+/* Container für das Bild */
+.ErrPage_image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    box-sizing: border-box;
+    overflow: hidden;
+    width: fit-content; /* Adjust width to fit content */
+    height: fit-content; /* Adjust height to fit content */
+    max-width: 100%; /* Ensure it doesn't exceed the viewport width */
+    max-height: calc(100vh - var(--header-height) - var(--footer-height)); /* Ensure it doesn't exceed the viewport height */
+    margin: auto; /* Center the container */
+}
+
+/* Bild-Stil */
+.ErrPage_image {
+    width: 60%;      /* Bild auf 20% der Container-Breite setzen */
+    height: auto;    /* Höhe automatisch anpassen, um das Seitenverhältnis beizubehalten */
+    min-width: 50px; /* Mindestbreite des Bildes setzen (kann beliebig angepasst werden) */
+    min-height: 50px;border: 5px solid black;
+    border-radius: 20px;
+}
+.dropzone {
+    width: 100%;
+    max-width: 300px;
+    height: 200px;
+    padding: 20px;
+    text-align: center;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    background-color: #fafafa;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px; /* Abstand von oben 20px */
+}
+
+.dropzone:hover, .dropzone.dragover {
+    border-color: #007bff;
+    background-color: #e3f2fd;
+}
+
+.dropzone p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+/* Allgemeines Styling für Zeitfelder */
+input[type="time"] {
+    appearance: none; /* Standard-Browser-Styling entfernen */
+    -webkit-appearance: none; /* Safari fix */
+    -moz-appearance: none; /* Firefox fix */
+    background: #222; /* Dunkler Hintergrund */
+    color: #fff; /* Helle Schrift */
+    border: 2px solid #f39c12; /* Orangefarbener Rand */
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Hover-Effekt */
+input[type="time"]:hover {
+    border-color: #e67e22;
+}
+
+/* Wenn aktiv */
+input[type="time"]:focus {
+    border-color: #d35400;
+    outline: none;
+    box-shadow: 0 0 5px rgba(211, 84, 0, 0.8);
+}
+
+.flatpickr-time .numInputWrapper input {
+    display: block !important; /* Ensure the input fields are displayed */
+    visibility: visible !important; /* Ensure the input fields are visible */
+    height: 50px !important; /* Set a fixed height for better visibility */
+    font-size: 24px !important; /* Increase font size for better readability */
+    font-weight: bold !important; /* Make the font bold */
+    text-align: center !important; /* Center the text */
+    color: black !important; /* Ensure the text color is black */
+    background-color: white !important; /* Ensure the background color is white */
+    z-index: 9999 !important; /* Ensure the input fields are on top */
+}
+
+/* Styling DIV-Container-Toggel */
+.toggle-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0; /* Unsichtbar beim Start */
+    padding: 0;
+    margin: 0;
+    transition: max-height 0.4s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out;
+}
+
+.toggle-content.open {
+    max-height: 500px; /* Genug Platz, passt sich automatisch an */
+    opacity: 1;
+    padding: 10px; /* Fügt sanft den inneren Abstand hinzu */
+    margin-bottom: 10px; /* Fügt unten Platz hinzu, damit das Layout nicht springt */
+}
+.toggle-button {
+    background-color: white;    /* Hintergrundfarbe weiß */
+    color: black;             /* Schriftfarbe schwarz */
+    font-family: 'Calibri', sans-serif; /* Schriftart */
+    font-weight: bold;         /* Fettdruck */
+    border: 2px solid black;    /* Schwarzer Rand */
+    padding: 10px 20px; /* Innenabstand */
+    border: none; /* Kein Rand */
+    border-radius: 5px; /* Abgerundete Ecken */
+    cursor: pointer; /* Zeige den Zeiger an */
+    font-size: 16px; /* Schriftgröße */
+    margin-bottom: 10px; /* Abstand nach unten */
+}
+.custom-button-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px; /* Abstand zwischen Icon & Text */
+    padding: 8px 12px;
+    border: none;
+    background: #f0f0f0;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    color: black;
+    border-radius: 5px;
+}
+
+.custom-button-icon img {
+    width: 16px;
+    height: 16px;
+}
+
+/* Spezifische Anpassung für <a>-Tags */
+.custom-button-icon[href] {
+    display: inline-flex;
+}
+
+/* Optional: Hover-Effekt */
+.custom-button-icon:hover {
+    background: #ddd;
+}
+.custom-permissions-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.custom-permissions-table td {
+    padding: 8px;
+    vertical-align: middle;
+}
+
+.permission-checkbox {
+    width: 5%;
+    text-align: center;
+}
+
+.permission-label {
+    width: 95%;
+}
+/* Scrollbarer Modul-Container */
+.module-list-scroll {
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* Einzelnes Modul */
+.module-list-scroll ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.module-list-scroll li {
+    margin-bottom: 10px;
+}
+
+/* Statusfarben */
+.module-status-active {
+    color: green;
+    font-weight: bold;
+}
+
+.module-status-inactive {
+    color: red;
+    font-weight: bold;
+}
+
+.module-status-maintenance {
+    color: orange;
+    font-style: italic;
+}
+.opening-preview-box {
+    background-color: rgba(255, 255, 255, 0.08);
+    padding: 12px 18px;
+    border-radius: 6px;
+    margin-top: 15px;
+    font-size: 1rem;
+}
+.alert-warning {
+    background-color: #fff3cd;
+    border: 1px solid #ffecb5;
+    color: #856404;
+    font-size: 0.95rem;
+    border-radius: 8px;
+}
+.alert-warning img {
+    flex-shrink: 0;
+}
+
+.readonly-display {
+    background-color: #f8f9fa; /* Bootstrap bg-light */
+    padding: 1rem;
+    border: 1px solid #dee2e6; /* Bootstrap border */
+    border-radius: 0.375rem;
+    color: #6c757d; /* Bootstrap text-muted */
+    pointer-events: none;     /* Keine Interaktion */
+    user-select: none;        /* Kein Kopieren */
+    white-space: pre-wrap;    /* Zeilenumbrüche erhalten */
+    font-size: 0.9rem;
+    overflow: auto;           /* Hinzugefügt, um das Layout zu schützen */
+}
+
+.readonly-display img {
+    max-width: 100%;    /* Stellt sicher, dass Bilder nicht breiter als der Container sind */
+    height: auto;       /* Behält das Seitenverhältnis bei */
+    display: block;     /* Verhindert, dass sich Bilder unerwartet neben Text setzen */
+    margin: 0 auto;     /* Zentriert das Bild */
+}
+
+.readonly-display p, .readonly-display div {
+    overflow-wrap: break-word; /* Erlaubt Textumbrüche, ohne Layout zu zerbrechen */
+    word-break: break-word;
+}
+
+.readonly-display {
+    display: block;    /* Verhindert Nebeneinanderstellen von Text und Bildern */
+}
+
+        body.dark-mode {
+            background-color: #121212;
+            color: white;
+        }
+        .swatch {
+            width: 2rem;
+            height: 2rem;
+            border: 1px solid #ccc;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        #qrcode {
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            background: var(--preview-bg, #fff);
+        }
+        .hide-content {
+            display: none;
+        }
+        #qrcode canvas {
+            width: 100%;
+            height: auto;
+            max-width: 300px;
+            max-height: 300px;
+        }
+        .card:hover {
+    box-shadow: 0 0 0 4px #b0d1ff40;
+}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1>UserRoles</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user_role.id }}</td>
+            </tr>
+            <tr>
+                <th>RoleName</th>
+                <td>{{ user_role.roleName }}</td>
+            </tr>
+            <tr>
+                <th>RoleCreate</th>
+                <td>{{ user_role.roleCreate ? user_role.roleCreate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>RoleCreateBy</th>
+                <td>{{ user_role.roleCreateBy }}</td>
+            </tr>
+            <tr>
+                <th>RoleDescription</th>
+                <td>{{ user_role.roleDescription }}</td>
+            </tr>
+            <tr>
+                <th>RoleTag</th>
+                <td>{{ user_role.roleTag }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_roles_index') }}">back to list</a>
+
+    <a href="{{ path('app_user_roles_edit', {'id': user_role.id}) }}">edit</a>
+
+
+{% endblock %}

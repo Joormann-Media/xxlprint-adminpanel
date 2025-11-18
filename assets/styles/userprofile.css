@@ -1,0 +1,306 @@
+.social-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 8px;
+    object-fit: contain;
+    border-radius: 4px; /* oder 50% für komplett rund */
+}
+.user-profile-wrapper {
+    max-width: 900px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    border: 2px solid #ccc;
+}
+
+.profile-section {
+    margin-bottom: 2rem;
+}
+
+.profile-section h3 {
+    margin-bottom: 0.8rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.4rem;
+    color: #333;
+}
+
+.profile-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.profile-list li {
+    padding: 6px 0;
+    font-size: 0.95rem;
+}
+
+.social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.social-entry {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f7f7f7;
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.social-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.profile-edit-button {
+    text-align: center;
+    margin-top: 2rem;
+}
+.profile-wrapper {
+    max-width: 1200px;
+    margin: auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1rem;
+}
+
+.profile-avatar-lg {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #007bff;
+}
+
+.user-info h2 {
+    margin: 0;
+}
+
+.profile-sections {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.section-left, .section-right {
+    flex: 1;
+    min-width: 300px;
+}
+
+.section-left h4,
+.section-right h4 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.social-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.social-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.social-list img.social-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+.user-profile-css-input {
+    padding: 5px !important;
+    font-size: 16px !important;
+    border-width: 2px !important;
+    border-color: #CCCCCC !important;
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    border-style: solid !important;
+    border-radius: 20px !important;
+    box-shadow: 0px 0px 5px rgba(66,66,66,.75) !important; 
+    text-shadow: 0px 0px 5px rgba(66,66,66,.75) !important;
+}
+.user-profile-css-input:focus {
+    outline:none;
+}
+.user-profile-Input-NoBorder {
+   border: none; /* Kein Rahmen */
+}
+.user-profile-Box-layout {
+ display: flex;
+ gap: 25px;
+
+ align-items: center;
+}
+.user-profile-Style {
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 256px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    border-radius: 25px;
+    border: 5px solid #000000; /* Blaue Farbe #005A9F und 4px Strichstärke */
+}
+.user-profile-Shadow {
+-webkit-box-shadow: 5px 5px 15px 5px #000000; 
+box-shadow: 5px 5px 15px 5px #000000;
+}
+/* Gleiche Breite für alle Labels */
+.custom-form-lable {
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    display: inline-block;
+    width: 200px; /* Breite kannst du anpassen */
+    font-weight: bold;
+    vertical-align: top;
+}
+
+/* Einheitliche Eingabefelder */
+.custom-form-group input,
+.custom-form-group select,
+.custom-form-group textarea {
+    width: 100%;
+    max-width: 400px; /* optional: Max-Breite */
+    box-sizing: border-box;
+}
+
+/* Optional: schöne Gruppen-Optik */
+.form-group {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+/* Optional: Damit auch in kleinen Auflösungen alles nice bleibt */
+@media (max-width: 768px) {
+    .form-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .custom-form-lable {
+        width: 100%;
+    }
+}
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.custom-form-label {
+    min-width: 160px;
+    font-weight: bold;
+    text-align: right;
+}
+
+.form-field {
+    flex: 1;
+    min-width: 250px;
+}
+
+.form-field input,
+.form-field select {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.profile-layout-table {
+    width: 100%;
+    table-layout: fixed;
+    border-spacing: 2rem;
+}
+
+.profile-avatar-cell,
+.profile-placeholder-cell {
+    width: 25%;
+    vertical-align: top;
+    text-align: center;
+}
+
+.profile-data-cell {
+    width: 50%;
+    vertical-align: top;
+}
+
+.profile-avatar-lg {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+}
+
+.profile-right-placeholder {
+    width: 100px;
+    height: 100px;
+    opacity: 0.4;
+}
+.profile-lable-table {
+    font-family: 'Calibri', sans-serif !important;
+    font-weight: bold !important;
+    color: #000000 !important;
+}
+.profile-layout-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.profile-layout-table td {
+    vertical-align: top;
+    padding: 1rem;
+    width: 33.33%;
+}

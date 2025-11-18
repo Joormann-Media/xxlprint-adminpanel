@@ -1,0 +1,41 @@
+{# templates/vrr_busstop/import.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Haltestellen CSV importieren{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Haltestellen CSV importieren</h1>
+        <p>Bitte lade hier deine CSV-Datei mit Semikolon als Trennzeichen hoch.</p>
+
+        {# Flash Messages #}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label == 'error' ? 'danger' : 'success' }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <form method="post" enctype="multipart/form-data" action="{{ path('app_vrr_busstop_import') }}" class="mb-3">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('vrr_busstop_import') }}">
+
+            <div class="mb-3">
+                <label for="csv_file" class="form-label">CSV-Datei (Semikolon getrennt)</label>
+                <input type="file" name="csv_file" id="csv_file" accept=".csv" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Import starten</button>
+            <a href="{{ path('app_vrr_busstop_index') }}" class="btn btn-secondary ms-2">Zurück zur Übersicht</a>
+        </form>
+
+        <hr>
+
+        <h5>Erwartetes CSV-Format</h5>
+        <pre style="max-height: 200px; overflow-y: auto; background: #f8f9fa; padding: 1rem; border: 1px solid #ddd; font-size: 0.9rem;">
+VERSION;STOP_NR;STOP_TYPE;STOP_NAME;STOP_NAME_WITHOUT_LOCALITY;STOP_SHORTNAME;STOP_POS_X;STOP_POS_Y;PLACE;OCC;FARE_ZONE1_NR;FARE_ZONE2_NR;FARE_ZONE3_NR;FARE_ZONE4_NR;FARE_ZONE5_NR;FARE_ZONE6_NR;GLOBAL_ID;VALID_FROM;VALID_TO;PLACE_ID;GIS_MOT_FLAG;IS_CENTRAL_STOP;IS_RESPONSIBLE_STOP;INTERCHANGE_TYPE;INTERCHANGE_QUALITY
+57;77;0;Dortmund Oberdelle;Oberdelle;ObDel;7.3228685;51.5160517;Dortmund;5913000;374;-1;-1;-1;-1;-1;de:05913:77;19781001;25001231;c5e35586-2e68-4b9d-b9fd-6c86135feeda;0;0;0;2;0
+57;78;0;Dortmund Bövinghauser Dorfstr.;Bövinghauser Dorfstraße;BövDorf;7.3219792;51.5114843;Dortmund;5913000;374;-1;-1;-1;-1;-1;de:05913:78;19781001;25001231;c5e35586-2e68-4b9d-b9fd-6c86135feeda;0;0;0;2;0
+        </pre>
+    </div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}NFC-Sticker/Karte{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h2 class="mb-0">
+            <i class="bi bi-credit-card"></i> NFC-Sticker/Karte #{{ nfc_sticker_card.id }}
+        </h2>
+        <div>
+            <a href="{{ path('app_nfc_sticker_card_edit', {'id': nfc_sticker_card.id}) }}" class="btn btn-primary me-2">
+                <i class="bi bi-pencil"></i> Bearbeiten
+            </a>
+            <a href="{{ path('app_nfc_sticker_card_index') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Zurück zur Liste
+            </a>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">UID</dt>
+                        <dd class="col-sm-8"><code>{{ nfc_sticker_card.uid }}</code></dd>
+
+                        <dt class="col-sm-4">Typ</dt>
+                        <dd class="col-sm-8">{{ nfc_sticker_card.type|capitalize }}</dd>
+
+                        <dt class="col-sm-4">Label</dt>
+                        <dd class="col-sm-8">{{ nfc_sticker_card.label|default('—') }}</dd>
+
+                        <dt class="col-sm-4">Zweck</dt>
+                        <dd class="col-sm-8">{{ nfc_sticker_card.purpose|default('—') }}</dd>
+
+                        <dt class="col-sm-4">Ziel</dt>
+                        <dd class="col-sm-8">{{ nfc_sticker_card.target|default('—') }}</dd>
+
+                        <dt class="col-sm-4">Status</dt>
+                        <dd class="col-sm-8">
+                            {% if nfc_sticker_card.active %}
+                                <span class="badge bg-success">Aktiv</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inaktiv</span>
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-4">Ausgegeben am</dt>
+                        <dd class="col-sm-8">{{ nfc_sticker_card.issuedAt ? nfc_sticker_card.issuedAt|date('Y-m-d H:i') : '—' }}</dd>
+
+                        <dt class="col-sm-4">Letzter Scan</dt>
+                        <dd class="col-sm-8">{{ nfc_sticker_card.lastScanAt ? nfc_sticker_card.lastScanAt|date('Y-m-d H:i') : '—' }}</dd>
+
+                        <dt class="col-sm-4">Kommentar</dt>
+                        <dd class="col-sm-8">{{ nfc_sticker_card.comment|default('—') }}</dd>
+
+                        <dt class="col-sm-4">Erstellt</dt>
+                        <dd class="col-sm-8">{{ nfc_sticker_card.createdAt ? nfc_sticker_card.createdAt|date('Y-m-d H:i') : '—' }}</dd>
+
+                        <dt class="col-sm-4">Geändert</dt>
+                        <dd class="col-sm-8">{{ nfc_sticker_card.updatedAt ? nfc_sticker_card.updatedAt|date('Y-m-d H:i') : '—' }}</dd>
+
+                        <dt class="col-sm-4">Extra</dt>
+                        <dd class="col-sm-8" style="max-width:400px; overflow:auto;">
+                            {% if nfc_sticker_card.extra %}
+                                <pre class="mb-0" style="white-space:pre-wrap;">{{ nfc_sticker_card.extra|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <form method="post" action="{{ path('app_nfc_sticker_card_delete', {'id': nfc_sticker_card.id}) }}" onsubmit="return confirm('Wirklich löschen?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ nfc_sticker_card.id) }}">
+                        <button class="btn btn-danger"><i class="bi bi-trash"></i> Löschen</button>
+                    </form>
+                    <span class="text-muted small">ID: {{ nfc_sticker_card.id }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

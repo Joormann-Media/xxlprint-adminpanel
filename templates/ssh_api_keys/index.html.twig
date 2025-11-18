@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SshApiKeys index{% endblock %}
+
+{% block body %}
+    <h1>SshApiKeys index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Sshapikey</th>
+                <th>SshapikeyDescription</th>
+                <th>SshapikeyExpiration</th>
+                <th>SshapikeyCreate</th>
+                <th>SshapikeyUpdate</th>
+                <th>SshapikeyValid</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ssh_api_key in ssh_api_keys %}
+            <tr>
+                <td>{{ ssh_api_key.id }}</td>
+                <td>{{ ssh_api_key.sshapikey }}</td>
+                <td>{{ ssh_api_key.sshapikeyDescription }}</td>
+                <td>{{ ssh_api_key.sshapikeyExpiration ? ssh_api_key.sshapikeyExpiration|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ssh_api_key.sshapikeyCreate ? ssh_api_key.sshapikeyCreate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ssh_api_key.sshapikeyUpdate ? ssh_api_key.sshapikeyUpdate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ssh_api_key.sshapikeyValid ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_ssh_api_keys_show', {'id': ssh_api_key.id}) }}">show</a>
+                    <a href="{{ path('app_ssh_api_keys_edit', {'id': ssh_api_key.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ssh_api_keys_new') }}">Create new</a>
+{% endblock %}

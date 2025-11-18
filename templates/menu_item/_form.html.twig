@@ -1,0 +1,75 @@
+<div class="container py-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h2 class="mb-4">🧩 Menüeintrag erstellen / bearbeiten</h2>
+
+            {{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+
+                <div class="col-md-6">
+                    {{ form_label(form.name) }}
+                    {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_label(form.status) }}
+                    {{ form_widget(form.status, {'attr': {'class': 'form-select'}}) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_label(form.route) }}
+                    {{ form_widget(form.route, {'attr': {'class': 'form-select'}}) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_label(form.menuId) }}
+                    {{ form_widget(form.menuId, {'attr': {'class': 'form-select'}}) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_label(form.subMenuId) }}
+                    {{ form_widget(form.subMenuId, {'attr': {'class': 'form-select'}}) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_label(form.minRole) }}
+                    {{ form_widget(form.minRole, {'attr': {'class': 'form-select'}}) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_label(form.lastUpdateBy) }}
+                    {{ form_widget(form.lastUpdateBy, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_label(form.updateBy) }}
+                    {{ form_widget(form.updateBy, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_label(form.lastUpdate) }}
+                    {{ form_widget(form.lastUpdate, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_label(form.createAt) }}
+                    {{ form_widget(form.createAt, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_label(form.updateAt) }}
+                    {{ form_widget(form.updateAt, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
+                </div>
+                
+
+                {{ form_widget(form.sortOrder) }}
+
+                <div class="col-12 text-end mt-3">
+                    <button class="btn btn-primary">💾 Speichern</button>
+                    <a href="{{ path('app_menu_item_index') }}" class="btn btn-secondary ms-2">⬅️ Zurück</a>
+                    
+                </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

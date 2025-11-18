@@ -1,0 +1,263 @@
+<p>{{ form_start(form) }}</p>
+<div class="form-container">
+    <style>
+        .sort-arrows {
+            display: inline-flex;
+            flex-direction: row;
+        }
+    </style>
+    <figure class="table">
+        
+            
+            <a href="{{ path('app_permission_index') }}"class="custom-button-icon"><img src="/gfx/systemgfx/last-step.png" alt="Back" >Back</a>
+
+
+
+            <button class=" custom-button-icon">
+                <img src="/gfx/systemgfx/ok_arrow.png" alt="Save" > Save
+            </button>
+            
+        
+        <table class="custom-form-table">
+            
+            <tbody>
+                <tr>
+                    <td>
+                        <h4>Permission System-Config</h4>
+                        <div class="form-group">
+                            <div class="custom-form-lable">
+                                {{ form_label(form.name) }}<br>
+                            </div>
+                            {{ form_widget(form.name) }} 
+                            {{ form_errors(form.name) }}
+                        </div>
+
+                        <div class="form-group invisible-content">
+                            <div class="custom-form-lable">
+                            {{ form_label(form.createBy) }}<br>
+                            </div>
+                            {{ form_widget(form.createBy) }} 
+                            {{ form_errors(form.createBy) }}
+                        </div>
+
+                        
+
+                            <div class="form-group invisible-content">
+                                <div class="custom-form-lable">
+                                {{ form_label(form.createdate) }}<br>
+                                </div>
+                                
+                                {{ form_widget(form.createdate) }} 
+                                {{ form_errors(form.createdate) }}
+                            </div>
+                            
+                            <div class="custom-form-lable">
+                            {{ form_label(form.pinRequired) }}<br>
+                            {{ form_widget(form.pinRequired) }} 
+                            {{ form_errors(form.pinRequired) }}<br>
+                        </div>
+                        <div class="custom-form-lable">
+                            {{ form_label(form.isActive) }}<br>
+                            {{ form_widget(form.isActive) }} 
+                            {{ form_errors(form.isActive) }}<br>
+                        </div>
+                        <div class="custom-form-lable">
+                            {{ form_label(form.minRole) }}<br>
+                            {{ form_widget(form.minRole) }} 
+                            {{ form_errors(form.minRole) }}<br>
+                        </div>
+                        <div class="form-section">
+        
+        
+
+                            <div id="device-restrictions" >
+                                <div class="form-group">
+                                    
+                                        <label class="custom-form-lable">Device Restrictions</label><br>
+                                        <button type="button" class="toggle-button custom-button-icon" id="select-all-devices">Select All</button>
+                                        <button type="button" class="toggle-button custom-button-icon" id="deselect-all-devices">Deselect All</button>
+                                    
+                                    <select id="device-restrictions-select" multiple class="custom-css-input">
+                                        <option value="onMobileIOS">iOS (iPhone, iPad)</option>
+                                        <option value="onMobileAndroid">Android</option>
+                                        <option value="onOtherMobile">Sonstige Mobile</option>
+                                        <option value="onChromeOS">ChromeOS</option>
+                                        <option value="onWindows">Windows</option>
+                                        <option value="onLinux">Linux</option>
+                                        <option value="onMacOS">MacOS</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </td>
+                    <td>
+                        <h4>Permission Route</h4>
+                        <div class="custom-form-lable">{{ form_label(form.permissionRoute) }}<br>&nbsp;</div>
+                        <p>{{ form_widget(form.permissionRoute) }} {{ form_errors(form.permissionRoute) }}</p>
+
+                        <h4>Permission Description</h4>
+                        <div class="custom-form-lable">
+                            {{ form_label(form.description) }}<br>
+                        </div>
+                        {{ form_widget(form.description) }} {{ form_errors(form.description) }}<br>
+                        
+                        <div id="subroutes-container" class="toggle-content">
+                            <h4>Unterrouten:</h4>
+                            <ul id="subroutes-list"></ul>
+                        </div>
+                        
+                        <button id="send-to-api" class="custom-button-icon" style="display: none;">Send To API</button>
+                        
+                    </td>
+                    <td>
+
+                        <div class="form-section">
+                            <h4>Restrictions:</h4>
+                        </div>
+                        <div class="form-section">
+                                  
+                              <button type="button" class="toggle-button" data-target="country-restrictions">
+                             ➕ Country Restrictions anzeigen
+                           </button>
+    
+                            <div id="country-restrictions" class="toggle-content">
+                           <div class="form-group">
+                <p>
+                    <label class="custom-form-lable">Allowed Countries</label> <br>
+                    <button type="button" class="toggle-button" id="select-all-allowed">Alle auswählen</button>
+                    <button type="button" class="toggle-button" id="deselect-all-allowed">Alle abwählen</button>
+                </p>
+                {{ form_widget(form.allowedCountries) }}
+                {{ form_errors(form.allowedCountries) }}
+            </div>
+    
+            <div class="form-group">
+                <p>
+                    <label class="custom-form-lable">Blocked Countries</label><br> 
+                    <button type="button"  class="toggle-button"  id="select-all-blocked">Select All</button>
+                    <button type="button"  class="toggle-button" id="deselect-all-blocked">Unselect All</button>
+                </p>
+                {{ form_widget(form.blockedCountries) }}
+                {{ form_errors(form.blockedCountries) }}
+            </div>
+        </div>
+    </div>
+    
+                    </td>
+                </tr>
+               
+         
+            </tbody>
+        </table>
+    </figure>
+    <p> {{ form_end(form) }}&nbsp;<script>
+document.addEventListener("DOMContentLoaded", function () {
+    function toggleAll(selectAll, fieldId) {
+        const select = document.getElementById(fieldId);
+        if(select) {
+            for(let option of select.options) {
+                option.selected = selectAll;
+            }
+        }
+    }
+    
+    document.getElementById("select-all-allowed")
+        .addEventListener("click", function () {
+            toggleAll(true, "{{ form.allowedCountries.vars.id }}");
+        });
+    
+    document.getElementById("deselect-all-allowed")
+        .addEventListener("click", function () {
+            toggleAll(false, "{{ form.allowedCountries.vars.id }}");
+        });
+    
+    document.getElementById("select-all-blocked")
+        .addEventListener("click", function () {
+            toggleAll(true, "{{ form.blockedCountries.vars.id }}");
+        });
+    
+    document.getElementById("deselect-all-blocked")
+        .addEventListener("click", function () {
+            toggleAll(false, "{{ form.blockedCountries.vars.id }}");
+        });
+});
+
+// Device Restrictions JavaScript
+document.addEventListener("DOMContentLoaded", function () {
+    const deviceSelect = document.getElementById("device-restrictions-select");
+    deviceSelect.style.overflow = "hidden"; // Entfernt den Scrollbalken
+    // Adding CSS instructions
+    deviceSelect.style.width = "auto";
+    deviceSelect.style.height = "200px";
+    deviceSelect.style.border = "1px solid #ccc";
+    deviceSelect.style.padding = "10px";
+    
+    // Adding custom CSS class
+    deviceSelect.classList.add("custom-css-input");
+    const allowedDevices = {
+        onMobileIOS: document.getElementById("{{ form.onMobileIOS.vars.id }}"),
+        onMobileAndroid: document.getElementById("{{ form.onMobileAndroid.vars.id }}"),
+        onOtherMobile: document.getElementById("{{ form.onOtherMobile.vars.id }}"),
+        onChromeOS: document.getElementById("{{ form.onChromeOS.vars.id }}"),
+        onWindows: document.getElementById("{{ form.onWindows.vars.id }}"),
+        onLinux: document.getElementById("{{ form.onLinux.vars.id }}"),
+        onMacOS: document.getElementById("{{ form.onMacOS.vars.id }}"),
+    };
+    
+    function syncDeviceSelection() {
+        for(let key in allowedDevices) {
+            allowedDevices[key].value = "0"; // Standard: Alle deaktivieren
+        }
+        for(let option of deviceSelect.selectedOptions) {
+            if(allowedDevices[option.value]) {
+                allowedDevices[option.value].value = "1"; // Aktivieren
+            }
+        }
+    }
+    
+    deviceSelect.addEventListener("change", syncDeviceSelection);
+    
+    document.getElementById("select-all-devices")
+        .addEventListener("click", function () {
+            for(let option of deviceSelect.options) {
+                option.selected = true;
+            }
+            syncDeviceSelection();
+        });
+    
+    document.getElementById("deselect-all-devices")
+        .addEventListener("click", function () {
+            for(let option of deviceSelect.options) {
+                option.selected = false;
+            }
+            syncDeviceSelection();
+        });
+    
+    // Initial Sync (z. B. wenn das Formular geladen wird)
+    syncDeviceSelection();
+});
+document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll(".toggle-button");
+
+    buttons.forEach(button => {
+        button.addEventListener("click", function () {
+            const targetId = this.getAttribute("data-target");
+            const targetDiv = document.getElementById(targetId);
+            
+            // Schließe alle geöffneten Bereiche außer dem aktuellen
+            document.querySelectorAll(".toggle-content").forEach(div => {
+                if (div !== targetDiv) {
+                    div.classList.remove("open");
+                }
+            });
+
+            // Toggle den aktuellen Bereich
+            targetDiv.classList.toggle("open");
+        });
+    });
+});
+
+        </script>
+    </p>
+</div>

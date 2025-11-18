@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ProjectStatistics{% endblock %}
+
+{% block body %}
+    <h1>ProjectStatistics</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ project_statistic.id }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ project_statistic.createdAt ? project_statistic.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>EntitiesCount</th>
+                <td>{{ project_statistic.entitiesCount }}</td>
+            </tr>
+            <tr>
+                <th>RoutesCount</th>
+                <td>{{ project_statistic.routesCount }}</td>
+            </tr>
+            <tr>
+                <th>FormsCount</th>
+                <td>{{ project_statistic.formsCount }}</td>
+            </tr>
+            <tr>
+                <th>ControllersCount</th>
+                <td>{{ project_statistic.controllersCount }}</td>
+            </tr>
+            <tr>
+                <th>FilesCount</th>
+                <td>{{ project_statistic.filesCount }}</td>
+            </tr>
+            <tr>
+                <th>DirectoriesCount</th>
+                <td>{{ project_statistic.directoriesCount }}</td>
+            </tr>
+            <tr>
+                <th>ServicesCount</th>
+                <td>{{ project_statistic.servicesCount }}</td>
+            </tr>
+            <tr>
+                <th>CommandsCount</th>
+                <td>{{ project_statistic.commandsCount }}</td>
+            </tr>
+            <tr>
+                <th>ShellScriptsCount</th>
+                <td>{{ project_statistic.shellScriptsCount }}</td>
+            </tr>
+            <tr>
+                <th>PythonScriptsCount</th>
+                <td>{{ project_statistic.pythonScriptsCount }}</td>
+            </tr>
+            <tr>
+                <th>PhpLinesCount</th>
+                <td>{{ project_statistic.phpLinesCount }}</td>
+            </tr>
+            <tr>
+                <th>PythonLinesCount</th>
+                <td>{{ project_statistic.pythonLinesCount }}</td>
+            </tr>
+            <tr>
+                <th>ShellLinesCount</th>
+                <td>{{ project_statistic.shellLinesCount }}</td>
+            </tr>
+            <tr>
+                <th>TotalLinesCount</th>
+                <td>{{ project_statistic.totalLinesCount }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_project_statistics_index') }}">back to list</a>
+
+    <a href="{{ path('app_project_statistics_edit', {'id': project_statistic.id}) }}">edit</a>
+
+    {{ include('project_statistics/_delete_form.html.twig') }}
+{% endblock %}

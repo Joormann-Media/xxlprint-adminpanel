@@ -1,0 +1,180 @@
+{# templates/nfc_scan/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}NFC-Scans{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">NFC-Scans</h1>
+    <span class="badge bg-primary">Karten: {{ stats.nfcCards }}</span>
+<span class="badge bg-success">Aufkleber: {{ stats.nfcStickers }}</span>
+
+
+    <!-- Pagination -->
+    <nav>
+        <ul id="pagination" class="pagination justify-content-center mt-4"></ul>
+    </nav>
+
+    <div class="table-responsive">
+        <table id="scanTable" class="table table-striped table-hover table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th data-sort="uid" class="sortable">UID <span class="sort-indicator"></span></th>
+                    <th data-sort="atr" class="sortable">ATR <span class="sort-indicator"></span></th>
+                    <th data-sort="chipType" class="sortable">Chip-Type <span class="sort-indicator"></span></th>
+                    <th data-sort="memory" class="sortable">Memory <span class="sort-indicator"></span></th>
+                    <th data-sort="manufacturer" class="sortable">Hersteller <span class="sort-indicator"></span></th>
+                    <th data-sort="medium" class="sortable">Medium <span class="sort-indicator"></span></th>
+                    <th data-sort="scannedAt" class="sortable">Zeitpunkt <span class="sort-indicator"></span></th>
+                    <th>Aktionen</th>
+                </tr>
+            </thead>
+            <tbody id="scanTableBody">
+            {% for scan in nfc_scans %}
+                <tr>
+                    <td>{{ scan.uid }}</td>
+                    <td>{{ scan.atr }}</td>
+                    <td>{{ scan.chipType }}</td>
+                    <td>{{ scan.memory }}</td>
+                    <td>{{ scan.manufacturer }}</td>
+                    <td>
+                        {% if scan.mediumType or scan.mediumDescription %}
+                            {% if scan.mediumType %}
+                                <span class="fw-semibold">{{ scan.mediumType }}</span>
+                            {% endif %}
+                            {% if scan.mediumDescription %}
+                                <br><small class="text-muted">{{ scan.mediumDescription }}</small>
+                            {% endif %}
+                        {% else %}
+                            <span class="text-muted">—</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ scan.scannedAt ? scan.scannedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>
+                        <a href="{{ path('app_nfc_scan_show', {'id': scan.id}) }}" class="btn btn-sm btn-outline-primary">Anzeigen</a>
+                        <a href="{{ path('app_nfc_scan_edit', {'id': scan.id}) }}" class="btn btn-sm btn-outline-secondary">Bearbeiten</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const rowsPerPage = 25;
+let currentPage = 1;
+let scanRows = Array.from(document.querySelectorAll('#scanTable tbody tr'));
+let lastSorted = { idx: null, asc: true };
+
+function renderTable() {
+    scanRows.forEach((row, i) => {
+        row.style.display = (i >= (currentPage - 1) * rowsPerPage && i < currentPage * rowsPerPage) ? '' : 'none';
+    });
+    renderPagination();
+}
+
+function renderPagination() {
+    const pageCount = Math.ceil(scanRows.length / rowsPerPage);
+    const pagin = document.getElementById('pagination');
+    pagin.innerHTML = '';
+    for (let i = 1; i <= pageCount; i++) {
+        const li = document.createElement('li');
+        li.className = 'page-item' + (i === currentPage ? ' active' : '');
+        const a = document.createElement('a');
+        a.className = 'page-link';
+        a.href = '#';
+        a.innerText = i;
+        a.onclick = function(e) {
+            e.preventDefault();
+            currentPage = i;
+            renderTable();
+        };
+        li.appendChild(a);
+        pagin.appendChild(li);
+    }
+}
+
+function sortTableBy(column, asc = true) {
+    scanRows.sort((a, b) => {
+        let av = a.querySelector(`td:nth-child(${column+1})`).innerText || '';
+        let bv = b.querySelector(`td:nth-child(${column+1})`).innerText || '';
+        if (column === 6) { // scannedAt column (jetzt Spalte 6, wegen Medium)
+            av = new Date(av);
+            bv = new Date(bv);
+        }
+        if (av < bv) return asc ? -1 : 1;
+        if (av > bv) return asc ? 1 : -1;
+        return 0;
+    });
+    const tbody = document.querySelector('#scanTable tbody');
+    scanRows.forEach(row => tbody.appendChild(row));
+    renderTable();
+    updateSortIndicators(column, asc);
+}
+
+function updateSortIndicators(column, asc) {
+    document.querySelectorAll('.sortable').forEach((th, idx) => {
+        let indicator = th.querySelector('.sort-indicator');
+        if (idx === column) {
+            indicator.innerHTML = asc ? "&#9650;" : "&#9660;";
+            th.classList.add('table-primary');
+        } else {
+            indicator.innerHTML = "";
+            th.classList.remove('table-primary');
+        }
+    });
+}
+
+document.querySelectorAll('.sortable').forEach((th, idx) => {
+    let asc = true;
+    th.style.cursor = 'pointer';
+    th.onclick = () => {
+        if (lastSorted.idx === idx) {
+            asc = !lastSorted.asc;
+        } else {
+            asc = true;
+        }
+        sortTableBy(idx, asc);
+        lastSorted = { idx, asc };
+    };
+});
+
+function fetchAndUpdateTable() {
+    // !!! Stelle hier die URL zu deinem Scan-Index-API-Endpunkt ein, der NUR das <tbody> zurückliefert !!!
+    fetch(window.location.pathname + "?ajax=1")
+        .then(r => r.text())
+        .then(html => {
+            // Hole nur das <tbody> aus dem Response (du kannst auf server-side ein Partial für tbody bauen!)
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newTbody = doc.querySelector('#scanTableBody');
+            if (!newTbody) return; // Safety
+            document.querySelector('#scanTable tbody').innerHTML = newTbody.innerHTML;
+
+            // Update JS-Cache
+            scanRows = Array.from(document.querySelectorAll('#scanTable tbody tr'));
+            renderTable();
+            if (lastSorted.idx !== null) {
+                sortTableBy(lastSorted.idx, lastSorted.asc);
+            }
+        });
+}
+
+// Auto-Reload, alle 1 Sekunde
+let reloadInterval = setInterval(fetchAndUpdateTable, 1000);
+
+// Option: Pausiere Reload wenn Maus über Tabelle (falls du manuell klickst)
+let tableHover = false;
+document.querySelector('#scanTable').addEventListener('mouseenter', () => { tableHover = true; });
+document.querySelector('#scanTable').addEventListener('mouseleave', () => { tableHover = false; });
+setInterval(() => {
+    if (!tableHover) fetchAndUpdateTable();
+}, 1000);
+
+window.addEventListener('DOMContentLoaded', () => {
+    renderTable();
+    updateSortIndicators(0, true);
+});
+</script>
+{% endblock %}

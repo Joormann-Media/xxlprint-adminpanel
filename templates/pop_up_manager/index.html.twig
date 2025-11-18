@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container py-4">
+    <div class="bg-light border rounded p-4 mb-4 shadow-sm">
+        <h2 class="mb-0">📢 PopUp Manager</h2>
+        <p class="text-muted">Alle aktuell verfügbaren PopUp-Module im System.</p>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <a href="{{ path('app_pop_up_manager_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle me-1"></i>Neues PopUp
+        </a>
+
+    </div>
+        
+    
+
+    {% if pop_up_managers is not empty %}
+        <div class="row g-4">
+            {% for pop_up in pop_up_managers %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ pop_up.popupName }}</h5>
+
+                            <p class="mb-1"><strong>Status:</strong> {{ pop_up.popupStatus }}</p>
+                            <p class="mb-1"><strong>Ablauf:</strong> {{ pop_up.popupExpires ? pop_up.popupExpires|date('d.m.Y H:i') : '–' }}</p>
+                            <p class="mb-1"><strong>Erstellt am:</strong> {{ pop_up.popupCreate ? pop_up.popupCreate|date('d.m.Y H:i') : '–' }}</p>
+                            <p class="mb-1"><strong>Erstellt von:</strong> {{ pop_up.popupUser ?: '–' }}</p>
+                            <p class="mb-1"><strong>Kurzbeschreibung:</strong><br>{{ pop_up.popupDescription }}</p>
+                            <div class="mt-3">
+                                <strong>🔗 Shortcode:</strong>
+                                <code class="d-block bg-light p-2 rounded text-break">
+                                    [[shortcode_button tag="help" id={{ pop_up.id }} modal=true]]
+                                </code>
+                                <button
+                                    class="btn btn-sm btn-outline-secondary mt-1 copy-shortcode-btn"
+                                    data-shortcode="[[shortcode_button tag=&quot;help&quot; id={{ pop_up.id }} modal=true]]"
+                                >
+                                    📋 In Zwischenablage kopieren
+                                </button>
+                            </div>
+                            
+                            <div class="card-footer d-flex justify-content-end gap-2 bg-transparent border-top-0">
+                            <a href="{{ path('app_pop_up_manager_show', {'id': pop_up.id}) }}" class="custom-button-icon" title="Anzeigen">
+                                <img src="/gfx/systemgfx/show.png" alt="Show">
+                            </a>
+                            <a href="{{ path('app_pop_up_manager_edit', {'id': pop_up.id}) }}" class="custom-button-icon" title="Bearbeiten">
+                                <img src="/gfx/systemgfx/edit.png" alt="Edit">
+                            </a>
+                            <form method="post" action="{{ path('app_pop_up_manager_delete', {'id': pop_up.id}) }}"
+                                  onsubmit="return confirm('Möchtest du dieses PopUp wirklich löschen?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ pop_up.id) }}">
+                                <button class="custom-button-icon" title="Löschen">
+                                    <img src="/gfx/systemgfx/delete.png" alt="Delete">
+                                </button>
+                            </form>
+                        </div>
+                        {% if pop_up.popupContent %}
+                        <p class="mb-1"><strong>Inhalt:</strong></p>
+                        <div class="readonly-display">
+                            {{ pop_up.popupContent|raw }}
+                        </div>
+                    {% endif %}
+                    
+                    
+
+
+                        </div>
+
+                        
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning text-center mt-4">
+            🚫 Es wurden noch keine PopUps angelegt.
+        </div>
+    {% endif %}
+</div>
+<script>
+    document.querySelectorAll('.copy-shortcode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const text = btn.dataset.shortcode;
+            navigator.clipboard.writeText(text).then(() => {
+                btn.classList.add('btn-success');
+                btn.innerHTML = '✅ Kopiert!';
+                setTimeout(() => {
+                    btn.classList.remove('btn-success');
+                    btn.innerHTML = '📋 In Zwischenablage kopieren';
+                }, 2000);
+            });
+        });
+    });
+</script>
+{% endblock %}

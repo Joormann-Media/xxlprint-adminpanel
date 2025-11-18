@@ -1,0 +1,253 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mitarbeiter bearbeiten{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-person-badge"></i> Mitarbeiter bearbeiten</h4>
+        </div>
+        <div class="card-body">
+
+            {% if form.vars.errors|length > 0 %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+
+            {{ form_start(form, {'attr': {'autocomplete': 'off'}}) }}
+
+            <ul class="nav nav-tabs mb-3" id="employeeTabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="tab-person" data-bs-toggle="tab" data-bs-target="#person" type="button" role="tab">
+                        <i class="bi bi-person"></i> Person
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="tab-job" data-bs-toggle="tab" data-bs-target="#job" type="button" role="tab">
+                        <i class="bi bi-briefcase"></i> Anstellung
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="tab-vehicles" data-bs-toggle="tab" data-bs-target="#vehicles" type="button" role="tab">
+                        <i class="bi bi-truck"></i> Fahrzeuge & Lizenzen
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="tab-address" data-bs-toggle="tab" data-bs-target="#address" type="button" role="tab">
+                        <i class="bi bi-geo-alt"></i> Adresse
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="tab-extras" data-bs-toggle="tab" data-bs-target="#extras" type="button" role="tab">
+                        <i class="bi bi-info-circle"></i> Extras
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- Person -->
+                <div class="tab-pane fade show active" id="person" role="tabpanel">
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            {{ form_label(form.firstName) }}
+                            {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.firstName) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.lastName) }}
+                            {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.lastName) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.email) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.phone) }}
+                            {{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.phone) }}
+                        </div>
+                    </div>
+                </div>
+                <!-- Job -->
+                <div class="tab-pane fade" id="job" role="tabpanel">
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            {{ form_label(form.employeeNumber) }}
+                            {{ form_widget(form.employeeNumber, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.employeeNumber) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.shortCode) }}
+                            {{ form_widget(form.shortCode, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.shortCode) }}
+                        </div>
+                        <div class="col-md-4 d-flex align-items-center">
+                            <div class="form-check mt-4">
+                                {{ form_widget(form.isDriver, {'attr': {'class': 'form-check-input'}}) }}
+                                {{ form_label(form.isDriver, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                                {{ form_errors(form.isDriver) }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.birthDate) }}
+                            {{ form_widget(form.birthDate, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.birthDate) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.hiredAt) }}
+                            {{ form_widget(form.hiredAt, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.hiredAt) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.agreedHoursDaily) }}
+                            {{ form_widget(form.agreedHoursDaily, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.agreedHoursDaily) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.agreedHoursWeekly) }}
+                            {{ form_widget(form.agreedHoursWeekly, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.agreedHoursWeekly) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.agreedHoursMonthly) }}
+                            {{ form_widget(form.agreedHoursMonthly, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.agreedHoursMonthly) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.user) }}
+                            {{ form_widget(form.user, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.user) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.company) }}
+                            {{ form_widget(form.company, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.company) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.costCenters) }}
+                            {{ form_widget(form.costCenters, {'attr': {'class': 'form-select', 'multiple': 'multiple'}}) }}
+                            {{ form_errors(form.costCenters) }}
+                        </div>
+                    </div>
+                </div>
+                <!-- Fahrzeuge & Lizenzen -->
+                <div class="tab-pane fade" id="vehicles" role="tabpanel">
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            {{ form_label(form.licenceClasses) }}
+                            {{ form_widget(form.licenceClasses, {'attr': {'class': 'form-select', 'multiple': 'multiple'}}) }}
+                            {{ form_errors(form.licenceClasses) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.vehicles) }}
+                            {{ form_widget(form.vehicles, {'attr': {'class': 'form-select', 'multiple': 'multiple'}}) }}
+                            {{ form_errors(form.vehicles) }}
+                        </div>
+                    </div>
+                </div>
+                <!-- Adresse -->
+                <div class="tab-pane fade" id="address" role="tabpanel">
+                    <div class="row g-3 mt-2">
+                        <div class="col-12 mb-3">
+                            <label for="employee_address" class="form-label fw-bold">Adresse</label>
+                            <select id="employee_address"
+        class="form-select js-address-autocomplete"
+        data-url="{{ path('api_address_suggest') }}"
+        data-placeholder="Adresse suchen...">
+    {% if selectedAddress %}
+        <option value="{{ selectedAddress.id }}" selected>{{ selectedAddress }}</option>
+    {% endif %}
+</select>
+
+                            {{ form_widget(form.address, {'attr': {'class': 'js-address-hidden'}}) }}
+                            {{ form_errors(form.address) }}
+                            <div class="form-text">
+                                Adresse suchen & auswählen (min. 3 Zeichen). Die Datenbank bleibt happy.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Extras -->
+                <div class="tab-pane fade" id="extras" role="tabpanel">
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            {{ form_label(form.emergencyContact) }}
+                            {{ form_widget(form.emergencyContact, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.emergencyContact) }}
+                        </div>
+                        {# Weitere Felder für Zusatzinfos, falls benötigt #}
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <button class="btn btn-primary">
+                    <i class="bi bi-save"></i> Speichern
+                </button>
+                <a href="{{ path('app_employee_index') }}" class="btn btn-outline-secondary ms-2">
+                    <i class="bi bi-arrow-left"></i> Zurück
+                </a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
+<script>
+// Bootstrap Tabs für das Mitarbeiterformular
+document.querySelectorAll('#employeeTabs button').forEach(function(triggerEl) {
+    triggerEl.addEventListener('click', function(event) {
+        event.preventDefault();
+        bootstrap.Tab.getOrCreateInstance(triggerEl).show();
+    });
+});
+
+// --- Select2 Async Adresse ---
+// (jQuery + Select2 sind global in base.html.twig eingebunden!)
+$(function() {
+    $('.js-address-autocomplete').select2({
+        theme: 'bootstrap-5',
+        placeholder: $('.js-address-autocomplete').data('placeholder') || 'Adresse suchen ...',
+        minimumInputLength: 3,
+        allowClear: true,
+        width: '100%',
+        ajax: {
+            url: $('.js-address-autocomplete').data('url'),
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return { q: params.term };
+            },
+            processResults: function (data) {
+                return { results: data.results || data };
+            },
+            cache: true
+        },
+        templateResult: function(item) {
+            if (!item.id) { return item.text; }
+            return item.text + (item.city ? ' — ' + item.postcode + ' ' + item.city : '');
+        },
+        templateSelection: function(item) {
+            return item.text || item.id;
+        }
+    });
+
+    // Sync HiddenType (ID) bei Auswahl/Löschen
+    $('.js-address-autocomplete').on('select2:select', function(e) {
+        let id = e.params.data.id;
+        $('.js-address-hidden').val(id);
+    });
+    $('.js-address-autocomplete').on('select2:clear', function(e) {
+        $('.js-address-hidden').val('');
+    });
+    {% if form.address.vars.value %}
+    $('.js-address-hidden').val('{{ form.address.vars.value }}');
+    {% endif %}
+});
+</script>
+{% endblock %}

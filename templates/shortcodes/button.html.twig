@@ -1,0 +1,6 @@
+<a href="{{ url }}" class="btn btn-{{ style }} d-inline-flex align-items-center gap-2">
+    {% if icon %}
+        <img src="{{ asset(icon) }}" alt="" style="height: 20px;" onerror="this.style.display='none';">
+    {% endif %}
+    {{ label }}
+</a>

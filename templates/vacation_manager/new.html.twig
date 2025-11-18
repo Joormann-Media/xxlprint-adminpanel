@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    
+
+    {{ include('vacation_manager/_form.html.twig') }}
+
+    <a href="{{ path('app_vacation_manager_index') }}"class="custom-button-icon"><img src="/gfx/systemgfx/last-step.png" alt="Neu" ></a>
+{% endblock %}

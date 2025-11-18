@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New DevLogEntry{% endblock %}
+
+{% block body %}
+    <h1>Create new DevLogEntry</h1>
+
+    {{ include('dev_log_entry/_form.html.twig') }}
+
+    <a href="{{ path('app_dev_log_entry_index') }}">back to list</a>
+{% endblock %}

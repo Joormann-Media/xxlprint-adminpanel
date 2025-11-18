@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit SchoolTime{% endblock %}
+
+{% block body %}
+    <h1>Edit SchoolTime</h1>
+
+    {{ include('school_time/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_school_time_index') }}">back to list</a>
+
+    {{ include('school_time/_delete_form.html.twig') }}
+{% endblock %}

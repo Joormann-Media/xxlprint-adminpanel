@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% block title %}Adresskorrektur für {{ schoolkid.firstName }}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2>🧙 Adresskorrektur: {{ schoolkid.firstName }} {{ schoolkid.lastName }}</h2>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    🧾 Aktuell gespeicherte Adresse
+                </div>
+                <div class="card-body">
+                    <p><strong>Straße:</strong> {{ schoolkid.street }} {{ schoolkid.streetNumber }}</p>
+                    <p><strong>PLZ & Ort:</strong> {{ schoolkid.zip }} {{ schoolkid.city }}</p>
+                    <p><strong>Stadtteil (District):</strong> {{ schoolkid.district ?? '–' }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            {% if suggestion %}
+                <div class="card border-success">
+                    <div class="card-header bg-success text-white">
+                        🧠 Vorschlag (Quelle: {{ suggestion.source|capitalize }})
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="{{ path('app_schoolkids_apply_correction', {id: schoolkid.id}) }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token('correct' ~ schoolkid.id) }}">
+                            <input type="hidden" name="street" value="{{ suggestion.street }}">
+                            <input type="hidden" name="streetNumber" value="{{ suggestion.houseNumber }}">
+                            <input type="hidden" name="zip" value="{{ suggestion.postcode }}">
+                            <input type="hidden" name="city" value="{{ suggestion.city }}">
+                            <input type="hidden" name="district" value="{{ suggestion.district }}">
+
+                            <p><strong>Straße:</strong> {{ suggestion.street }} {{ suggestion.houseNumber }}</p>
+                            <p><strong>PLZ & Ort:</strong> {{ suggestion.postcode }} {{ suggestion.city }}</p>
+                            <p><strong>Stadtteil (District):</strong> {{ suggestion.district ?? '–' }}</p>
+
+                            <button type="submit" class="btn btn-success mt-2">
+                                ✔ Korrektur übernehmen
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    ⚠️ Es konnte kein alternativer Adressvorschlag gefunden werden.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{{ path('app_schoolkids_index') }}" class="btn btn-secondary">← Zurück zur Übersicht</a>
+</div>
+{% endblock %}

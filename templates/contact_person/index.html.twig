@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact Persons{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h2 class="mb-0">Contact Persons</h2>
+        <a href="{{ path('app_contact_person_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add Contact Person
+        </a>
+    </div>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="text" id="contactPersonSearch" class="form-control" placeholder="🔍 Search...">
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0" id="contactPersonTable" style="min-width:1100px;">
+                    <thead class="table-light sticky-top">
+                        <tr>
+                            <th class="sortable">Salutation</th>
+                            <th class="sortable">First Name</th>
+                            <th class="sortable">Last Name</th>
+                            <th class="sortable">Role</th>
+                            <th class="sortable">Street</th>
+                            <th class="sortable">No.</th>
+                            <th class="sortable">ZIP</th>
+                            <th class="sortable">City</th>
+                            <th class="sortable">Phone</th>
+                            <th class="sortable">Fax</th>
+                            <th class="sortable">Email</th>
+                            <th class="sortable">Web</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for contact_person in contact_people %}
+                        <tr>
+                            <td>{{ contact_person.salutation }}</td>
+                            <td>{{ contact_person.firstName }}</td>
+                            <td>{{ contact_person.lastName }}</td>
+                            <td>{{ contact_person.role }}</td>
+                            <td>{{ contact_person.street }}</td>
+                            <td>{{ contact_person.streetNumber }}</td>
+                            <td>{{ contact_person.zip }}</td>
+                            <td>{{ contact_person.city }}</td>
+                            <td>{{ contact_person.phone }}</td>
+                            <td>{{ contact_person.fax }}</td>
+                            <td>{{ contact_person.email }}</td>
+                            <td>
+                                {% if contact_person.web %}
+                                    <a href="{{ contact_person.web }}" target="_blank" title="Visit website">
+                                        <i class="bi bi-globe"></i>
+                                    </a>
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <a href="{{ path('app_contact_person_show', {'id': contact_person.id}) }}"
+                                   class="btn btn-sm btn-outline-info" title="Show"><i class="bi bi-eye"></i></a>
+                                <a href="{{ path('app_contact_person_edit', {'id': contact_person.id}) }}"
+                                   class="btn btn-sm btn-outline-primary ms-1" title="Edit"><i class="bi bi-pencil"></i></a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="13" class="text-center">No records found.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Search
+    const searchInput = document.getElementById('contactPersonSearch');
+    searchInput.addEventListener('input', function() {
+        const value = this.value.toLowerCase();
+        document.querySelectorAll("#contactPersonTable tbody tr").forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(value) ? '' : 'none';
+        });
+    });
+
+    // Sortable columns
+    function compareRows(a, b, idx, asc, isNumber) {
+        let v1 = a.children[idx].innerText.trim();
+        let v2 = b.children[idx].innerText.trim();
+
+        if (isNumber) {
+            v1 = parseFloat(v1.replace(/[^0-9.\-]/g, "")) || 0;
+            v2 = parseFloat(v2.replace(/[^0-9.\-]/g, "")) || 0;
+        }
+        if (asc) {
+            return v1.localeCompare ? v1.localeCompare(v2, undefined, {numeric:isNumber}) : (v1 > v2 ? 1 : -1);
+        } else {
+            return v2.localeCompare ? v2.localeCompare(v1, undefined, {numeric:isNumber}) : (v1 > v2 ? 1 : -1);
+        }
+    }
+
+    document.querySelectorAll('#contactPersonTable th.sortable').forEach((th, idx) => {
+        th.style.cursor = "pointer";
+        th.insertAdjacentHTML('beforeend', ' <span class="sort-arrow">⇅</span>');
+        let asc = true;
+
+        th.addEventListener('click', function() {
+            // Alle Pfeile zurücksetzen
+            document.querySelectorAll('#contactPersonTable th .sort-arrow').forEach(el => el.textContent = '⇅');
+            th.querySelector('.sort-arrow').textContent = asc ? '↑' : '↓';
+
+            const tbody = th.closest('table').querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr')).filter(tr => tr.style.display !== "none");
+
+            // Zahlenspalten automatisch erkennen
+            const isNumber = idx === 6; // ZIP als Zahl, Rest als String
+            rows.sort((a, b) => compareRows(a, b, idx, asc, isNumber));
+            rows.forEach(tr => tbody.appendChild(tr));
+            asc = !asc;
+        });
+    });
+});
+</script>
+{% endblock %}

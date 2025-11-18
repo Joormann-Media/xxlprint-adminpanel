@@ -1,0 +1,49 @@
+{# templates/e_mail_signature/preview.html.twig #}
+
+<div style="font-family: Arial, sans-serif; color: #333; line-height: 1.4;">
+    {% if signature.logoPath %}
+        <img src="{{ asset(signature.logoPath) }}" alt="Logo" style="max-height: 60px; margin-bottom: 10px;">
+    {% endif %}
+
+    <p style="margin: 0;">
+        <strong style="font-size: 1.1em;">{{ signature.name }}</strong><br>
+        {{ signature.position }}<br>
+        {{ signature.company }}
+    </p>
+
+    <p style="margin: 10px 0 0;">
+        📞 {{ signature.phone }} |
+        📱 {{ signature.mobile }} |
+        ✉️ <a href="mailto:{{ signature.email }}">{{ signature.email }}</a><br>
+        🌐 <a href="{{ signature.website }}" target="_blank">{{ signature.website }}</a>
+    </p>
+
+    {% if signature.address %}
+        <p style="margin: 10px 0 0;">
+            📍 {{ signature.address }}
+        </p>
+    {% endif %}
+
+    {% if signature.linkedin or signature.facebook or signature.twitter %}
+        <p style="margin-top: 10px;">
+            {% if signature.linkedin %}
+                <a href="{{ signature.linkedin }}" target="_blank">🔗 LinkedIn</a>&nbsp;
+            {% endif %}
+            {% if signature.facebook %}
+                <a href="{{ signature.facebook }}" target="_blank">📘 Facebook</a>&nbsp;
+            {% endif %}
+            {% if signature.twitter %}
+                <a href="{{ signature.twitter }}" target="_blank">🐦 Twitter</a>
+            {% endif %}
+        </p>
+    {% endif %}
+
+    {% if signature.bannerPath %}
+        <img src="{{ asset(signature.bannerPath) }}" alt="Banner" style="max-width: 100%; margin-top: 10px;">
+    {% endif %}
+
+    {% if signature.disclaimer %}
+        <hr>
+        <p style="font-size: 0.8em; color: #666;">{{ signature.disclaimer|nl2br }}</p>
+    {% endif %}
+</div>

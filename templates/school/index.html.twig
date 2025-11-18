@@ -1,0 +1,171 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Schools{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h2 class="mb-0">School List</h2>
+        <div class="d-flex gap-2">
+            <form method="post"
+                  action="{{ path('app_school_bulk_assign_addresses') }}"
+                  id="bulkAssignForm"
+                  class="d-inline">
+                <input type="hidden" name="_token" value="{{ csrf_token('bulk_assign') }}">
+                <button class="btn btn-outline-primary"
+                        type="submit"
+                        id="bulkAssignBtn"
+                        disabled>
+                    📦 Für Auswahl Adressen zuordnen
+                </button>
+            </form>
+            <a href="{{ path('app_school_new') }}" class="btn btn-success">➕ New School</a>
+        </div>
+    </div>
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label == 'success' ? 'success' : (label == 'warning' ? 'warning' : (label == 'info' ? 'info' : 'secondary')) }} alert-dismissible fade show" role="alert">
+                {{ message|raw }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="text" id="schoolSearch" class="form-control" placeholder="🔍 Search schools...">
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0" id="schoolTable">
+                    <thead class="table-light sticky-top">
+                        <tr>
+                            <th class="text-center">Actions</th>
+                            <th style="width:32px;">
+                                <input type="checkbox" id="selectAllSchools">
+                            </th>
+                            <th>ID</th>
+                            <th>Shorttag</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            
+                            <th>Phone</th>
+                            <th>Email</th>
+                            
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for school in schools %}
+                        <tr>
+                            <td class="text-center">
+                                <a href="{{ path('app_school_show', {'id': school.id}) }}"
+                                   class="btn btn-sm btn-outline-info" title="Show"><i class="bi bi-eye"></i></a>
+                                <a href="{{ path('app_school_edit', {'id': school.id}) }}"
+                                   class="btn btn-sm btn-outline-primary ms-1" title="Edit"><i class="bi bi-pencil"></i></a>
+                                <form method="post"
+                                      action="{{ path('app_school_assign_address', {'id': school.id}) }}"
+                                      style="display:inline"
+                                      onsubmit="return confirm('Adresse jetzt automatisch zuordnen?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('assign_address_' ~ school.id) }}">
+                                    <button class="btn btn-sm btn-outline-success ms-1"
+                                            {% if school.address %}disabled title="Bereits zugeordnet"{% else %}title="Adresse zuordnen"{% endif %}>
+                                        🧩
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
+                                <input type="checkbox"
+                                       name="school_ids[]"
+                                       value="{{ school.id }}"
+                                       class="school-checkbox"
+                                       {% if school.address %}disabled{% endif %}>
+                            </td>
+                            <td>{{ school.id }}</td>
+                            <td>{{ school.shorttag }}</td>
+                            <td>{{ school.name }}</td>
+                            <td>
+                                {% if school.address %}
+                                    {{ school.address }}
+                                {% else %}
+                                    –
+                                {% endif %}
+                            </td>
+                            
+                            <td>{{ school.phone }}</td>
+                            <td>
+                                {% if school.email %}
+                                    <a href="mailto:{{ school.email }}">{{ school.email }}</a>
+                                {% endif %}
+                            </td>
+                            
+                            <td>
+                                {% if school.additionalInfo %}
+                                    <span title="{{ school.additionalInfo }}">{{ school.additionalInfo|u.truncate(40, '…') }}</span>
+                                {% else %}
+                                    –
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="17" class="text-center">No records found.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Live-Suche
+    const searchInput = document.getElementById('schoolSearch');
+    searchInput.addEventListener('input', function() {
+        const value = this.value.toLowerCase();
+        document.querySelectorAll("#schoolTable tbody tr").forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(value) ? '' : 'none';
+        });
+    });
+
+    // Bulk-Checkboxen
+    const selectAll = document.getElementById('selectAllSchools');
+    const checkboxes = document.querySelectorAll('.school-checkbox');
+    const bulkBtn = document.getElementById('bulkAssignBtn');
+    const bulkForm = document.getElementById('bulkAssignForm');
+
+    function toggleBulkBtn() {
+        bulkBtn.disabled = ![...checkboxes].some(cb => cb.checked);
+    }
+    selectAll?.addEventListener('change', function() {
+        checkboxes.forEach(cb => {
+            if (!cb.disabled) cb.checked = selectAll.checked;
+        });
+        toggleBulkBtn();
+    });
+    checkboxes.forEach(cb => cb.addEventListener('change', toggleBulkBtn));
+    toggleBulkBtn();
+
+    // Vor dem Absenden: Checkboxes als hidden-Inputs einsammeln
+    bulkForm.addEventListener('submit', function(e) {
+        // Entferne alle alten hidden inputs
+        document.querySelectorAll('#bulkAssignForm input[name="school_ids[]"][type="hidden"]').forEach(el => el.remove());
+        // Füge nur angehakte IDs als hidden ein
+        checkboxes.forEach(cb => {
+            if (cb.checked) {
+                let hidden = document.createElement('input');
+                hidden.type = 'hidden';
+                hidden.name = 'school_ids[]';
+                hidden.value = cb.value;
+                bulkForm.appendChild(hidden);
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

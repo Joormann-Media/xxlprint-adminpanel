@@ -1,0 +1,165 @@
+parameters:
+  release_upload_directory: '%kernel.project_dir%/var/releases'
+  system_avatar_dir: '%kernel.project_dir%/public/system-gfx/system-avatars'
+  upload_directory: '%kernel.project_dir%/public/uploads'
+  user_data_base_path: '%kernel.project_dir%/public/user_data'
+  employee_documents_dir: '%kernel.project_dir%/public/uploads/employee_documents'
+  seven.api_token: '%env(SEVEN_API_TOKEN)%'
+  seven.base_url: '%env(SEVEN_API_BASE_URL)%'
+  seven.sender: '%env(SEVEN_SMS_SENDER)%'
+  vehicle_docs_dir: '%kernel.project_dir%/public/uploads/vehicle_docs'
+  ortungslogistik.cookie: '%env(ORTUNGS_COOKIE)%'
+  MAPBOX_TOKEN: '%env(MAPBOX_TOKEN)%'
+  attachments_directory: '%kernel.project_dir%/public/uploads/attachments'
+  session_handler_options:
+    gc_maxlifetime: 14400
+    db_table: 'sessions'
+    db_id_col: 'sess_id'
+    db_data_col: 'sess_data'
+    db_lifetime_col: 'sess_lifetime'
+    db_time_col: 'sess_time'
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    bind:
+      $apiToken: '%seven.api_token%'
+      $baseUrl: '%seven.base_url%'
+      $defaultSender: '%seven.sender%'
+
+  App\Twig\MessageStatusExtension:
+    tags: ['twig.extension']
+
+  App\Form\EMailSignatureForm:
+    autowire: true
+    arguments:
+      $projectDir: '%kernel.project_dir%'
+
+  App\Service\SignatureGenerator:
+    autowire: true
+    arguments:
+      $projectDir: '%kernel.project_dir%'
+
+  App\Service\WebhookService:
+    arguments:
+      $httpClient: '@http_client'
+      $webhookUrl: '%env(WEBHOOK_URL)%'
+      $logger: '@logger'
+
+  App\Service\DiscordWebhookService:
+    autowire: false
+    autoconfigure: false
+    public: false
+    arguments:
+      $httpClient: '@http_client'
+      $webhookUrl: 'https://discordapp.com/api/webhooks/1362493531960250640/_pHU5J34nPqzm4tkJ63sdk2vWDMZbLEpMYcY9V6IS4ZguET33KroWn-_ACfVQ8qefpiD'
+
+  App\Service\TwilioService:
+    arguments:
+      $sid: 'ACebd6bba594543ebbf037003dc8221932'
+      $token: 'bee6c024cac7e2d05d37d4cb04926620'
+      $from: '+4917619167015'
+      $logger: '@logger'
+
+  App\Service\SmsSenderService:
+    autowire: false
+    arguments:
+      $apiToken: '%seven.api_token%'
+      $baseUrl: '%seven.base_url%'
+      $defaultSender: '%seven.sender%'
+
+  session.pdo_connection:
+    class: PDO
+    arguments:
+      - '%env(resolve:DATABASE_DSN)%'
+      - '%env(resolve:DATABASE_USER)%'
+      - '%env(resolve:DATABASE_PASSWORD)%'
+
+  App\Service\CustomSessionHandler:
+    autowire: false
+    autoconfigure: false
+    arguments:
+      $pdoConnection: '@session.pdo_connection'
+      $options: '%session_handler_options%'
+      $tokenStorage: '@security.token_storage'
+      $requestStack: '@request_stack'
+
+  Symfony\Component\HttpFoundation\Session\Storage\Handler\AbstractSessionHandler: '@App\Service\CustomSessionHandler'
+
+  PDO: '@session.pdo_connection'
+
+  Symfony\Component\Ldap\LdapInterface:
+    factory: ['Symfony\Component\Ldap\Ldap', 'create']
+    arguments:
+      - 'ext_ldap'
+      - 
+          host: '%env(resolve:LDAP_HOST)%'
+          port: '%env(int:LDAP_PORT)%'
+          encryption: ssl
+          options:
+            network_timeout: 10
+            x_tls_require_cert: never
+
+  App\:
+    resource: '../src/'
+    exclude:
+      - '../src/DependencyInjection/'
+      - '../src/Kernel.php'
+      - '../src/Service/DiscordWebhookService.php'
+
+  App\Service\MenuService:
+    public: true
+    arguments:
+      $authorizationChecker: '@security.authorization_checker'
+
+  App\Service\FileUploadService:
+    arguments:
+      $userDataBasePath: '%user_data_base_path%'
+      $logger: '@logger'
+
+  App\Service\UserCleanupService:
+    arguments:
+      $userDataBasePath: '%user_data_base_path%'
+
+  App\Service\TokenService:
+    arguments:
+      $em: '@doctrine.orm.entity_manager'
+      $tokenRepo: '@App\Repository\UserTokenRepository'
+
+  App\Service\UserDeviceManagerService:
+    arguments:
+      $geoApiToken: '%env(GEO_API_TOKEN)%'
+      $adminMail: '%env(ADMIN_SECURITY_EMAIL)%'
+
+  App\Twig\Extension\MenuExtension:
+    arguments:
+      $menuService: '@App\Service\MenuService'
+    tags:
+      - { name: 'twig.extension' }
+
+  App\Twig\ShortcodeExtension:
+    arguments: []
+    tags:
+      - { name: 'twig.extension' }
+
+  App\Service\LdapUserService:
+    autowire: true
+    autoconfigure: true
+    arguments:
+      $ldapBindDn: '%env(LDAP_BIND_DN)%'
+      $ldapPassword: '%env(LDAP_PASSWORD)%'
+
+  App\Service\ReleaseFileUploader:
+    arguments:
+      $targetDirectory: '%release_upload_directory%'
+
+  App\Repository\CalendarRepository:
+    public: true
+
+  App\EventListener\VehicleMileageLogListener:
+    autowire: true
+    autoconfigure: false # weil du den Listener explizit taggst
+    tags:
+      - { name: 'doctrine.orm.entity_listener' }
+

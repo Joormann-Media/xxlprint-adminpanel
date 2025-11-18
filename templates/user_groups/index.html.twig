@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">👥 Benutzergruppen</h2>
+        <a href="{{ path('app_user_groups_new') }}" class="btn btn-success">➕ Neue Gruppe</a>
+    </div>
+
+    {% if user_groups is not empty %}
+        <div class="row g-4">
+            {% for group in user_groups %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ group.groupName }}</h5>
+                            {% if group.groupLogo %}
+                            <img src="{{ asset('user_groups/' ~ group.baseDir ~ '/avatar/' ~ group.groupLogo) }}"
+                                 alt="Gruppenlogo"
+                                 class="img-thumbnail"
+                                 style="max-height: 50px;">
+                        {% else %}
+                            <span class="text-muted">Kein Logo</span>
+                        {% endif %}
+                    
+                        
+                        <p class="mb-1"><strong>Beschreibung:</strong><br>{% if group.groupDescription %}
+                            <div>{{ group.groupDescription|raw }}</div>
+                        {% else %}
+                            <div class="text-muted">–</div>
+                        {% endif %}
+                        
+                        </p>
+
+                            <p class="mb-1"><strong>Erstellt von:</strong> {{ group.groupCreateBy ?: '–' }}</p>
+                            <p class="mb-0"><strong>Erstellt am:</strong> {{ group.groupCreate ? group.groupCreate|date('d.m.Y H:i') : '–' }}</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0 d-flex justify-content-end gap-2">
+                            <a href="{{ path('app_user_groups_show', {'id': group.id}) }}" class="custom-button-icon" title="Anzeigen">
+                                <img src="/gfx/systemgfx/show.png" alt="Show">
+                            </a>
+                            <a href="{{ path('app_user_groups_edit', {'id': group.id}) }}" class="custom-button-icon" title="Bearbeiten">
+                                <img src="/gfx/systemgfx/edit.png" alt="Edit">
+                            </a>
+                            <form method="post" action="{{ path('app_user_groups_delete', {'id': group.id}) }}" onsubmit="return confirm('Sind Sie sicher, dass Sie diese Rolle löschen möchten?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ group.id) }}">
+                                <button class="custom-button-icon" title="Löschen">
+                                    <img src="/gfx/systemgfx/delete.png" alt="Delete">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning text-center">
+            🚫 Keine Gruppen gefunden.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

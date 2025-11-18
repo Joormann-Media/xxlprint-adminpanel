@@ -1,0 +1,133 @@
+{% set sort = sort|default('lastName') %}
+{% set direction = direction|default('ASC') %}
+{% set route = route|default(app.request.attributes.get('_route')) %}
+{% set query = query|default({}) %}
+
+{% macro sort_link(label, field, sort, direction, route, query) %}
+    {% set new_direction = (sort == field and direction == 'ASC') ? 'DESC' : 'ASC' %}
+    {% set icon = (sort == field) 
+        ? (direction == 'ASC' ? '▲' : '▼')
+        : '<span class="text-muted" style="font-size:0.9em;">⇅</span>' %}
+    <a href="{{ path(route, query|merge({'sort':field, 'direction':new_direction, 'page': 1})) }}" class="sort-link">
+        {{ label|raw }} {{ icon|raw }}
+    </a>
+{% endmacro %}
+{% import _self as self %}
+
+<div id="schoolkids-table-container">
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0" id="schoolkidsTable" style="min-width: 1100px;">
+                    <thead class="table-light sticky-top">
+                        <tr>
+                            <th>{{ self.sort_link('Schule', 'school', sort, direction, route, query) }}</th>
+                            <th>{{ self.sort_link('Nachname', 'lastName', sort, direction, route, query) }}</th>
+                            <th>{{ self.sort_link('Vorname', 'firstName', sort, direction, route, query) }}</th>
+                            <th>Adresse</th>
+                            <th>{{ self.sort_link('Straße / Nr.', 'street', sort, direction, route, query) }}</th>
+                            <th>{{ self.sort_link('PLZ', 'zip', sort, direction, route, query) }}</th>
+                            <th>{{ self.sort_link('Ort', 'city', sort, direction, route, query) }}</th>
+                            <th>{{ self.sort_link('Bezirk', 'district', sort, direction, route, query) }}</th>
+                            <th>Adresse (offiziell)</th>
+                            <th>{{ self.sort_link('Sitze benötigt', 'requiredSeats', sort, direction, route, query) }}</th>
+                            <th>Hilfebedarf</th>
+                            <th class="text-center">Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for schoolkid in schoolkids %}
+                            <tr>
+                                <td>
+                                    {% if schoolkid.school %}
+                                        <strong>{{ schoolkid.school.shorttag|default('–') }}</strong><br>
+                                        <small class="text-muted">{{ schoolkid.school.name }}</small>
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </td>
+                                <td>{{ schoolkid.lastName }}</td>
+                                <td>{{ schoolkid.firstName }}</td>
+                                <td>
+    {% if schoolkid.address %}
+        {{ schoolkid.address.fullAddress ?? (
+            (schoolkid.address.street ~ ' ' ~ schoolkid.address.houseNumber ~ ', ' ~ schoolkid.address.postcode ~ ' ' ~ schoolkid.address.city)|trim )
+        }}
+    {% else %}
+        {{ schoolkid.street ~ ' ' ~ schoolkid.streetNumber ~ ', ' ~ schoolkid.zip ~ ' ' ~ schoolkid.city }}
+    {% endif %}
+</td>
+
+                                
+                                <td>{{ schoolkid.street }} {{ schoolkid.streetNumber }}</td>
+                                <td>{{ schoolkid.zip }}</td>
+                                <td>{{ schoolkid.city }}</td>
+                                <td>{{ schoolkid.district|default('—') }}</td>
+                                <td>
+                                    {% if schoolkid.address %}
+                                        {{ schoolkid.address.fullAddress|default('—') }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </td>
+                                <td>{{ schoolkid.requiredSeats|default('—') }}</td>
+                                <td class="text-center">
+                                    {% if schoolkid.needsAid or schoolkid.aidType %}
+                                        <span title="{{ schoolkid.aidType|default('Hilfebedarf') }}" style="font-size: 1.4em;">♿</span>
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    <a href="{{ path('app_schoolkids_correct_address', {id: schoolkid.id}) }}" class="btn btn-outline-info btn-sm">
+                                        🧙 Adresse prüfen
+                                    </a>
+                                    <a href="{{ path('app_schoolkids_show', {'id': schoolkid.id}) }}" class="btn btn-sm btn-outline-info" title="Anzeigen"><i class="bi bi-eye"></i></a>
+                                    <a href="{{ path('app_schoolkids_edit', {'id': schoolkid.id}) }}" class="btn btn-sm btn-outline-primary ms-1" title="Bearbeiten"><i class="bi bi-pencil"></i></a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="12" class="text-center text-muted">Keine Schulkinder gefunden.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-4">
+                {% if pagination.nbPages > 1 %}
+                    <nav>
+                        <ul class="pagination justify-content-center flex-wrap">
+                            <li class="page-item {% if pagination.currentPage == 1 %}disabled{% endif %}">
+                                <a class="page-link page-link-prev" href="{{ path(route, query|merge({'page': 1})) }}">&laquo;</a>
+                            </li>
+                            <li class="page-item {% if pagination.currentPage == 1 %}disabled{% endif %}">
+                                <a class="page-link page-link-prev" href="{{ path(route, query|merge({'page': pagination.currentPage - 1})) }}">&lt;</a>
+                            </li>
+                            {% for i in 1..pagination.nbPages %}
+                                {% if i == 1 or i == pagination.nbPages or (i >= pagination.currentPage-2 and i <= pagination.currentPage+2) %}
+                                    <li class="page-item {% if i == pagination.currentPage %}active{% endif %}">
+                                        <a class="page-link" href="{{ path(route, query|merge({'page': i})) }}">{{ i }}</a>
+                                    </li>
+                                {% elseif i == 2 and pagination.currentPage > 4 %}
+                                    <li class="page-item disabled"><span class="page-link">…</span></li>
+                                {% elseif i == pagination.nbPages-1 and pagination.currentPage < pagination.nbPages-3 %}
+                                    <li class="page-item disabled"><span class="page-link">…</span></li>
+                                {% endif %}
+                            {% endfor %}
+                            <li class="page-item {% if pagination.currentPage == pagination.nbPages %}disabled{% endif %}">
+                                <a class="page-link page-link-next" href="{{ path(route, query|merge({'page': pagination.currentPage + 1})) }}">&gt;</a>
+                            </li>
+                            <li class="page-item {% if pagination.currentPage == pagination.nbPages %}disabled{% endif %}">
+                                <a class="page-link page-link-next" href="{{ path(route, query|merge({'page': pagination.nbPages})) }}">&raquo;</a>
+                            </li>
+                        </ul>
+                    </nav>
+                {% endif %}
+                <div class="text-muted text-center small mt-2">
+                    Seite {{ pagination.currentPage }} von {{ pagination.nbPages }} ({{ pagination.nbResults }} Einträge)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

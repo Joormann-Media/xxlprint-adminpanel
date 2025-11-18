@@ -1,0 +1,11 @@
+<h2>🔐 PIN zurücksetzen</h2>
+
+<p>Hallo {{ user.prename ?? user.username }},</p>
+
+<p>Du hast eine PIN-Zurücksetzung angefordert. Klicke auf den folgenden Link, um deine neue PIN zu setzen:</p>
+
+<p><a href="{{ url('token_reset_pin', { token: token }) }}">PIN zurücksetzen</a></p>
+
+<p>Dieser Link ist 60 Minuten lang gültig. Wenn du die PIN-Zurücksetzung nicht angefordert hast, kannst du diese E-Mail ignorieren.</p>
+
+<p>Viele Grüße,<br>Dein Admin Panel</p>

@@ -1,0 +1,230 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container py-4">
+    <h2 class="mb-3">Fahrzeugschein OCR</h2>
+    <form method="post" enctype="multipart/form-data" class="mb-3">
+        <div class="input-group mb-2">
+            <input type="file" class="form-control" name="upload_file" accept=".pdf,.jpg,.jpeg,.png" required>
+            <button type="submit" class="btn btn-primary">Hochladen & OCR starten</button>
+        </div>
+    </form>
+
+    {% if filePreview or error or ocrResult %}
+    <div class="row g-4 align-items-start">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header fw-bold">
+                    Fahrzeugschein Vorschau
+                </div>
+                <div class="card-body text-center">
+                    {% if filePreview and imagePath %}
+                        <div id="cropperWrap" style="display: inline-block;">
+                            <img id="scheinImg" src="{{ filePreview }}" alt="Vorschau" class="img-fluid rounded" style="max-height:420px; max-width:100%;">
+                        </div>
+                        <input type="hidden" id="imagePath" value="{{ imagePath }}">
+                        <div id="cropperCoords" class="small text-muted mt-2 mb-2" style="font-family: monospace;"></div>
+                        <div class="mt-3 d-flex flex-wrap gap-2 justify-content-center">
+                            <button id="ocrAreaBtn" class="btn btn-success" disabled>
+                                Bereich erkennen (Enter)
+                            </button>
+                            <button type="button" id="cropperResetBtn" class="btn btn-secondary">
+                                Crop zurücksetzen (Strg+Z)
+                            </button>
+                            <button type="button" id="cropperAllBtn" class="btn btn-outline-primary">
+                                Alles auswählen (Strg+0)
+                            </button>
+                            <button type="button" id="cropperZoomInBtn" class="btn btn-outline-dark">
+                                <b>+</b> Zoom (Strg+Plus)
+                            </button>
+                            <button type="button" id="cropperZoomOutBtn" class="btn btn-outline-dark">
+                                <b>-</b> Zoom (Strg+Minus)
+                            </button>
+                        </div>
+                        <div class="small text-muted mt-2">
+                            <span>Shift+Klick: Crop ziehen &nbsp;|&nbsp; Bild verschieben: Drag &nbsp;|&nbsp; Mausrad: Zoom</span>
+                        </div>
+                        <div id="ocrAreaResult" class="mt-3"></div>
+                    {% else %}
+                        <span class="text-muted">Noch kein Bild hochgeladen.</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header fw-bold">
+                    OCR Ergebnis
+                </div>
+                <div class="card-body">
+                    {% if error %}
+                        <div class="alert alert-danger mb-3">
+                            <strong>Fehler:</strong> {{ error|raw }}
+                            {% if shellOutput %}
+                                <hr>
+                                <strong>Shell-Ausgabe:</strong>
+                                <pre>{{ shellOutput }}</pre>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    {% if ocrResult %}
+                        <h5 class="card-title">Erkannter Text:</h5>
+                        <textarea class="form-control mb-2" rows="14" readonly>{{ ocrResult }}</textarea>
+                        <a href="data:text/plain;charset=utf-8,{{ ocrResult | url_encode }}" download="ocr_fahrzeugschein.txt" class="btn btn-success">
+                            Text herunterladen
+                        </a>
+                    {% elseif error is empty and ocrResult is not null %}
+                        <div class="alert alert-warning mt-3">Es wurde kein Text erkannt oder ein Fehler ist aufgetreten.</div>
+                    {% else %}
+                        <div class="text-muted">Hier erscheint nach dem Hochladen das Ergebnis der Texterkennung.</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+<script>
+let cropper = null;
+let lastCropData = null;
+
+function showCoords(cropData) {
+    let coordsDiv = document.getElementById('cropperCoords');
+    if (coordsDiv && cropData.width && cropData.height) {
+        coordsDiv.innerText = `Bereich: X=${Math.round(cropData.x)}, Y=${Math.round(cropData.y)}, B=${Math.round(cropData.width)}, H=${Math.round(cropData.height)}`;
+    } else if (coordsDiv) {
+        coordsDiv.innerText = 'Ziehe mit Shift+Maus einen Rahmen!';
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const img = document.getElementById('scheinImg');
+    const ocrBtn = document.getElementById('ocrAreaBtn');
+    const resetBtn = document.getElementById('cropperResetBtn');
+    const allBtn = document.getElementById('cropperAllBtn');
+    const zoomInBtn = document.getElementById('cropperZoomInBtn');
+    const zoomOutBtn = document.getElementById('cropperZoomOutBtn');
+    const areaResult = document.getElementById('ocrAreaResult');
+
+    if (img && ocrBtn && areaResult) {
+        cropper = new Cropper(img, {
+            viewMode: 1,
+            aspectRatio: NaN,
+            autoCrop: false,
+            dragMode: 'move', // Bild verschieben ist Standard!
+            movable: true,
+            scalable: true,
+            zoomable: true,
+            zoomOnWheel: true,
+            cropBoxResizable: true,
+            cropBoxMovable: true,
+            ready() {
+                showCoords({x: 0, y: 0, width: 0, height: 0});
+            },
+            crop: function(event) {
+                let cropData = cropper.getData(true);
+                ocrBtn.disabled = !(cropData.width && cropData.height && cropData.width > 10 && cropData.height > 10);
+                lastCropData = cropData;
+                showCoords(cropData);
+            }
+        });
+
+        // Shift+Klick = CropModus für neues Ziehen
+        img.addEventListener('mousedown', function(e){
+            if (e.shiftKey) {
+                cropper.setDragMode('crop');
+                // Trick: Wenn kein Rahmen da ist, einen winzigen anzeigen
+                if (!cropper.getCropBoxData().width || !cropper.getCropBoxData().height) {
+                    const cont = cropper.getContainerData();
+                    cropper.setCropBoxData({
+                        left: cont.width/2 - 5, top: cont.height/2 - 5, width: 10, height: 10
+                    });
+                }
+            } else {
+                cropper.setDragMode('move');
+            }
+        });
+
+        // Wenn Crop-Box aufgehört: DragModus zurück
+        img.addEventListener('mouseup', function(e){
+            setTimeout(() => cropper.setDragMode('move'), 120);
+        });
+
+        // OCR-Bereich auslesen (wie gehabt)
+        ocrBtn.addEventListener('click', function(e){
+            e.preventDefault();
+            areaResult.innerHTML = "Bereich wird erkannt...";
+            const cropData = cropper.getData(true);
+            fetch('{{ path("app_ocr_fahrzeugschein_area") }}', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    imagePath: document.getElementById('imagePath').value,
+                    x: Math.round(cropData.x),
+                    y: Math.round(cropData.y),
+                    width: Math.round(cropData.width),
+                    height: Math.round(cropData.height)
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.text) {
+                    areaResult.innerHTML =
+                        "<div class='small text-muted mb-1' style='font-family:monospace;'>Erkannter Bereich: X=" + Math.round(cropData.x) + ", Y=" + Math.round(cropData.y) + ", B=" + Math.round(cropData.width) + ", H=" + Math.round(cropData.height) + "</div>" +
+                        "<textarea class='form-control mb-2' rows='5' readonly>"+data.text+"</textarea>";
+                } else {
+                    areaResult.innerHTML = "<div class='alert alert-danger'>Fehler: "+(data.error || 'Unbekannt')+"</div>";
+                }
+            });
+        });
+
+        // Cropper zurücksetzen und CropModus sofort aktivieren
+        resetBtn.addEventListener('click', function() {
+            cropper.clear();
+            cropper.setDragMode('crop');
+            showCoords({x: 0, y: 0, width: 0, height: 0});
+        });
+
+        // Alles auswählen
+        allBtn.addEventListener('click', function() {
+            cropper.setCropBoxData({
+                left: 0, top: 0,
+                width: cropper.getContainerData().width,
+                height: cropper.getContainerData().height
+            });
+            showCoords(cropper.getData(true));
+        });
+
+        // Zoom in/out
+        zoomInBtn.addEventListener('click', function() { cropper.zoom(0.1); });
+        zoomOutBtn.addEventListener('click', function() { cropper.zoom(-0.1); });
+
+        // Tastenkürzel
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === '0') { e.preventDefault(); allBtn.click(); }
+            if (e.ctrlKey && (e.key === '+' || e.key === '=')) { e.preventDefault(); zoomInBtn.click(); }
+            if (e.ctrlKey && (e.key === '-' || e.key === '_')) { e.preventDefault(); zoomOutBtn.click(); }
+            if (e.ctrlKey && (e.key === 'z' || e.key === 'Z')) { e.preventDefault(); resetBtn.click(); }
+            if (e.key === 'Enter' && !ocrBtn.disabled) { e.preventDefault(); ocrBtn.click(); }
+            if (e.key === 'Escape') {
+                cropper.clear();
+                cropper.setDragMode('crop');
+                showCoords({x: 0, y: 0, width: 0, height: 0});
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

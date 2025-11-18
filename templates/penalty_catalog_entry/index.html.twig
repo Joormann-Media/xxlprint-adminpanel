@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PenaltyCatalogEntry index{% endblock %}
+
+{% block body %}
+    <h1>PenaltyCatalogEntry index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>OffenseTitle</th>
+                <th>Description</th>
+                <th>Paragraph</th>
+                <th>Category</th>
+                <th>VehicleTypes</th>
+                <th>PenaltyMin</th>
+                <th>PenaltyMax</th>
+                <th>Points</th>
+                <th>DrivingBanMonths</th>
+                <th>IsProbezeitRelevant</th>
+                <th>SeverityLevel</th>
+                <th>Active</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for penalty_catalog_entry in penalty_catalog_entries %}
+            <tr>
+                <td>{{ penalty_catalog_entry.id }}</td>
+                <td>{{ penalty_catalog_entry.offenseTitle }}</td>
+                <td>{{ penalty_catalog_entry.description }}</td>
+                <td>{{ penalty_catalog_entry.paragraph }}</td>
+                <td>{{ penalty_catalog_entry.category }}</td>
+                <td>{{ penalty_catalog_entry.vehicleTypes ? penalty_catalog_entry.vehicleTypes|json_encode : '' }}</td>
+                <td>{{ penalty_catalog_entry.penaltyMin }}</td>
+                <td>{{ penalty_catalog_entry.penaltyMax }}</td>
+                <td>{{ penalty_catalog_entry.points }}</td>
+                <td>{{ penalty_catalog_entry.drivingBanMonths }}</td>
+                <td>{{ penalty_catalog_entry.isProbezeitRelevant ? 'Yes' : 'No' }}</td>
+                <td>{{ penalty_catalog_entry.severityLevel }}</td>
+                <td>{{ penalty_catalog_entry.active ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_penalty_catalog_entry_show', {'id': penalty_catalog_entry.id}) }}">show</a>
+                    <a href="{{ path('app_penalty_catalog_entry_edit', {'id': penalty_catalog_entry.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="14">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_penalty_catalog_entry_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fahrzeugübersicht{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h2 class="mb-0">
+            <i class="bi bi-truck-front"></i> Fahrzeuge
+        </h2>
+        <a href="{{ path('app_vehicle_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Neues Fahrzeug
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0 table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th><i class="bi bi-card-text"></i> Bezeichnung</th>
+                            
+                            <th><i class="bi bi-type"></i> Typ</th>
+                            <th><i class="bi bi-123"></i> Kennzeichen</th>
+                            <th><i class="bi bi-terminal"></i> Ortungslogistik-ID</th>
+                            <th><i class="bi bi-person-vcard"></i> Sitze</th>
+                            <th><i class="bi bi-universal-access"></i> Rollstuhlplatz</th>
+                            <th><i class="bi bi-box-arrow-in-down"></i> Rampe</th>
+                            <th><i class="bi bi-toilet"></i> WC</th>
+                            <th><i class="bi bi-arrow-bar-up"></i> Lifter</th>
+                            <th><i class="bi bi-link-45deg"></i> AHK</th>
+                            <th><i class="bi bi-activity"></i> Status</th>
+                            <th><i class="bi bi-tools"></i> Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% set toiletMap = {
+                        'ok':       ['success', 'Vorhanden – OK'],
+                        'defect':   ['warning', 'Vorhanden – Defekt'],
+                        'not_available': ['secondary', 'Nicht vorhanden'],
+                        null: ['secondary', '-']
+                    } %}
+                    {% for vehicle in vehicles %}
+                        <tr>
+                            <td>{{ vehicle.id }}</td>
+                            <td>{{ vehicle.bezeichnung|default('-') }}</td>
+                            <td>{{ vehicle.type|default('-') }}</td>
+                            <td>{{ vehicle.licensePlate|default('-') }}<br><code class="small">{{ vehicle.licensePlateSanitized|default('-') }}</code></td>
+                            <td>{{ vehicle.ortlogId|default('-') }}</td>
+
+                            <td><span class="badge bg-primary">{{ vehicle.seatCount ?: '-' }}</span></td>
+                            <td>
+                                {% if vehicle.wheelchair %}
+                                    <span class="badge bg-success"><i class="bi bi-check-lg"></i></span>
+                                {% else %}
+                                    <span class="badge bg-secondary"><i class="bi bi-x-lg"></i></span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if vehicle.wheelchairRamp %}
+                                    <span class="badge bg-success"><i class="bi bi-check-lg"></i></span>
+                                {% else %}
+                                    <span class="badge bg-secondary"><i class="bi bi-x-lg"></i></span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% set toilet = toiletMap[vehicle.toiletStatus|default('not_available')] %}
+                                <span class="badge bg-{{ toilet[0] }}">{{ toilet[1] }}</span>
+                            </td>
+                            <td>
+                                {% if vehicle.lifter %}
+                                    <span class="badge bg-success"><i class="bi bi-check-lg"></i></span>
+                                {% else %}
+                                    <span class="badge bg-secondary"><i class="bi bi-x-lg"></i></span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if vehicle.ahk %}
+                                    <span class="badge bg-success"><i class="bi bi-check-lg"></i></span>
+                                {% else %}
+                                    <span class="badge bg-secondary"><i class="bi bi-x-lg"></i></span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% set badge = {
+                                    'active':   'success',
+                                    'werkstatt':'warning',
+                                    'stillgelegt': 'danger',
+                                    'reserviert': 'info',
+                                    'ausgemustert': 'secondary'
+                                }[vehicle.status|default('active')] %}
+                                <span class="badge bg-{{ badge }}">{{ vehicle.status|capitalize }}</span>
+                            </td>
+                            <td>
+                                <a href="{{ path('app_vehicle_show', {'id': vehicle.id}) }}" class="btn btn-outline-info btn-sm" title="Anzeigen">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{{ path('app_vehicle_edit', {'id': vehicle.id}) }}" class="btn btn-outline-primary btn-sm" title="Bearbeiten">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="11" class="text-center text-muted py-4">
+                                <i class="bi bi-exclamation-circle"></i> Keine Fahrzeuge gefunden
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Partner-Firma anzeigen{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">
+                <i class="bi bi-building"></i> Partner-Firma #{{ partner_company.id }}
+            </h4>
+            <div>
+                <a href="{{ path('app_partner_company_edit', {'id': partner_company.id}) }}" class="btn btn-sm btn-outline-light">
+                    <i class="bi bi-pencil"></i> Bearbeiten
+                </a>
+                <a href="{{ path('app_partner_company_index') }}" class="btn btn-sm btn-outline-light">
+                    <i class="bi bi-arrow-left"></i> Zurück
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered align-middle">
+                <tbody>
+                    <tr>
+                        <th scope="row">Name</th>
+                        <td>{{ partner_company.name }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Slug</th>
+                        <td>{{ partner_company.slug }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Adresse</th>
+                        <td>{{ partner_company.address }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">PLZ</th>
+                        <td>{{ partner_company.postalcode }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Ort</th>
+                        <td>{{ partner_company.city }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">E-Mail</th>
+                        <td>{{ partner_company.contactEmail }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Telefon</th>
+                        <td>{{ partner_company.contactPhone }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Aktiv</th>
+                        <td>
+                            {% if partner_company.isActive %}
+                                <span class="badge bg-success">Ja</span>
+                            {% else %}
+                                <span class="badge bg-danger">Nein</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Notiz</th>
+                        <td>{{ partner_company.note }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Erstellt am</th>
+                        <td>{{ partner_company.createdAt ? partner_company.createdAt|date('Y-m-d H:i') : '-' }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Geändert am</th>
+                        <td>{{ partner_company.updatedAt ? partner_company.updatedAt|date('Y-m-d H:i') : '-' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer bg-light text-end">
+            {{ include('partner_company/_delete_form.html.twig') }}
+        </div>
+    </div>
+</div>
+{%

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Attachment index{% endblock %}
+
+{% block body %}
+    <h1>Attachment index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Filename</th>
+                <th>Filepath</th>
+                <th>Mimetype</th>
+                <th>UploadedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for attachment in attachments %}
+            <tr>
+                <td>{{ attachment.id }}</td>
+                <td>{{ attachment.filename }}</td>
+                <td>{{ attachment.filepath }}</td>
+                <td>{{ attachment.mimetype }}</td>
+                <td>{{ attachment.uploadedAt ? attachment.uploadedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_attachment_show', {'id': attachment.id}) }}">show</a>
+                    <a href="{{ path('app_attachment_edit', {'id': attachment.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_attachment_new') }}">Create new</a>
+{% endblock %}

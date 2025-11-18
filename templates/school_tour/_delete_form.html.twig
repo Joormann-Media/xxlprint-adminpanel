@@ -1,0 +1,12 @@
+{% set entity = tour ?? school_tour ?? null %}
+
+{% if entity %}
+<form method="post"
+      action="{{ path('app_school_tour_delete', {'id': entity.id}) }}"
+      onsubmit="return confirm('Willst du die Tour wirklich löschen?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
+    <button class="btn btn-sm btn-outline-danger">
+        <i class="bi bi-trash"></i>
+    </button>
+</form>
+{% endif %}

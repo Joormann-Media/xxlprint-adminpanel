@@ -1,0 +1,9 @@
+<form method="post"
+      action="{{ path('app_user_dashboard_config_delete', {'id': user_dashboard_config.id}) }}"
+      onsubmit="return confirm('❗️ Bist du sicher, dass du diesen Eintrag löschen möchtest?');"
+      class="d-inline">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user_dashboard_config.id) }}">
+    <button class="btn btn-sm btn-outline-danger" style="background-color: red; color: white;">
+        🗑️ Löschen
+    </button>
+</form>

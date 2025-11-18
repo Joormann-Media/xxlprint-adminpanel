@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}🏠 Adresse #{{ official_address.id }}{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="mb-4">📍 Adresse anzeigen</h1>
+
+    <div class="row g-4">
+        <!-- Linke Spalte: Detailinfos -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    🗂️ Adressdetails
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-borderless">
+                        <tbody>
+                            <tr><th scope="row">ID</th><td>{{ official_address.id }}</td></tr>
+                            <tr><th>PLZ</th><td>{{ official_address.postcode }}</td></tr>
+                            <tr><th>Stadt</th><td>{{ official_address.city }}</td></tr>
+                            <tr><th>Bezirk</th><td>{{ official_address.district ?? '–' }}</td></tr>
+                            <tr><th>Unterbezirk</th><td>{{ official_address.subdistrict ?? '–' }}</td></tr>
+                            <tr><th>Nachbarschaft</th><td>{{ official_address.neighbourhood ?? '–' }}</td></tr>
+                            <tr><th>Straße</th><td>{{ official_address.street }}</td></tr>
+                            <tr><th>Hausnummer</th><td>{{ official_address.houseNumber ?? '–' }}</td></tr>
+                            <tr><th>Koordinaten</th>
+                                <td>{{ official_address.lat ?? '?' }}, {{ official_address.lon ?? '?' }}</td>
+                            </tr>
+                            <tr><th>Kommentar</th><td>{{ official_address.locationComment ?? '–' }}</td></tr>
+                            <tr><th>Quelle</th><td>{{ official_address.source }}</td></tr>
+                            <tr><th>Erstellt</th><td>{{ official_address.createdAt|date('d.m.Y H:i') }}</td></tr>
+                            <tr><th>Geändert</th>
+                                <td>{{ official_address.updatedAt ? official_address.updatedAt|date('d.m.Y H:i') : '–' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a href="{{ path('app_official_address_index') }}" class="btn btn-secondary">⬅️ Zurück</a>
+                    <a href="{{ path('app_official_address_edit', {id: official_address.id}) }}" class="btn btn-primary">✏️ Bearbeiten</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rechte Spalte: Karte -->
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-success text-white">
+                    🗺️ Lage auf Karte
+                </div>
+                <div class="card-body p-0">
+                    <div id="map" style="height: 400px; width: 100%; border-radius: 0 0 10px 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if official_address.lat and official_address.lon %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const map = L.map('map').setView([{{ official_address.lat }}, {{ official_address.lon }}], 17);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap-Mitwirkende'
+            }).addTo(map);
+
+            let popupContent = `
+                <strong>{{ official_address.street }} {{ official_address.houseNumber ?? '' }}</strong><br>
+                {{ official_address.postcode }} {{ official_address.city }}
+            `;
+
+            {% if official_address.subdistrict %}
+                popupContent += `<br><small><em>Unterbezirk:</em> {{ official_address.subdistrict }}</small>`;
+            {% endif %}
+            {% if official_address.neighbourhood %}
+                popupContent += `<br><small><em>Nachbarschaft:</em> {{ official_address.neighbourhood }}</small>`;
+            {% endif %}
+
+            L.marker([{{ official_address.lat }}, {{ official_address.lon }}]).addTo(map)
+                .bindPopup(popupContent)
+                .openPopup();
+        });
+    </script>
+{% endif %}
+{% endblock %}

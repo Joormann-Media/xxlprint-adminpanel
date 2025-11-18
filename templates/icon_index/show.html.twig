@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}IconIndex{% endblock %}
+
+{% block body %}
+    <h1>IconIndex</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ icon_index.id }}</td>
+            </tr>
+            <tr>
+                <th>IconPath</th>
+                <td>{{ icon_index.iconPath }}</td>
+            </tr>
+            <tr>
+                <th>IconName</th>
+                <td>{{ icon_index.iconName }}</td>
+            </tr>
+            <tr>
+                <th>IconCategory</th>
+                <td>{{ icon_index.iconCategory }}</td>
+            </tr>
+            <tr>
+                <th>IconTags</th>
+                <td>{{ icon_index.iconTags ? icon_index.iconTags|json_encode : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_icon_index_index') }}">back to list</a>
+
+    <a href="{{ path('app_icon_index_edit', {'id': icon_index.id}) }}">edit</a>
+
+    {{ include('icon_index/_delete_form.html.twig') }}
+{% endblock %}

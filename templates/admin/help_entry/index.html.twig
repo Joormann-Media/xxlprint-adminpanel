@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container my-5">
+    <div class="bg-light border rounded p-4 mb-4 shadow-sm">
+    <h1 class="mb-3">📚 Hilfeeinträge</h1>
+    <p class="text-muted">Alle aktuell verfügbaren Hilfe-Module im System.</p>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <a href="{{ path('admin_app_help_entry_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle me-1"></i> Neuer Eintrag
+        </a>
+
+    </div>
+
+    {% if help_entries is not empty %}
+        <div class="row g-4">
+            {% for help_entry in help_entries %}
+                <div class="col-md-6 col-xl-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ help_entry.name }}</h5>
+                            <p class="mb-1"><strong>Status:</strong> {{ help_entry.status }}</p>
+                            <p class="mb-1"><strong>Ablauf:</strong>
+                                {{ help_entry.expiresAt ? help_entry.expiresAt|date('d.m.Y H:i') : '—' }}
+                            </p>
+                            <p class="mb-1"><strong>Erstellt am:</strong>
+                                {{ help_entry.createdAt ? help_entry.createdAt|date('d.m.Y H:i') : '—' }}
+                            </p>
+                            <p class="mb-1"><strong>Erstellt von:</strong> {{ help_entry.createdBy }}</p>
+                            <p class="mb-1 text-muted small"><strong>Beschreibung:</strong><br>
+                                {{ help_entry.description }}
+                            </p>
+                            <div class="mt-2">
+                                <strong>Inhalt (Vorschau):</strong><br>
+                                <div class="border rounded p-2 bg-light small" style="max-height: 100px; overflow: auto;">
+                                    {{ help_entry.content|striptags|slice(0, 150) ~ '…' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-top-0 d-flex justify-content-end gap-2">
+                            <a href="{{ path('admin_app_help_entry_show', {'id': help_entry.id}) }}" class="btn custom-button-icon btn-outline-secondary" title="Anzeigen">
+                                <img src="/gfx/systemgfx/show.png" alt="Show">
+                            </a>
+                            <a href="{{ path('admin_app_help_entry_edit', {'id': help_entry.id}) }}" class="btn custom-button-icon btn-outline-secondary" title="Bearbeiten">
+                                <img src="/gfx/systemgfx/edit.png" alt="Edit">
+                            </a>
+                            <form method="post"
+      action="{{ path('admin_app_help_entry_delete', {'id': help_entry.id}) }}"
+      onsubmit="return confirm('❗️ Möchtest du diesen Hilfeeintrag wirklich löschen?');"
+      class="d-inline">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ help_entry.id) }}">
+    <button class="btn btn-danger">
+        <i class="bi bi-trash me-1"></i> 
+    </button>
+</form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center mt-4">
+            📭 Es wurden noch keine Hilfeeinträge erstellt.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

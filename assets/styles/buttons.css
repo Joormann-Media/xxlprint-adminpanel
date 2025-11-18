@@ -1,0 +1,64 @@
+.custom-button-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px; /* Abstand zwischen Icon und Text */
+    padding: 8px 12px;
+    
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.custom-button-icon img {
+    width: 20px;
+    height: 20px;
+}
+
+.custom-button-icon:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.05);
+}
+
+.custom-button-cancel {
+    background-image: url('/gfx/SystemGFX/StandardIcons/cancel.png');
+}
+
+.custom-button-delete {
+    background-image: url('/gfx/SystemGFX/StandardIcons/delete.png');
+}
+
+.custom-button-help {
+    background-image: url('/gfx/SystemGFX/StandardIcons/help.png');
+}
+
+.custom-button-edit {
+    background-image: url('/gfx/SystemGFX/StandardIcons/edit.png');
+}
+
+.custom-button-show {
+    background-image: url('/gfx/SystemGFX/StandardIcons/show.png');
+}
+
+.custom-button-setup {
+    background-image: url('/gfx/SystemGFX/StandardIcons/setup.png');
+}
+
+.custom-button-ok {
+    background-image: url('/gfx/SystemGFX/StandardIcons/ok_arrow.png');
+}
+
+/* Falls Buttons ohne Text genutzt werden sollen */
+.custom-button-icon-only {
+    width: 40px;
+    height: 40px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+}

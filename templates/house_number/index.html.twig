@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HouseNumber index{% endblock %}
+
+{% block body %}
+    <h1>HouseNumber index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Number</th>
+                <th>Suffix</th>
+                <th>IsActive</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for house_number in house_numbers %}
+            <tr>
+                <td>{{ house_number.id }}</td>
+                <td>{{ house_number.number }}</td>
+                <td>{{ house_number.suffix }}</td>
+                <td>{{ house_number.isActive ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_house_number_show', {'id': house_number.id}) }}">show</a>
+                    <a href="{{ path('app_house_number_edit', {'id': house_number.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_house_number_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TranslationKey index{% endblock %}
+
+{% block body %}
+    <h1>TranslationKey index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Key</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for translation_key in translation_keys %}
+            <tr>
+                <td>{{ translation_key.id }}</td>
+                <td>{{ translation_key.key }}</td>
+                <td>
+                    <a href="{{ path('app_translation_key_show', {'id': translation_key.id}) }}">show</a>
+                    <a href="{{ path('app_translation_key_edit', {'id': translation_key.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_translation_key_new') }}">Create new</a>
+{% endblock %}

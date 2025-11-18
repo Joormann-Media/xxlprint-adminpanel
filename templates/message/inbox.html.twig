@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1 class="mb-4">📬 Nachrichten</h1>
+
+<div class="row">
+    {# 👥 Linke Spalte: Absenderliste #}
+    <div class="col-md-4 border-end" id="chat-contact-list">
+        {% for senderId, status in latestMessages %}
+            {% set message = status.recipient.message %}
+            <a href="#"
+               class="list-group-item list-group-item-action d-flex justify-content-between align-items-start py-3 sender-entry"
+               data-sender-id="{{ message.sender.id }}">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-2">
+                            <span>{{ message.sender.username }}</span>
+                            <img src="/gfx/SystemGFX/Icons/message-list.png" alt="Nachrichten" height="22">
+                        </div>
+                        {% if unreadMessagesCount > 0 or urgentNewsCount > 0 %}
+                            <span class="badge rounded-pill bg-danger shadow-sm text-white"
+                                  style="font-size: 0.8em; min-width: 24px;">
+                                {{ unreadMessagesCount > 0 ? unreadMessagesCount : '' }}{{ urgentNewsCount > 0 ? '!' : '' }}
+                                <span class="visually-hidden">Neue Nachrichten</span>
+                            </span>
+                        {% endif %}
+                    </div>
+                    <div class="text-muted small">
+                        {{ message.content|striptags|slice(0, 40) ~ (message.content|length > 40 ? '…' : '') }}
+                        <br><small>{{ message.createdAt|date('d.m.Y H:i') }}</small>
+                    </div>
+                </div>
+                {% if not status.displayedAt %}
+                    <span class="badge bg-warning text-dark">Neu</span>
+                {% endif %}
+            </a>
+        {% else %}
+            <div class="text-muted text-center my-5">Kein Chatverlauf vorhanden</div>
+        {% endfor %}
+    </div>
+
+    {# 💬 Rechte Spalte: Chatfenster #}
+    <div class="col-md-8" id="chat-viewer">
+        <div class="text-muted text-center my-5">🫱 Wähle einen Kontakt aus der Liste</div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const viewer = document.getElementById('chat-viewer');
+    const modalElement = document.getElementById('globalModalViewer');
+    const modalBody = document.getElementById('globalModalBody');
+    const globalModal = new bootstrap.Modal(modalElement);
+
+    // Chat laden
+    document.querySelectorAll('.sender-entry').forEach(entry => {
+        entry.addEventListener('click', function (e) {
+            e.preventDefault();
+            const senderId = this.dataset.senderId;
+
+            document.querySelectorAll('.sender-entry').forEach(e => e.classList.remove('active'));
+            this.classList.add('active');
+
+            fetch(`/message/chat/${senderId}`)
+                .then(res => res.text())
+                .then(html => {
+                    viewer.innerHTML = html;
+                });
+        });
+    });
+
+    // Modal Handling für ALLE späteren .open-message-modal-Buttons (auch nach AJAX)
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.open-message-modal');
+        if (!btn) return;
+
+        e.preventDefault();
+        const statusId = btn.dataset.statusId;
+        const messageId = btn.dataset.messageId;
+
+        fetch(`/message-status/${statusId}/read`, {
+    method: 'POST',
+    headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': '{{ csrf_token("mark_message_read") }}'
+    }
+})
+.then(r => r.json())
+.then(() => {
+    // 🟢 Update globales Badge
+    if (window.updateMessageBadge) {
+        window.updateMessageBadge();
+    }
+
+    fetch(`/message/modal/${messageId}`)
+        .then(resp => resp.text())
+        .then(html => {
+            modalElement.removeAttribute('inert');
+            modalBody.innerHTML = html;
+            globalModal.show();
+
+            modalElement.addEventListener('hidden.bs.modal', () => {
+                modalElement.setAttribute('inert', '');
+            }, { once: true });
+
+            const badge = btn.parentElement?.querySelector('.badge');
+            if (badge) {
+                badge.className = 'badge bg-success';
+                badge.textContent = 'Gelesen';
+            }
+        });
+});
+
+    });
+});
+</script>
+{% endblock %}

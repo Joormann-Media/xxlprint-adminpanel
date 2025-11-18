@@ -1,0 +1,95 @@
+{{ form_start(form, {'attr': {'autocomplete': 'off'}}) }}
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">
+            <i class="bi bi-plug"></i>
+            {{ form.vars.value.id ? 'API-Client bearbeiten' : 'Neuen API-Client anlegen' }}
+        </h4>
+    </div>
+
+    <div class="card-body">
+        <ul class="nav nav-tabs mb-3" id="apiClientTabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" id="tab-client" data-bs-toggle="tab" data-bs-target="#client" type="button" role="tab">
+                    <i class="bi bi-person"></i> Client
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="tab-security" data-bs-toggle="tab" data-bs-target="#security" type="button" role="tab">
+                    <i class="bi bi-shield-lock"></i> Sicherheit
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <!-- Tab 1: Client -->
+            <div class="tab-pane fade show active" id="client" role="tabpanel">
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        {{ form_label(form.passkey) }}
+                        {{ form_widget(form.passkey, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.ipWhitelist) }}
+                        {{ form_widget(form.ipWhitelist, {'attr': {'class': 'form-control'}}) }}
+                        <small class="form-text text-muted">Optional, z. B. [ "192.168.0.1" ]</small>
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.expires) }}
+                        {{ form_widget(form.expires, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.partnerCompany) }}
+                        {{ form_widget(form.partnerCompany, {'attr': {'class': 'form-select'}}) }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Sicherheit -->
+            <div class="tab-pane fade" id="security" role="tabpanel">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        {{ form_label(form.authKey) }}
+                        {{ form_widget(form.authKey, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.registerToken) }}
+                        {{ form_widget(form.registerToken, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-md-4 pt-2">
+                        <div class="form-check mt-4">
+                            {{ form_widget(form.isValid, {'attr': {'class': 'form-check-input'}}) }}
+                            {{ form_label(form.isValid, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.createdAt) }}
+                        {{ form_widget(form.createdAt, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-end mt-4">
+            <button class="btn btn-success">
+                <i class="bi bi-save"></i> Speichern
+            </button>
+            <a href="{{ path('app_api_client_index') }}" class="btn btn-outline-secondary ms-2">
+                <i class="bi bi-arrow-left"></i> Zurück
+            </a>
+        </div>
+    </div>
+</div>
+
+{{ form_end(form) }}
+
+<script>
+    document.querySelectorAll('#apiClientTabs button').forEach(function(triggerEl) {
+        triggerEl.addEventListener('click', function (event) {
+            event.preventDefault();
+            bootstrap.Tab.getOrCreateInstance(triggerEl).show();
+        });
+    });
+</script>

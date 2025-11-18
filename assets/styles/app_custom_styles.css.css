@@ -1,0 +1,63 @@
+.CustomForms_Style {
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 256px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    border-radius: 25px;
+    border: 5px solid #000000; /* Blaue Farbe #005A9F und 4px Strichstärke */
+}
+
+.CustomForms_Style {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 256px;
+    height: auto;
+}
+.CustomDuration_Style_Horizon {
+    display: flex;
+    justify-content: center; /* Zentriert den Container horizontal */
+}
+
+.CustomDuration_Style_Horizon p {
+    margin-left: 25px; /* Abstand zwischen den Elementen */
+}
+
+.invisible-content {
+    visibility: hidden; /* Macht den Inhalt unsichtbar */
+    display: none; /* Entfernt das Element aus dem Layout und gibt den Platz frei */
+}
+.Custom-css-input {
+     padding: 5px;
+     font-size: 16px;
+     border-width: 2px;
+     border-color: #CCCCCC;
+     background-color: #FFFFFF;
+     color: #000000;
+     border-style: solid;
+     border-radius: 25px;
+     box-shadow: 0px 0px 5px rgba(66,66,66,.75);
+     text-shadow: 0px 0px 5px rgba(66,66,66,.75);
+}
+ .Custom-css-input:focus {
+     outline:none;
+}
+.Custom-Css-Input-NoBorder {
+    border: no-border; /* Ändern Sie dies zu dem gewünschten Stil */
+}
+.Custom-Box-layout {
+  display: flex;
+  gap: 25px;
+
+  align-items: center;
+}

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">🔐 PIN zurücksetzen anfordern</h3>
+        </div>
+        <div class="card-body">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+
+            <form method="POST">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-Mail-Adresse</label>
+                    <input type="email" name="email" id="email" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">📩 PIN-Reset-Link anfordern</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

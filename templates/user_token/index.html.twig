@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1>UserToken index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Token</th>
+                <th>Type</th>
+                <th>CreatedAt</th>
+                <th>ExpiresAt</th>
+                <th>Used</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_token in user_tokens %}
+            <tr>
+                <td>{{ user_token.id }}</td>
+                <td>{{ user_token.token }}</td>
+                <td>{{ user_token.type }}</td>
+                <td>{{ user_token.createdAt ? user_token.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user_token.expiresAt ? user_token.expiresAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user_token.used ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_user_token_show', {'id': user_token.id}) }}">show</a>
+                    <a href="{{ path('app_user_token_edit', {'id': user_token.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_token_new') }}">Create new</a>
+{% endblock %}

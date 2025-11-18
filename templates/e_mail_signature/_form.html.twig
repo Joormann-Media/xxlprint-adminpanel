@@ -1,0 +1,312 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container my-3">
+    <h1 class="mb-4"><i class="bi bi-envelope-at-fill"></i> E-Mail-Signatur erstellen</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    {{ form_start(form, { attr: { id: 'signature-form' } }) }}
+
+                    <ul class="nav nav-tabs" id="signatureTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button">📇 Kontakt</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="social-tab" data-bs-toggle="tab" data-bs-target="#social" type="button">🌍 Social Media</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="images-tab" data-bs-toggle="tab" data-bs-target="#images" type="button">🖼️ Bilder</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="legal-tab" data-bs-toggle="tab" data-bs-target="#legal" type="button">⚖️ Rechtliches</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="user-tab" data-bs-toggle="tab" data-bs-target="#user" type="button">👤 Benutzer</button>
+                        </li>
+<li class="nav-item" role="presentation">
+    <button class="nav-link" id="html-tab" data-bs-toggle="tab" data-bs-target="#html" type="button">⚙️ Ohne Vorlage</button>
+</li>
+
+                    </ul>
+
+                    
+
+                    <div class="tab-content pt-3 max-width=250px">
+                        {# 🏷️ Vorlagen #}
+                        {# 📇 Kontakt #}
+                        <div class="tab-pane fade show active" id="contact" role="tabpanel">
+                            {{ form_row(form.template, { attr: { class: 'form-select sig-input' } }) }}
+                            {{ form_row(form.name, { attr: { class: 'form-control sig-input' } }) }}
+                            {{ form_row(form.position, { attr: { class: 'form-control sig-input' } }) }}
+                            {{ form_row(form.company, { attr: { class: 'form-control sig-input' } }) }}
+                            {{ form_row(form.phone, { attr: { class: 'form-control sig-input' } }) }}
+                            {{ form_row(form.mobile, { attr: { class: 'form-control sig-input' } }) }}
+                            {{ form_row(form.email, { attr: { class: 'form-control sig-input' } }) }}
+                            {{ form_row(form.website, { attr: { class: 'form-control sig-input' } }) }}
+                            {{ form_row(form.address, { attr: { class: 'form-control sig-input' } }) }}
+                        </div>
+
+                        {# 🌍 Social Media #}
+                        <div class="tab-pane fade" id="social" role="tabpanel">
+                            {{ form_row(form.linkedin, { attr: { class: 'form-control sig-input' } }) }}
+                            {{ form_row(form.facebook, { attr: { class: 'form-control sig-input' } }) }}
+                            {{ form_row(form.twitter, { attr: { class: 'form-control sig-input' } }) }}
+                        </div>
+
+                        {# 🖼️ Bilder #}
+                        <div class="tab-pane fade" id="images" role="tabpanel">
+                            {{ form_row(form.logoPath, { attr: { class: 'form-control sig-input' } }) }}
+                            {{ form_row(form.bannerPath, { attr: { class: 'form-control sig-input' } }) }}
+                        </div>
+
+                        {# ⚖️ Rechtliches #}
+                        <div class="tab-pane fade" id="legal" role="tabpanel">
+                            {{ form_row(form.disclaimer, { attr: { class: 'form-control sig-input tinymce tinymce-signatur' } }) }}
+                        </div>
+
+                        {# 👤 Benutzer #}
+                        <div class="tab-pane fade" id="user" role="tabpanel">
+                            {{ form_row(form.user, { attr: { class: 'form-control sig-input' } }) }}
+                        </div>
+
+                        {# 🧩 Ohne Vorlage #}
+                        <div class="tab-pane fade" id="html" role="tabpanel">
+                            <div class="mb-3">
+                                
+                                {{ form_widget(form.htmlOutput, { attr: { class: 'form-control sig-input tinymce tinymce-signatur', name: form.htmlOutput.vars.full_name } }) }}
+
+        
+                                {{ form_errors(form.htmlOutput) }}
+                            </div>
+                        </div>
+  
+
+                        
+                    </div>
+
+<div class="d-flex justify-content-between mt-4">
+    <button class="btn btn-success w-48"><i class="bi bi-save"></i> Speichern</button>
+    <a href="{{ path('app_email_signature_index') }}" class="btn btn-secondary w-48"><i class="bi bi-arrow-left"></i> Zurück zur Übersicht</a>
+    
+</div>
+                    {# Delete Button nur wenn ID vorhanden (also bei Bearbeitung) #}
+                    {% if e_mail_signature.id is defined %}
+                        <div class="d-flex justify-content-between mt-4">
+                            <form method="post" action="{{ path('app_email_signature_delete', {'id': e_mail_signature.id}) }}" onsubmit="return confirm('Sind Sie sicher, dass Sie diese Signatur löschen möchten?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ e_mail_signature.id) }}">
+                                <button class="btn btn-danger w-48"><i class="bi bi-trash"></i> Löschen</button>
+                            </form>
+                        </div>
+                    {% endif %}
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="mb-4">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary text-white">
+                        🔍 Live-Vorschau
+                    </div>
+                    <div class="card-body bg-light" id="signature-preview" style="min-height: 300px;">
+                        <em>Bitte gib Daten ein, um die Vorschau zu sehen.</em>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="card border-secondary">
+                    <div class="card-header bg-secondary text-white">
+                        🧾 HTML-Code
+                    </div>
+                    <div class="card-body bg-light" style="max-height: 300px; overflow: auto;">
+                        <pre class="small text-break" id="signature-html"><code>&lt;em&gt;Noch kein HTML generiert.&lt;/em&gt;</code></pre>
+
+                    
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <button class="btn btn-secondary" id="copy-clipboard"><i class="bi bi-clipboard"></i> In Zwischenablage kopieren</button>
+                        <button class="btn btn-secondary" id="download-signature"><i class="bi bi-download"></i> Download</button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# JS für Live-Vorschau #}
+<!-- JSZip CDN (Stelle sicher, dass die Version zu deiner Nutzung passt) -->
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js"></script>
+
+<script>
+    const htmlOutputFieldId = '{{ form.htmlOutput.vars.id }}';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('signature-form');
+        if (!form) return;
+
+        const copyButton = document.getElementById('copy-clipboard');
+        const downloadButton = document.getElementById('download-signature');
+        const inputs = form.querySelectorAll('.sig-input');
+        const preview = document.getElementById('signature-preview');
+        const htmlCode = document.getElementById('signature-html');
+
+        const htmlOutput = document.getElementById(htmlOutputFieldId);
+        if (htmlOutput) {
+        htmlOutput.addEventListener('input', updatePreview);
+        }
+
+        // Importiere die JSZip-Bibliothek
+        const JSZip = window.JSZip;
+
+        // Copy-to-Clipboard
+        copyButton.addEventListener('click', () => {
+            const code = htmlCode.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert("HTML-Code in Zwischenablage kopiert!");
+            }).catch(err => {
+                alert("Fehler beim Kopieren: " + err);
+            });
+        });
+
+        /// Download Outlook-Paket und EML als ZIP
+    downloadButton.addEventListener('click', () => {
+        const code = htmlCode.textContent || htmlCode.innerText;
+
+        // Neue ZIP-Datei erstellen
+        const zip = new JSZip();
+
+        // Holen der Bild-URLs aus den Formularfeldern
+        const logoPath = document.getElementById('{{ form.logoPath.vars.id }}')?.value || null;
+        const bannerPath = document.getElementById('{{ form.bannerPath.vars.id }}')?.value || null;
+
+        // HTML-Datei für die Signatur hinzufügen
+        zip.file("email-signature.html", code);
+
+        // EML-Datei für Outlook/Thunderbird erstellen
+        const emlHeader = [
+            "From: \"Your Name\" <youremail@example.com>", // Hier deinen Namen und deine E-Mail-Adresse eintragen
+            "Subject: E-Mail-Signatur",
+            "MIME-Version: 1.0",
+            "Content-Type: text/html; charset=UTF-8",
+            "Content-Transfer-Encoding: quoted-printable",
+            "",
+        ].join("\n");
+
+        const emlContent = emlHeader + code;  // HTML in den EML-Inhalt einfügen
+        zip.file("email-signature.eml", emlContent);
+
+        // Optional: Logo und Banner hinzufügen (wenn vorhanden)
+        if (logoPath) {
+            fetch(logoPath)
+                .then(response => response.blob())
+                .then(blob => {
+                    zip.file("logo.png", blob);
+                })
+                .catch(err => console.error('Logo konnte nicht geladen werden: ', err));
+        }
+
+        if (bannerPath) {
+            fetch(bannerPath)
+                .then(response => response.blob())
+                .then(blob => {
+                    zip.file("banner.png", blob);
+                })
+                .catch(err => console.error('Banner konnte nicht geladen werden: ', err));
+        }
+
+        // Text-Datei mit Anweisungen (optional)
+        const instructions = "Importiere die E-Mail-Signatur, indem du die HTML-Datei in Thunderbird oder Outlook hinzufügst.\n\nDie Bilder (Logo und Banner) können auch in den E-Mail-Client eingefügt werden, falls erforderlich.";
+        zip.file("instructions.txt", instructions);
+
+        // ZIP-Datei erzeugen und herunterladen
+        zip.generateAsync({ type: "blob" })
+            .then(function(content) {
+                // Erstelle einen Download-Link für die ZIP-Datei
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(content);
+                link.download = 'email-signature.zip';
+                link.click();
+            })
+            .catch(function(err) {
+                console.error('Fehler beim Erstellen der ZIP-Datei:', err);
+            });
+    });
+        function sanitizeHtml(html) {
+    // Entfernt automatisch generierte <p> um den gesamten Inhalt, wenn gewünscht
+    if (html.startsWith('<p>') && html.endsWith('</p>')) {
+        return html.slice(3, -4);
+    }
+    return html;
+}
+
+        // Vorschau aktualisieren
+        function updatePreview() {
+            const formData = new FormData(document.getElementById('signature-form'));
+
+            // 🛠️ Füge htmlOutput manuell hinzu, falls nicht korrekt übermittelt
+            const htmlOutput = document.getElementById('{{ form.htmlOutput.vars.id }}');
+            if (htmlOutput) {
+                formData.set(htmlOutput.name, htmlOutput.value);
+            }
+            // Sanitizing HTML
+            const sanitizedHtml = sanitizeHtml(htmlOutput.value);
+            formData.set(htmlOutput.name, sanitizedHtml);
+
+            fetch('{{ path("signature_preview") }}', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Netzwerkfehler: ' + res.statusText);
+                return res.json();
+            })
+            .then(data => {
+                document.getElementById('signature-preview').innerHTML = data.html || '<em>Keine Vorschau verfügbar.</em>';
+                document.getElementById('signature-html').textContent = data.html || '<em>Keine HTML-Ausgabe.</em>';
+            })
+            .catch(error => {
+                console.error('Fehler beim Laden der Vorschau:', error);
+                document.getElementById('signature-preview').innerHTML = '<div class="text-danger">Fehler beim Laden der Vorschau.</div>';
+                document.getElementById('signature-html').textContent = 'Fehler beim Laden der HTML-Daten.';
+            });
+        }
+        // expose globally for TinyMCE handlers
+        window.updatePreview = updatePreview;
+
+        // Live-Vorschau bei Eingaben
+        inputs.forEach(input => input.addEventListener('input', updatePreview));
+
+        // TinyMCE: trigger preview on editor changes
+        if (window.tinymce) {
+            tinymce.init({
+                selector: '.tinymce-signatur',
+                setup(editor) {
+                    editor.on('change keyup', () => window.updatePreview());
+                }
+            });
+        }
+
+        // Vorschau beim Tab-Wechsel anzeigen
+        document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+            tab.addEventListener('shown.bs.tab', () => {
+                setTimeout(updatePreview, 100); // Verzögerung hinzufügen
+            });
+        });
+
+        // Initiale Vorschau beim Laden
+        updatePreview();
+    });
+</script>
+
+{% endblock %}

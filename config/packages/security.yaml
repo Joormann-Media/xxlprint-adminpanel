@@ -1,0 +1,167 @@
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    providers:
+        app_user_provider:
+            id: App\Security\EmailOrUsernameUserProvider # ✅ ← eigener Provider für E-Mail oder Benutzername
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        # 🔧 DAV-WebDAV Login mit Basic Auth
+        dav:
+            pattern: ^/dav(/|$)
+            security: true
+            stateless: true
+            provider: app_user_provider
+            custom_authenticators:
+                - App\Security\SabreBasicAuthenticator
+        
+        vehicle_tracking_import:
+            pattern: ^/vehicle-tracking/import
+            stateless: true
+            security: false    # oder: anonymous: true    
+
+
+        # 🔧 Standard-Login (Admin, intern)
+        main:
+            lazy: true
+            provider: app_user_provider
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                enable_csrf: true
+                default_target_path: /admin
+                always_use_default_target_path: true # Optional, erzwingt immer Weiterleitung zu /
+            logout:
+                path: app_logout
+                target: app_logout_success
+                invalidate_session: true
+            switch_user: true
+
+        # 🔧 Zweiter Login für Kundenbereich
+        customer:
+            pattern: ^/kunden
+            lazy: true
+            provider: app_user_provider
+            entry_point: form_login  # ✅ ← EINZIGES Entry Point
+            form_login:
+                login_path: app_customer_login
+                check_path: app_customer_login
+                enable_csrf: true
+                username_parameter: _username  # ❗️ Kommt aus deinem Formularfeld (kannst du auch „email“ nennen)
+                password_parameter: _password
+            logout:
+                path: app_customer_logout
+                target: app_customer_login
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+        # 🔧 API-Login (intern)
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: app_user_provider
+            json_login:
+                check_path: /api/login
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+            jwt: ~
+
+
+    role_hierarchy:
+        ROLE_SUPREME_ADMIN: [
+            ROLE_SYSADMIN,
+            ROLE_ADMIN,
+            ROLE_USERADMIN,
+            ROLE_RELEASEMANAGER,
+            ROLE_WEBSITEADMIN,
+            ROLE_MODERATOR,
+            ROLE_CUSTOMERADMIN,
+            ROLE_CUSTOMER,
+            ROLE_DEVELOPER,
+            ROLE_USER,
+            ROLE_ALLOWED_TO_SWITCH
+        ]
+        ROLE_SYSADMIN: [
+            ROLE_ADMIN,
+            ROLE_USERADMIN,
+            ROLE_RELEASEMANAGER,
+            ROLE_ALLOWED_TO_SWITCH,
+            ROLE_USER
+        ]
+        ROLE_ADMIN: [
+            ROLE_WEBSITEADMIN,
+            ROLE_MODERATOR,
+            ROLE_CUSTOMERADMIN,
+            ROLE_USER
+        ]
+        ROLE_USERADMIN: [
+            ROLE_USER
+        ]
+        ROLE_RELEASEMANAGER: [
+            ROLE_USER
+        ]
+        ROLE_WEBSITEADMIN: [
+            ROLE_MODERATOR,
+            ROLE_USER
+        ]
+        ROLE_MODERATOR: [
+            ROLE_USER
+        ]
+        ROLE_CUSTOMERADMIN: [
+            ROLE_CUSTOMER,
+            ROLE_USER
+        ]
+        ROLE_CUSTOMER: [
+            ROLE_USER
+        ]
+        ROLE_DEVELOPER: [
+            ROLE_USER
+        ]
+
+    access_control:
+        - { path: ^/gpx-studio/ors/, roles: PUBLIC_ACCESS }
+        - { path: ^/vehicle-tracking/live, roles: ROLE_USER }
+        - { path: ^/live/map/data, roles: PUBLIC_ACCESS }
+        - { path: ^/vehicle/import, roles: PUBLIC_ACCESS }
+        - { path: ^/api/work-log, roles: PUBLIC_ACCESS }
+        - { path: ^/api/schoolkids, roles: PUBLIC_ACCESS }
+        - { path: ^/penalty-catalog/entry/import, roles: PUBLIC_ACCESS }
+        - { path: ^/vehicle/update-ortlogid, roles: PUBLIC_ACCESS }
+        - { path: ^/vehicle-tracking/import, roles: PUBLIC_ACCESS }
+        - { path: ^/api-token/validate, roles: PUBLIC_ACCESS }
+        - { path: ^/api/project-statistics, roles: PUBLIC_ACCESS }
+        - { path: ^/backup-manager/import, roles: PUBLIC_ACCESS }
+        - { path: ^/dev-log/entry/import, roles: PUBLIC_ACCESS }
+        - { path: ^/project-statistics/import, roles: PUBLIC_ACCESS }
+        - { path: ^/security-access/log/import, roles: PUBLIC_ACCESS }
+        - { path: ^/nfc-scan/import$, roles: PUBLIC_ACCESS }      # 👈 muss vor ^/
+        - { path: ^/api-client/register, roles: PUBLIC_ACCESS }   # 👈 NEU!
+        - { path: ^/geoimport, roles: PUBLIC_ACCESS }
+        - { path: ^/state/api/import, roles: PUBLIC_ACCESS }
+        - { path: ^/official-address/api/local-city-suggest, roles: PUBLIC_ACCESS }
+        - { path: ^/official-address/api/local-city-postcodes, roles: PUBLIC_ACCESS }
+        - { path: ^/official-address/api/import/by-plz, roles: PUBLIC_ACCESS }
+        - { path: ^/official-address/api/import/by-street-letter, roles: PUBLIC_ACCESS }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_USER }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+
+
+
+when@test:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4
+                time_cost: 3
+                memory_cost: 10

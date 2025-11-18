@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SystemConfig{% endblock %}
+
+{% block body %}
+    <h1>SystemConfig</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ system_config.id }}</td>
+            </tr>
+            <tr>
+                <th>Timezone</th>
+                <td>{{ system_config.timezone }}</td>
+            </tr>
+            <tr>
+                <th>Locale</th>
+                <td>{{ system_config.locale }}</td>
+            </tr>
+            <tr>
+                <th>DateFormat</th>
+                <td>{{ system_config.dateFormat }}</td>
+            </tr>
+            <tr>
+                <th>Currency</th>
+                <td>{{ system_config.currency }}</td>
+            </tr>
+            <tr>
+                <th>SystemName</th>
+                <td>{{ system_config.systemName }}</td>
+            </tr>
+            <tr>
+                <th>SystemLogoUrl</th>
+                <td>{{ system_config.systemLogoUrl }}</td>
+            </tr>
+            <tr>
+                <th>Enable2FA</th>
+                <td>{{ system_config.enable2FA ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>SessionTimeout</th>
+                <td>{{ system_config.sessionTimeout }}</td>
+            </tr>
+            <tr>
+                <th>SupportEmail</th>
+                <td>{{ system_config.supportEmail }}</td>
+            </tr>
+            <tr>
+                <th>MaintenanceMode</th>
+                <td>{{ system_config.maintenanceMode ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>MaintenanceMessage</th>
+                <td>{{ system_config.maintenanceMessage }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_system_config_index') }}">back to list</a>
+
+    <a href="{{ path('app_system_config_edit', {'id': system_config.id}) }}">edit</a>
+
+    {{ include('system_config/_delete_form.html.twig') }}
+{% endblock %}

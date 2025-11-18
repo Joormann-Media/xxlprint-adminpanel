@@ -1,0 +1,177 @@
+body {
+       background-image: url('/gfx/backgroung_login.jpg');
+       background-position: center center;
+       background-repeat: no-repeat;
+       background-attachment: fixed;
+       background-size: cover;
+       padding-top: 70px; /* Platz f�r den Header */
+       padding-bottom: 30px; /* Platz f�r den Footer */
+
+	}
+button {
+	color: #ffffff;
+	background-color: #000000;
+	font-size: 19px;
+	border: 1px solid #000000;
+	border-radius: 10px;
+	padding: 15px 50px;
+	cursor: pointer
+	}
+button:hover {
+	color: #000000;
+	background-color: #ffffff;
+	}
+.container_center {
+    font-family: 'Calibri', sans-serif;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 256px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    border-radius: 25px;
+    border: 4px solid #000000; /* Blaue Farbe #005A9F und 4px Strichst�rke */
+    border-radius: 25px; /* 25px abgerundete Ecken */
+    padding-top: 15px;    /* 15px Abstand nach oben */
+    padding-bottom: 15px; /* 15px Abstand nach unten */
+}
+.custom-border {
+    border: 4px solid #000000; /* Blaue Farbe #005A9F und 4px Strichst�rke */
+    border-radius: 25px; /* 25px abgerundete Ecken */
+}
+.logo-formular {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 256px;
+    height: auto;
+}
+login_background {
+    background-image: url('/gfx/backgroung_login.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+@font-face {
+    font-family: 'Calibri';
+    src: url('/fonts/Calibri.woff') format('woff'),
+         url('/fonts/Calibri.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Calibri';
+    src: url('/fonts/Calibri-Bold.woff') format('woff'),
+         url('/fonts/Calibri-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Calibri';
+    src: url('/fonts/Calibri-Italic.woff') format('woff'),
+         url('/fonts/Calibri-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Calibri';
+    src: url('/fonts/Calibri-BoldItalic.woff') format('woff'),
+         url('/fonts/Calibri-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Calibri';
+    src: url('/fonts/Calibri-Light.woff') format('woff'),
+         url('/fonts/Calibri-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Calibri';
+    src: url('/fonts/Calibri-LightItalic.woff') format('woff'),
+         url('/fonts/Calibri-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+.custom-button {
+    color: #ffffff;
+    font-weight: bold;
+    background-color: #000000 !important;  /* Farbe #a51b1b */
+    font-size: 15px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    padding: 15px 50px;
+    cursor: pointer;
+}
+
+.custom-button:hover {
+    color: #000000;
+    background-color: #ffffff;
+}
+
+.custom-button img {
+    width: 100%; /* Skaliert das Bild auf die volle Breite des Buttons */
+    height: auto; /* Beibehaltung des Seitenverhältnisses */
+    max-width: 45px; /* Optional: maximale Breite des Bildes */
+    
+}
+.custom-button imgSave    { content: url('/gfx/save.png'); }
+.custom-button imgCancel  { content: url('/gfx/cancel.png'); }
+.custom-button imgDelete  { content: url('/gfx/delete.png'); }
+.custom-button imgEdit    { content: url('/gfx/edit.png'); }
+.custom-button imgAdd     { content: url('/gfx/add.png'); }
+.custom-button imgSearch  { content: url('/gfx/search.png'); }
+.custom-button imgPrint   { content: url('/gfx/print.png'); }
+.custom-button imgRefresh { content: url('/gfx/refresh.png'); }
+.custom-button imgBack    { content: url('/gfx/back.png'); }
+.custom-button imgForward { content: url('/gfx/forward.png'); }
+.custom-button imgHome    { content: url('/gfx/home.png'); }
+.custom-button imgLogout  { content: url('/gfx/logout.png'); }
+.custom-button imgLogin   { content: url('/gfx/login.png'); }
+.custom-button imgUser    { content: url('/gfx/user.png'); }
+.custom-button imgPassword{ content: url('/gfx/password.png'); }
+
+
+
+
+
+    .custom-form-table {
+        border: 2px solid black; /* Schwarzer Rahmen */
+        border-radius: 10px; /* Abgerundete Ecken */
+        padding: 15pc; /* Abstand des Rahmens zur Tabelle */
+        border-spacing: 15px; /* Abstand zwischen den Spalten */
+        width: 100%; /* Optional: Tabelle auf die volle Breite setzen */
+        vertical-align: top; /* Zellen oben ausrichten */
+    }
+    
+    .custom-form-table th, .custom-form-table td {
+        padding: 10px; /* Abstand innerhalb der Zellen */
+        text-align: left; /* Text linksbündig */
+        vertical-align: top;
+    }
+    
+    .custom-form-table th {
+        background-color: #f2f2f2; /* Hintergrundfarbe für Tabellenüberschriften */
+        font-weight: bold; /* Fettdruck für Tabellenüberschriften */
+    }
+    
+    .custom-form-table td {
+        background-color: #fff; /* Weißer Hintergrund für Zellen */
+    }
+    .custom-form-lable {
+        font-weight: bold; /* Fettdruck für Tabellenüberschriften */
+    }

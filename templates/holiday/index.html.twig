@@ -1,0 +1,177 @@
+{# templates/holiday/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}🌴 Feiertage & Schulferien Übersicht{% endblock %}
+
+
+{% block body %}
+    <style>
+        .table th, .table td { vertical-align: middle; }
+        .badge-holiday {
+            background: #ff6b6b !important;
+            color: rgb(10, 10, 10) !important;
+            font-size: 1em;
+            padding: 0.5em 1em !important;
+        }
+        .badge-vacation {
+            background: #ffd166 !important;
+            color: #663d00 !important;
+            font-size: 1em;
+            padding: 0.5em 1em !important;
+        }
+        .badge-other {
+            background: #caffbf;
+            color: #226622;
+        }
+        .badge-recur {
+            background: #c5cae9;
+            color: #283593;
+        }
+        .badge-date {
+            background: #b2f7ef !important;
+            color: #00796b !important;
+            font-size: 1em;
+            padding: 0.5em 1em !important;
+        }
+        .recurring {
+            font-size: 1.1em;
+            color: #6c757d;
+            margin-left: .2em;
+        }
+        .holiday-comment {
+            font-size: .96em;
+            color: #888;
+        }
+        .badge-holiday,
+.badge-vacation,
+.badge-other,
+.badge-recur,
+.badge-date,
+.badge.bg-secondary {
+    font-size: 1em !important;
+    padding: 0.5em 1em !important;
+    min-width: 6.5rem;       /* gleiche Mindestbreite */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.2rem;          /* gleiche Höhe */
+    border-radius: 0.5rem;
+    white-space: nowrap;
+}
+.badge-holiday i,
+.badge-vacation i,
+.badge-recur i {
+    margin-right: 0.4em;
+    font-size: 1.1em;
+}
+
+    </style>
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h1 class="mb-0">
+            🌴 Feiertage & Schulferien
+            <small class="text-muted fs-6">({{ holidays|length }})</small>
+        </h1>
+        <div>
+            <a href="{{ path('app_holiday_import') }}" class="btn btn-info me-2">
+                🚀 Feiertage/Ferien importieren
+            </a>
+            <a href="{{ path('app_holiday_new') }}" class="btn btn-success">
+                ➕ Neuer Eintrag
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table align-middle table-striped shadow-sm rounded">
+            <thead class="table-primary">
+                <tr>
+                    <th>ID</th>
+                    <th>Bundesland</th>
+                    <th>Name</th>
+                    <th>Typ</th>
+                    <th>Start</th>
+                    <th>Ende</th>
+                    <th>Intervall</th>
+                    <th>Offset</th>
+                    <th>Kommentar</th>
+                    <th>Aktionen</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for holiday in holidays %}
+                <tr>
+                    <td class="text-center">{{ holiday.id }}</td>
+                    <td class="text-center">
+                        {% if holiday.state %}
+                            <span class="badge bg-secondary">{{ holiday.state.code }}</span>
+                        {% else %}
+                            <span class="text-muted fst-italic">-</span>
+                        {% endif %}
+                    </td>
+                    <td><strong>{{ holiday.name }}</strong></td>
+                    <td>
+                        {% if holiday.type == 'holiday' %}
+                            <span class="badge badge-holiday fw-bold"><i class="bi bi-calendar-event-fill me-1"></i> Feiertag</span>
+                        {% elseif holiday.type == 'school_vacation' %}
+                            <span class="badge badge-vacation fw-bold"><i class="bi bi-umbrella-fill me-1"></i> Ferien</span>
+                        {% else %}
+                            <span class="badge badge-other fw-bold">{{ holiday.type|capitalize }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if holiday.startDate %}
+                            <span class="badge badge-date fw-bold px-3 py-2">{{ holiday.startDate|date('d.m.Y') }}</span>
+                        {% else %}
+                            <span class="text-muted">–</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if holiday.endDate and holiday.endDate != holiday.startDate %}
+                            <span class="badge badge-date fw-bold px-3 py-2">{{ holiday.endDate|date('d.m.Y') }}</span>
+                        {% elseif holiday.endDate %}
+                            <span class="text-muted">–</span>
+                        {% else %}
+                            <span class="text-muted">–</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if holiday.recurrence == 'yearly' %}
+                            <span class="badge badge-recur">Jährlich <i class="bi bi-arrow-repeat recurring"></i></span>
+                        {% elseif holiday.recurrence == 'none' or holiday.recurrence is empty %}
+                            <span class="text-muted">–</span>
+                        {% else %}
+                            <span class="badge badge-recur">{{ holiday.recurrence }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if holiday.daysoffset is not empty %}
+                            <span class="badge bg-secondary">{{ holiday.daysoffset }}</span>
+                        {% else %}
+                            <span class="text-muted">–</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if holiday.comment %}
+                            <span class="holiday-comment">{{ holiday.comment }}</span>
+                        {% else %}
+                            <span class="text-muted">–</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_holiday_show', {'id': holiday.id}) }}" class="btn btn-sm btn-outline-secondary">Anzeigen</a>
+                        <a href="{{ path('app_holiday_edit', {'id': holiday.id}) }}" class="btn btn-sm btn-outline-primary">Bearbeiten</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10" class="text-center text-muted py-5">
+                        Keine Feiertage oder Ferien gefunden.
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

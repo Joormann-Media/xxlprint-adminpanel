@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New EmployeeEvent{% endblock %}
+
+{% block body %}
+    <h1>Create new EmployeeEvent</h1>
+
+    {{ include('employee_event/_form.html.twig') }}
+
+    <a href="{{ path('app_employee_event_index') }}">back to list</a>
+{% endblock %}

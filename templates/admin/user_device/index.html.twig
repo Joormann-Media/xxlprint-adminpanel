@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<h1>🛡️ Geräteverwaltung</h1>
+
+<h2>📱 Registrierte Geräte</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Fingerprint</th>
+            <th>Device</th>
+            <th>IP</th>
+            <th>Trusted?</th>
+            <th>Aktiv?</th>
+            <th>Registriert am</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for device in devices %}
+        <tr>
+            <td>{{ device.user.email }}</td>
+            <td>{{ device.deviceFingerprint|slice(0, 16) ~ '...' }}</td>
+            <td>{{ device.deviceName }}</td>
+            <td>{{ device.ipAddress }}</td>
+            <td>{{ device.isTrusted ? '✅' : '❌' }}</td>
+            <td>{{ device.isActive ? '✅' : '❌' }}</td>
+            <td>{{ device.registeredAt|date('Y-m-d H:i') }}</td>
+        </tr>
+    {% else %}
+        <tr><td colspan="7">Keine Geräte gefunden.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h2>📜 Letzte Aktivitäten</h2>
+<table class="table table-sm table-hover">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Aktion</th>
+            <th>IP</th>
+            <th>Zeitpunkt</th>
+            <th>Hinweis</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for log in logs %}
+        <tr>
+            <td>{{ log.user.email }}</td>
+            <td>{{ log.actionType }}</td>
+            <td>{{ log.ipAddress }}</td>
+            <td>{{ log.timestamp|date('Y-m-d H:i') }}</td>
+            <td>{{ log.note }}</td>
+        </tr>
+    {% else %}
+        <tr><td colspan="5">Noch keine Aktivitäten protokolliert.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

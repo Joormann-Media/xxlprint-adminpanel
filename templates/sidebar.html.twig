@@ -1,0 +1,66 @@
+{% set currentRoute = app.request.attributes.get('_route') %}
+
+{% if app.user %}
+    {% set data = getStructuredMenu(true) %}
+    {% set menus = data.menus %}
+    {% set roles = data.user_roles %}
+
+    <div class="toggle-div">
+        <button id="menu-toggle">
+            <span class="menu-icon-wrapper">
+                <img src="{{ asset('gfx/SystemGFX/Icons/StandardIcons/menu-button.png') }}" alt="Menü Icon" class="menu-icon">
+            </span>
+            <span class="menu-text menu-icon-wrapper">Menü</span> 
+            <span class="lock-icon-wrapper">
+                <img id="lock-icon" src="{{ asset('gfx/systemgfx/padlock.png') }}" alt="Lock Icon" class="lock-icon unlocked" />
+            </span>
+        </button>
+    </div>
+
+    <div id="sidebar-wrapper" class="sidebar-closed">
+        <div class="sidebar-inner">
+            <div class="sidebar-content">
+                <div class="list-group list-group-flush">
+                    {% for menu in menus %}
+                        <div class="menu-group" data-id="{{ menu.id }}">
+                            <div class="menu-header" data-menu-id="{{ loop.index }}">
+                                <span class="me-1 text-muted">»</span>{{ menu.title }}
+                            </div>
+
+                            <div class="menu-content">
+                                {# Submenüs zuerst #}
+                                {% for sub in menu.sub_menus %}
+                                    <div class="submenu">
+                                        <div class="submenu-header">
+                                            <span class="me-1 text-muted">»</span>{{ sub.title }}
+                                        </div>
+                                        <div class="submenu-content">
+
+                                                {% for subItem in sub.items %}
+                                                    {% set url = subItem.route starts with '/' ? subItem.route : (subItem.route is defined ? path(subItem.route) : '#') %}
+                                                    <a href="{{ url }}" class="list-group-item list-group-item-action ps-5 {{ subItem.route == currentRoute ? 'active' : '' }}">
+                                                        <span class="me-1 text-muted">»</span>{{ subItem.title }}
+                                                    </a>
+                                                {% endfor %}
+                                            
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                                {# Hauptmenü-Einträge danach #}
+
+                                    {% for item in menu.items %}
+                                        {% set url = item.route starts with '/' ? item.route : (item.route is defined ? path(item.route) : '#') %}
+                                        <a href="{{ url }}" class="list-group-item list-group-item-action {{ item.route == currentRoute ? 'active' : '' }}">
+                                            {{ item.title }}
+                                        </a>
+                                    {% endfor %}
+                                
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

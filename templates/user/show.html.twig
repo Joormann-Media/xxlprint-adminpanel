@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Benutzerprofil{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-9">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h3 class="mb-0">
+                        <i class="bi bi-person-circle me-2"></i>
+                        Benutzer-Account
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row gy-3 align-items-center">
+                        <!-- Avatar -->
+                        <div class="col-md-4 text-center">
+                            {% if user.avatar and user.userDir %}
+                                <img src="{{ asset('user_data/' ~ user.userDir ~ '/avatar/' ~ user.avatar) }}"
+                                    alt="Benutzeravatar"
+                                    class="img-fluid rounded-circle border border-2 shadow mb-3"
+                                    style="width: 150px; height: 150px; object-fit: cover;">
+                            {% else %}
+                                <img src="{{ asset('gfx/systemgfx/profilpic_placeholder_ger.jpeg') }}"
+                                    alt="Standardavatar"
+                                    class="img-fluid rounded-circle border border-2 shadow mb-3"
+                                    style="width: 150px; height: 150px; object-fit: cover;">
+                            {% endif %}
+                        </div>
+                        <!-- User Infos -->
+                        <div class="col-md-8">
+                            <h4 class="card-title mb-1">{{ user.prename }} {{ user.name }}</h4>
+                            <div class="text-muted mb-2">@{{ user.username }}</div>
+                            <dl class="row mb-0">
+                                <dt class="col-sm-5">E-Mail:</dt>
+                                <dd class="col-sm-7">{{ user.email }}</dd>
+
+                                <dt class="col-sm-5">Registriert am:</dt>
+                                <dd class="col-sm-7">{{ user.regDate ? user.regDate|date('d.m.Y H:i') : 'Nicht verfügbar' }}</dd>
+
+                                <dt class="col-sm-5">Letzter Login:</dt>
+                                <dd class="col-sm-7">{{ user.lastlogindate ? user.lastlogindate|date('d.m.Y H:i') : 'Nicht verfügbar' }}</dd>
+
+                                <dt class="col-sm-5">Benutzergruppen:</dt>
+                                <dd class="col-sm-7">
+                                    {% set groupNames = user.usergroups is iterable
+                                        ? user.usergroups | map(id => userGroupMap[id] ?? '❓') | join(', ')
+                                        : userGroupMap[user.usergroups] ?? '—' %}
+                                    {{ groupNames }}
+                                </dd>
+
+                                <dt class="col-sm-5">Rollen:</dt>
+                                <dd class="col-sm-7">
+                                    {% for role in user.getRoles() %}
+                                        <span class="badge bg-info text-dark">{{ role|replace({'ROLE_':''}) }}</span>
+                                    {% else %}
+                                        <span class="text-muted">Keine Rollen</span>
+                                    {% endfor %}
+                                </dd>
+
+                                <dt class="col-sm-5">Aktiv:</dt>
+                                <dd class="col-sm-7">
+                                    {{ user.isActive ? '✔️ Ja' : '❌ Nein' }}
+                                </dd>
+
+                                <dt class="col-sm-5">Gesperrt:</dt>
+                                <dd class="col-sm-7">
+                                    {{ user.isLocked ? '🔒 Ja' : '— Nein' }}
+                                </dd>
+
+                                <dt class="col-sm-5">2FA aktiviert:</dt>
+                                <dd class="col-sm-7">
+                                    {{ user.isTwoFactorEnabled ? '✅ Ja' : '— Nein' }}
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <div>
+                        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Bearbeiten
+                        </a>
+                        <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary ms-2">
+                            <i class="bi bi-arrow-left"></i> Zurück zur Liste
+                        </a>
+                    </div>
+                    {% set adminRoles = ['ROLE_CHIEF_ACCOUNTING', 'ROLE_ADMIN', 'ROLE_SUPREME_ADMINISTRATOR', 'ROLE_USERADMIN'] %}
+                    {% if app.user and (app.user.roles|default([]) is iterable)
+                        and (app.user.roles|filter(r => r in adminRoles)|length > 0) %}
+                        <a href="{{ path('app_admin_user_recovery', {'id': user.id}) }}"
+                            class="btn btn-danger ms-auto">
+                            <i class="bi bi-key"></i> Admin-Passwort-Reset
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

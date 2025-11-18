@@ -1,0 +1,110 @@
+{# templates/contact_person/_quick_form.html.twig #}
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        {{ form_start(form, {'attr': {'id': 'quick-contact-form', 'class': 'row g-3'}}) }}
+
+        {# Persönliches #}
+        <div class="col-md-3">
+            {{ form_label(form.salutation) }}
+            {{ form_widget(form.salutation, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.salutation) }}
+        </div>
+        <div class="col-md-5">
+            {{ form_label(form.firstName) }}
+            {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.firstName) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_label(form.lastName) }}
+            {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.lastName) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.role) }}
+            {{ form_widget(form.role, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.role) }}
+        </div>
+
+        {# Adresse #}
+        <div class="col-12">
+            <hr class="my-2"><h6 class="text-muted">Adresse & Kontakt</h6>
+        </div>
+        <div class="col-md-7">
+            {{ form_label(form.street) }}
+            {{ form_widget(form.street, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.street) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_label(form.streetNumber) }}
+            {{ form_widget(form.streetNumber, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.streetNumber) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.zip) }}
+            {{ form_widget(form.zip, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.zip) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.city) }}
+            {{ form_widget(form.city, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.city) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.phone) }}
+            {{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.phone) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.fax) }}
+            {{ form_widget(form.fax, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.fax) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.web) }}
+            {{ form_widget(form.web, {'attr': {'class': 'form-control', 'placeholder': 'https://...'}}) }}
+            {{ form_errors(form.web) }}
+        </div>
+
+        {# Zuordnung #}
+        <div class="col-12">
+            <hr class="my-2"><h6 class="text-muted">Zugehörigkeit</h6>
+        </div>
+        <div class="col-md-4">
+            {{ form_label(form.school) }}
+            {{ form_widget(form.school, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.school) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_label(form.auftraggeber) }}
+            {{ form_widget(form.auftraggeber, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.auftraggeber) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_label(form.schoolkid) }}
+            {{ form_widget(form.schoolkid, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.schoolkid) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.contactType) }}
+            {{ form_widget(form.contactType, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.contactType) }}
+        </div>
+
+        {# Footer Button #}
+        <div class="col-12 text-end mt-4">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-save"></i> Speichern
+            </button>
+            <a href="{{ path('app_contact_person_index') }}" class="btn btn-outline-secondary ms-2">
+                <i class="bi bi-arrow-left"></i> Zurück
+            </a>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>

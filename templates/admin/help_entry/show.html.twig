@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container my-5">
+    <div class="bg-light border rounded p-4 mb-4 shadow-sm">
+    <h1 class="mb-3">📖 Hilfeeintrag</h1>
+</div>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title mb-3">{{ help_entry.name }}</h4>
+
+            <p><strong>Status:</strong> {{ help_entry.status }}</p>
+            <p><strong>Gültig bis:</strong>
+                {{ help_entry.expiresAt ? help_entry.expiresAt|date('d.m.Y H:i') : '–' }}
+            </p>
+            <p><strong>Erstellt am:</strong>
+                {{ help_entry.createdAt ? help_entry.createdAt|date('d.m.Y H:i') : '–' }}
+            </p>
+            <p><strong>Erstellt von:</strong> {{ help_entry.createdBy }}</p>
+            <p><strong>Beschreibung:</strong><br>
+                <span class="text-muted">{{ help_entry.description }}</span>
+            </p>
+
+            <hr>
+
+            <h5 class="mt-4">📄 Inhalt</h5>
+            <div class="bg-light border rounded p-3" style="white-space: pre-wrap;">
+                {{ help_entry.content|raw }}
+            </div>
+        </div>
+
+        <div class="card-footer bg-transparent border-top-0 d-flex justify-content-end gap-2">
+            <a href="{{ path('admin_app_help_entry_index') }}" class="btn btn-outline-secondary">
+                ⬅️ Zurück
+            </a>
+            <a href="{{ path('admin_app_help_entry_edit', {'id': help_entry.id}) }}" class="btn btn-primary">
+                ✏️ Bearbeiten
+            </a>
+            {{ include('admin/help_entry/_delete_form.html.twig') }}
+        </div>
+    </div>
+</div>
+{% endblock %}

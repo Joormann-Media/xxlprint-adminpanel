@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}API-Tokens{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h2 class="mb-0">API-Token-Verwaltung</h2>
+        <a href="{{ path('app_api_token_new') }}" class="btn btn-success">➕ Neuen Token erstellen</a>
+    </div>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="text" id="tokenSearch" class="form-control" placeholder="🔍 Suche nach Partner, Typ oder Token...">
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0" id="tokenTable" style="min-width: 1100px;">
+<thead class="table-light sticky-top">
+    <tr>
+        <th class="sortable">Partner</th>
+        <th class="sortable">Typ</th>
+        <th class="sortable">Token</th>
+        <th class="sortable">Erstellt</th>
+        <th class="sortable">Ablauf</th>
+        <th class="sortable text-center">Verwendet</th>
+        <th class="text-center">Aktionen</th>
+    </tr>
+</thead>
+<tbody>
+    {% for token in api_tokens %}
+        <tr>
+            <td>
+                {% if token.partnerCompany %}
+                    <strong>{{ token.partnerCompany.name }}</strong><br>
+                    <small class="text-muted">{{ token.partnerCompany.slug }}</small>
+                {% else %}
+                    <em class="text-muted">—</em>
+                {% endif %}
+            </td>
+            <td>{{ token.type }}</td>
+            <td><code>{{ token.token }}</code></td>
+            <td>{{ token.createdAt ? token.createdAt|date('Y-m-d H:i') : '—' }}</td>
+            <td>{{ token.expiresAt ? token.expiresAt|date('Y-m-d H:i') : '—' }}</td>
+            <td class="text-center">
+                {% if token.used %}
+                    ✅
+                {% else %}
+                    ❌
+                {% endif %}
+            </td>
+            <td class="text-center">
+                <a href="{{ path('app_api_token_show', {'id': token.id}) }}" class="btn btn-sm btn-outline-info" title="Anzeigen"><i class="bi bi-eye"></i></a>
+                <a href="{{ path('app_api_token_edit', {'id': token.id}) }}" class="btn btn-sm btn-outline-primary ms-1" title="Bearbeiten"><i class="bi bi-pencil"></i></a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="7" class="text-center text-muted">Keine API-Tokens gefunden.</td>
+        </tr>
+    {% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById('tokenSearch');
+    searchInput.addEventListener('input', function() {
+        const value = this.value.toLowerCase();
+        document.querySelectorAll("#tokenTable tbody tr").forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(value) ? '' : 'none';
+        });
+    });
+
+    function compareRows(a, b, idx, asc, isNumber) {
+        let v1 = a.children[idx].innerText.trim();
+        let v2 = b.children[idx].innerText.trim();
+        if (isNumber) {
+            v1 = parseFloat(v1.replace(/[^0-9.\-]/g, "")) || 0;
+            v2 = parseFloat(v2.replace(/[^0-9.\-]/g, "")) || 0;
+        }
+        return asc
+            ? (v1.localeCompare ? v1.localeCompare(v2, undefined, {numeric:isNumber}) : (v1 > v2 ? 1 : -1))
+            : (v2.localeCompare ? v2.localeCompare(v1, undefined, {numeric:isNumber}) : (v1 > v2 ? 1 : -1));
+    }
+
+    document.querySelectorAll('#tokenTable th.sortable').forEach((th, idx) => {
+        th.style.cursor = "pointer";
+        th.insertAdjacentHTML('beforeend', ' <span class="sort-arrow">⇅</span>');
+        let asc = true;
+        th.addEventListener('click', function() {
+            document.querySelectorAll('#tokenTable th .sort-arrow').forEach(el => el.textContent = '⇅');
+            th.querySelector('.sort-arrow').textContent = asc ? '↑' : '↓';
+
+            const tbody = th.closest('table').querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr')).filter(tr => tr.style.display !== "none");
+            const isNumber = false; // du kannst hier bei Bedarf anpassen
+            rows.sort((a, b) => compareRows(a, b, idx, asc, isNumber));
+            rows.forEach(tr => tbody.appendChild(tr));
+            asc = !asc;
+        });
+    });
+});
+</script>
+{% endblock %}

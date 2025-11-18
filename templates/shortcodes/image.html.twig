@@ -1,0 +1,22 @@
+{# templates/shortcodes/image.html.twig #}
+
+{% set modal = modal|default(false) %}
+{% set elementId = id|default(null) %}
+{% set height = compact ? '24px' : '32px' %}
+
+{% if modal and elementId %}
+    <a href="{{ path('popup_view', {'id': elementId}) }}"
+       class="open-popup"
+       data-title="{{ title|default('🔍 Vorschau') }}"
+       title="{{ title|default('🔍 Vorschau') }}">
+        <img src="{{ src }}"
+             alt="{{ title }}"
+             style="height: {{ height }};"
+             class="me-2" />
+    </a>
+{% else %}
+    <img src="{{ src }}"
+         alt="{{ title }}"
+         style="height: {{ height }};"
+         class="me-2" />
+{% endif %}

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SystemOwner{% endblock %}
+
+{% block body %}
+    <h1>SystemOwner</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ system_owner.id }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ system_owner.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ system_owner.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ system_owner.email }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ system_owner.phone }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_system_owner_index') }}">back to list</a>
+
+    <a href="{{ path('app_system_owner_edit', {'id': system_owner.id}) }}">edit</a>
+
+    {{ include('system_owner/_delete_form.html.twig') }}
+{% endblock %}

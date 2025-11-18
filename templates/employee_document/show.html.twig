@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EmployeeDocument{% endblock %}
+
+{% block body %}
+    <h1>EmployeeDocument</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ employee_document.id }}</td>
+            </tr>
+            <tr>
+                <th>DocType</th>
+                <td>{{ employee_document.docType }}</td>
+            </tr>
+            <tr>
+                <th>DocDate</th>
+                <td>{{ employee_document.docDate ? employee_document.docDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DocExpires</th>
+                <td>{{ employee_document.docExpires ? employee_document.docExpires|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DocValidated</th>
+                <td>{{ employee_document.docValidated ? employee_document.docValidated|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_employee_document_index') }}">back to list</a>
+
+    <a href="{{ path('app_employee_document_edit', {'id': employee_document.id}) }}">edit</a>
+
+    {{ include('employee_document/_delete_form.html.twig') }}
+{% endblock %}

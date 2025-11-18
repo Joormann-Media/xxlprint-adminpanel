@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Holiday{% endblock %}
+
+{% block body %}
+    <h1>Holiday</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ holiday.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ holiday.name }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ holiday.type }}</td>
+            </tr>
+            <tr>
+                <th>StartDate</th>
+                <td>{{ holiday.startDate ? holiday.startDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>EndDate</th>
+                <td>{{ holiday.endDate ? holiday.endDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Recurrence</th>
+                <td>{{ holiday.recurrence }}</td>
+            </tr>
+            <tr>
+                <th>Offset</th>
+                <td>{{ holiday.daysoffset }}</td>
+            </tr>
+            <tr>
+                <th>Comment</th>
+                <td>{{ holiday.comment }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_holiday_index') }}">back to list</a>
+
+    <a href="{{ path('app_holiday_edit', {'id': holiday.id}) }}">edit</a>
+
+    {{ include('holiday/_delete_form.html.twig') }}
+{% endblock %}

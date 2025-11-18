@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}VehicleInspectionInterval index{% endblock %}
+
+{% block body %}
+    <h1>VehicleInspectionInterval index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>InspectionType</th>
+                <th>IntervalMonths</th>
+                <th>LegalBasis</th>
+                <th>Mandatory</th>
+                <th>DateLast</th>
+                <th>DateNext</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for vehicle_inspection_interval in vehicle_inspection_intervals %}
+            <tr>
+                <td>{{ vehicle_inspection_interval.id }}</td>
+                <td>{{ vehicle_inspection_interval.inspectionType }}</td>
+                <td>{{ vehicle_inspection_interval.intervalMonths }}</td>
+                <td>{{ vehicle_inspection_interval.legalBasis }}</td>
+                <td>{{ vehicle_inspection_interval.mandatory }}</td>
+                <td>{{ vehicle_inspection_interval.dateLast ? vehicle_inspection_interval.dateLast|date('Y-m-d') : '' }}</td>
+                <td>{{ vehicle_inspection_interval.dateNext ? vehicle_inspection_interval.dateNext|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_vehicle_inspection_interval_show', {'id': vehicle_inspection_interval.id}) }}">show</a>
+                    <a href="{{ path('app_vehicle_inspection_interval_edit', {'id': vehicle_inspection_interval.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_vehicle_inspection_interval_new') }}">Create new</a>
+{% endblock %}

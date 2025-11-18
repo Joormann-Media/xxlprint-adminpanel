@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1>UserToken</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user_token.id }}</td>
+            </tr>
+            <tr>
+                <th>Token</th>
+                <td>{{ user_token.token }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ user_token.type }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ user_token.createdAt ? user_token.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ExpiresAt</th>
+                <td>{{ user_token.expiresAt ? user_token.expiresAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Used</th>
+                <td>{{ user_token.used ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_token_index') }}">back to list</a>
+
+    <a href="{{ path('app_user_token_edit', {'id': user_token.id}) }}">edit</a>
+
+    {{ include('user_token/_delete_form.html.twig') }}
+{% endblock %}

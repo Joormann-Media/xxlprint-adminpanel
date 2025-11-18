@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit TourSchedule{% endblock %}
+
+{% block body %}
+    <h1>Edit TourSchedule</h1>
+
+    {{ include('tour_schedule/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_tour_schedule_index') }}">back to list</a>
+
+    {{ include('tour_schedule/_delete_form.html.twig') }}
+{% endblock %}

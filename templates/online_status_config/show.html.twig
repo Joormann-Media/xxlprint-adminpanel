@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Online Status Details{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">
+                        <i class="bi bi-info-circle"></i> Online Status Config Details
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">ID</dt>
+                        <dd class="col-sm-8">{{ online_status_config.id }}</dd>
+
+                        <dt class="col-sm-4">Name</dt>
+                        <dd class="col-sm-8">{{ online_status_config.name }}</dd>
+
+                        <dt class="col-sm-4">Description</dt>
+                        <dd class="col-sm-8">{{ online_status_config.description|default('—') }}</dd>
+
+                        <dt class="col-sm-4">Icon</dt>
+                        <dd class="col-sm-8">
+                            {% if online_status_config.iconName %}
+                                <span class="badge bg-light border">
+                                    <i class="bi bi-image"></i> {{ online_status_config.iconName }}
+                                </span>
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-4">Updated At</dt>
+                        <dd class="col-sm-8">
+                            {{ online_status_config.updatedAt ? online_status_config.updatedAt|date('d.m.Y H:i') : '—' }}
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a href="{{ path('app_online_status_config_index') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to list
+                    </a>
+                    <div>
+                        <a href="{{ path('app_online_status_config_edit', {'id': online_status_config.id}) }}" class="btn btn-warning me-2">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a>
+                        {{ include('online_status_config/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

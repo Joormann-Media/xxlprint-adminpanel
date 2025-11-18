@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container py-4">
+        <div class="bg-light border rounded p-4 mb-4 shadow-sm">
+            <h1 class="mb-0">PopUp Kategorie Details</h1>
+            <p class="text-muted">Hier sehen Sie alle Details zur PopUp-Kategorie {{ pop_up_category.categoryName }}.</p>
+        </div>
+        <div class="d-flex justify-content-end align-items-center gap-2">
+            <a href="{{ path('app_pop_up_category_index') }}" class="btn btn-primary">Zurück zur Liste</a>
+            <a href="{{ path('app_pop_up_category_edit', {'id': pop_up_category.id}) }}" class="btn btn-warning">Bearbeiten</a>
+            {{ include('pop_up_category/_delete_form.html.twig') }}
+        </div>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title">PopUp Kategorie Informationen</h5>
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ pop_up_category.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Kategoriename</th>
+                            <td>{{ pop_up_category.categoryName }}</td>
+                        </tr>
+                        <tr>
+                            <th>Erstellt Am</th>
+                            <td>{{ pop_up_category.erstelltAm ? pop_up_category.erstelltAm|date('Y-m-d H:i:s') : 'Nicht verfügbar' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Erstellt Von</th>
+                            <td>{{ pop_up_category.erstelltVon }}</td>
+                        </tr>
+                        <tr>
+                            <th>Beschreibung</th>
+                            <td>{{ pop_up_category.description | raw}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

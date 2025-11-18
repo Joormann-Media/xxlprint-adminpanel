@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit CostCenter{% endblock %}
+
+{% block body %}
+    <h1>Edit CostCenter</h1>
+
+    {{ include('cost_center/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_cost_center_index') }}">back to list</a>
+
+    {{ include('cost_center/_delete_form.html.twig') }}
+{% endblock %}

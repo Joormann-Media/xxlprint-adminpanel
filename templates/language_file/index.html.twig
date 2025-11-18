@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LanguageFile index{% endblock %}
+
+{% block body %}
+    <h1>LanguageFile index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Filename</th>
+                <th>Content</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for language_file in language_files %}
+            <tr>
+                <td>{{ language_file.id }}</td>
+                <td>{{ language_file.filename }}</td>
+                <td>{{ language_file.content }}</td>
+                <td>{{ language_file.updatedAt ? language_file.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_language_file_show', {'id': language_file.id}) }}">show</a>
+                    <a href="{{ path('app_language_file_edit', {'id': language_file.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_language_file_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    NFC-Sticker/Karte {{ nfc_sticker_card.id is defined ? 'bearbeiten' : 'anlegen' }}
+{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="bi bi-credit-card-2-back me-2"></i>
+                    <h4 class="mb-0">
+                        {{ nfc_sticker_card.id is defined ? 'Sticker/Karte bearbeiten' : 'Neuen Sticker/Karte anlegen' }}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">UID <span class="text-danger">*</span></label>
+                            {{ form_widget(form.uid, {'attr': {'class': 'form-control', 'placeholder': 'Eindeutige UID des Stickers/der Karte'}}) }}
+                            {{ form_errors(form.uid) }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Typ <span class="text-danger">*</span></label>
+                            {{ form_widget(form.type, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.type) }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Label</label>
+                            {{ form_widget(form.label, {'attr': {'class': 'form-control', 'placeholder': 'z.B. Führerschein 1, Fahrer-Karte, etc.'}}) }}
+                            {{ form_errors(form.label) }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Zweck</label>
+                            {{ form_widget(form.purpose, {'attr': {'class': 'form-control', 'placeholder': 'Einsatzzweck'}}) }}
+                            {{ form_errors(form.purpose) }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Ziel (z.B. Fahrzeug)</label>
+                            {{ form_widget(form.target, {'attr': {'class': 'form-control', 'placeholder': 'Fahrzeug, Objekt, Bereich'}}) }}
+                            {{ form_errors(form.target) }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Benutzer (optional)</label>
+                            {{ form_widget(form.user, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.user) }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Aktiv?</label>
+                            <div class="form-check form-switch">
+                                {{ form_widget(form.active, {'attr': {'class': 'form-check-input'}}) }}
+                                <label class="form-check-label" for="nfc_sticker_card_active">Aktiv</label>
+                            </div>
+                            {{ form_errors(form.active) }}
+                        </div>
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Ausgegeben am</label>
+                            {{ form_widget(form.issuedAt, {'attr': {'class': 'form-control', 'placeholder': 'Datum der Ausgabe'}}) }}
+                            {{ form_errors(form.issuedAt) }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Letzter Scan</label>
+                            {{ form_widget(form.lastScanAt, {'attr': {'class': 'form-control', 'placeholder': 'Letzter Scan'}}) }}
+                            {{ form_errors(form.lastScanAt) }}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Kommentar</label>
+                            {{ form_widget(form.comment, {'attr': {'class': 'form-control', 'rows': 3, 'placeholder': 'Interne Notiz'}}) }}
+                            {{ form_errors(form.comment) }}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">
+                                Extra (JSON, optional)
+                                <span data-bs-toggle="tooltip" title="Hier kannst du beliebige Zusatzinfos als JSON hinterlegen, z.B. {&quot;farbe&quot;: &quot;blau&quot;}.">
+                                    <i class="bi bi-info-circle"></i>
+                                </span>
+                            </label>
+                            {{ form_widget(form.extra, {'attr': {'class': 'form-control font-monospace', 'rows': 5, 'placeholder': '{"foo":"bar"}'}}) }}
+                            {{ form_errors(form.extra) }}
+                        </div>
+                    </div>
+                    <div class="mt-4 d-flex justify-content-between">
+                        <a href="{{ path('app_nfc_sticker_card_index') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Zurück
+                        </a>
+                        <button class="btn btn-primary">
+                            <i class="bi bi-save"></i>
+                            {{ nfc_sticker_card.id is defined ? 'Speichern' : 'Anlegen' }}
+                        </button>
+                    </div>
+                    {{ form_end(form, {'render_rest': false}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Bootstrap-Tooltip für Info-Icons aktivieren
+document.addEventListener('DOMContentLoaded', function () {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+        new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+})
+</script>
+{% endblock %}

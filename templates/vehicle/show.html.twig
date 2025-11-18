@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fahrzeug-Details{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="bi bi-truck-front me-2 fs-3"></i>
+                    <h4 class="mb-0 flex-grow-1">Fahrzeugdetails: {{ vehicle.type ~ ' ' ~ vehicle.licensePlate }}</h4>
+                    <a href="{{ path('app_vehicle_index') }}" class="btn btn-sm btn-light ms-auto" title="Zurück zur Übersicht">
+                        <i class="bi bi-arrow-left"></i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5">Fahrzeugtyp</dt>
+                        <dd class="col-sm-7">{{ vehicle.type|default('-') }}</dd>
+
+                        <dt class="col-sm-5">Bezeichnung</dt>
+                        <dd class="col-sm-7">{{ vehicle.bezeichnung|default('-') }}</dd>
+
+                        <dt class="col-sm-5">Kennzeichen</dt>
+                        <dd class="col-sm-7">{{ vehicle.licensePlate|default('-') }}</dd>
+
+                        <dt class="col-sm-5">Interne Fahrzeugnummer</dt>
+                        <dd class="col-sm-7">{{ vehicle.vehicleNumber|default('-') }}</dd>
+
+                        <dt class="col-sm-5">Sitzplätze</dt>
+                        <dd class="col-sm-7">
+                            <span class="badge bg-primary">{{ vehicle.seatCount }}</span>
+                        </dd>
+
+                        <dt class="col-sm-5">Rollstuhlplatz</dt>
+                        <dd class="col-sm-7">
+                            {% if vehicle.wheelchair %}
+                                <span class="badge bg-success"><i class="bi bi-check-lg"></i> Ja</span>
+                            {% else %}
+                                <span class="badge bg-secondary"><i class="bi bi-x-lg"></i> Nein</span>
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-5">Anhängerkupplung</dt>
+                        <dd class="col-sm-7">
+                            {% if vehicle.ahk %}
+                                <span class="badge bg-success"><i class="bi bi-check-lg"></i> Ja</span>
+                            {% else %}
+                                <span class="badge bg-secondary"><i class="bi bi-x-lg"></i> Nein</span>
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-5">Max. Anhängelast</dt>
+                        <dd class="col-sm-7">
+                            {{ vehicle.trailerLoad is not null ? vehicle.trailerLoad|number_format(2, ',', '.') ~ ' kg' : '-' }}
+                        </dd>
+
+                        <dt class="col-sm-5">Rollstuhlrampe</dt>
+                        <dd class="col-sm-7">
+                            {% if vehicle.wheelchairRamp %}
+                                <span class="badge bg-success"><i class="bi bi-check-lg"></i> Ja</span>
+                            {% else %}
+                                <span class="badge bg-secondary"><i class="bi bi-x-lg"></i> Nein</span>
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-5">Lifter</dt>
+                        <dd class="col-sm-7">
+                            {% if vehicle.lifter %}
+                                <span class="badge bg-success"><i class="bi bi-check-lg"></i> Ja</span>
+                            {% else %}
+                                <span class="badge bg-secondary"><i class="bi bi-x-lg"></i> Nein</span>
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-5">Breite</dt>
+                        <dd class="col-sm-7">{{ vehicle.width|default('-') }} m</dd>
+
+                        <dt class="col-sm-5">Höhe</dt>
+                        <dd class="col-sm-7">{{ vehicle.height|default('-') }} m</dd>
+
+                        <dt class="col-sm-5">Länge</dt>
+                        <dd class="col-sm-7">{{ vehicle.length|default('-') }} m</dd>
+
+                        <dt class="col-sm-5">Leergewicht</dt>
+                        <dd class="col-sm-7">{{ vehicle.emptyWeight|default('-') }} kg</dd>
+
+                        <dt class="col-sm-5">Fahrer</dt>
+                        <dd class="col-sm-7">
+                            {% if vehicle.driver %}
+                                <span class="badge bg-info">
+                                    {{ vehicle.driver.fullName is defined ? vehicle.driver.fullName : vehicle.driver.id }}
+                                </span>
+                            {% else %}
+                                <span class="text-muted">– kein Fahrer zugewiesen –</span>
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-5">Mindestführerscheinklasse</dt>
+                        <dd class="col-sm-7">
+                            {% if vehicle.minLicenceClass %}
+                                <span class="badge bg-warning text-dark">
+                                    {{ vehicle.minLicenceClass.shortName is defined ? vehicle.minLicenceClass.shortName : vehicle.minLicenceClass.id }}
+                                </span>
+                            {% else %}
+                                <span class="text-muted">– keine Angabe –</span>
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-5">Konzession</dt>
+                        <dd class="col-sm-7">
+                            {% if vehicle.concession %}
+                                <span class="badge bg-info">
+                                    {{ vehicle.concession.concessionNumber }}
+                                </span>
+                            {% else %}
+                                <span class="text-muted">– keine Konzession zugewiesen –</span>
+                            {% endif %}
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-light d-flex justify-content-between">
+                    <div>
+                        <a href="{{ path('app_vehicle_edit', {'id': vehicle.id}) }}" class="btn btn-primary me-2">
+                            <i class="bi bi-pencil"></i> Bearbeiten
+                        </a>
+                    </div>
+                    <div>
+                        <a href="{{ path('app_vehicle_index') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-list"></i> Zur Übersicht
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

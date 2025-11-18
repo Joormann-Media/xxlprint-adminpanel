@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}API Manager Details{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-header d-flex align-items-center justify-content-between bg-primary text-white">
+                    <h2 class="h5 m-0"><i class="bi bi-plug"></i> API Manager: {{ api_manager.name }}</h2>
+                    <a href="{{ path('app_api_manager_index') }}" class="btn btn-light btn-sm">
+                        <i class="bi bi-arrow-left"></i> Zurück
+                    </a>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">ID</dt>
+                        <dd class="col-sm-8">{{ api_manager.id }}</dd>
+
+                        <dt class="col-sm-4">Name</dt>
+                        <dd class="col-sm-8">{{ api_manager.name }}</dd>
+
+                        <dt class="col-sm-4">Erstellt am</dt>
+                        <dd class="col-sm-8">
+                            {{ api_manager.apiCreate ? api_manager.apiCreate|date('d.m.Y H:i') : '–' }}
+                        </dd>
+
+                        <dt class="col-sm-4">Status</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-{{ api_manager.apiStatus == 'active' ? 'success' : (api_manager.apiStatus == 'inactive' ? 'secondary' : 'warning') }}">
+                                {{ api_manager.apiStatus|capitalize }}
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4">Beschreibung</dt>
+                        <dd class="col-sm-8">
+                            <div class="bg-light rounded p-3" style="min-height:60px;">
+                                {{ api_manager.apiDescription|raw }}
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-light d-flex justify-content-end gap-2">
+                    <a href="{{ path('app_api_manager_edit', {'id': api_manager.id}) }}" class="btn btn-outline-primary">
+                        <i class="bi bi-pencil"></i> Bearbeiten
+                    </a>
+                    {{ include('api_manager/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

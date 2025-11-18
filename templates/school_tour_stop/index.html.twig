@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SchoolTourStop index{% endblock %}
+
+{% block body %}
+    <h1>SchoolTourStop index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Address</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>PlannedTime</th>
+                <th>SortOrder</th>
+                <th>Notes</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for school_tour_stop in school_tour_stops %}
+            <tr>
+                <td>{{ school_tour_stop.id }}</td>
+                <td>{{ school_tour_stop.address }}</td>
+                <td>{{ school_tour_stop.latitude }}</td>
+                <td>{{ school_tour_stop.longitude }}</td>
+                <td>{{ school_tour_stop.plannedTime ? school_tour_stop.plannedTime|date('H:i:s') : '' }}</td>
+                <td>{{ school_tour_stop.sortOrder }}</td>
+                <td>{{ school_tour_stop.notes }}</td>
+                <td>
+                    <a href="{{ path('app_school_tour_stop_show', {'id': school_tour_stop.id}) }}">show</a>
+                    <a href="{{ path('app_school_tour_stop_edit', {'id': school_tour_stop.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_school_tour_stop_new') }}">Create new</a>
+{% endblock %}

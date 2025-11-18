@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1>UserProfile</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user_profile.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ user_profile.title }}</td>
+            </tr>
+            <tr>
+                <th>Gender</th>
+                <td>{{ user_profile.gender }}</td>
+            </tr>
+            <tr>
+                <th>Birthdate</th>
+                <td>{{ user_profile.birthdate ? user_profile.birthdate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>PhonePrivate</th>
+                <td>{{ user_profile.phonePrivate }}</td>
+            </tr>
+            <tr>
+                <th>PhoneMobile</th>
+                <td>{{ user_profile.phoneMobile }}</td>
+            </tr>
+            <tr>
+                <th>Street</th>
+                <td>{{ user_profile.street }}</td>
+            </tr>
+            <tr>
+                <th>PostalCode</th>
+                <td>{{ user_profile.postalCode }}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{ user_profile.city }}</td>
+            </tr>
+            <tr>
+                <th>Country</th>
+                <td>{{ user_profile.country }}</td>
+            </tr>
+            <tr>
+                <th>Language</th>
+                <td>{{ user_profile.language }}</td>
+            </tr>
+            <tr>
+                <th>JobTitle</th>
+                <td>{{ user_profile.jobTitle }}</td>
+            </tr>
+            <tr>
+                <th>Department</th>
+                <td>{{ user_profile.department }}</td>
+            </tr>
+            <tr>
+                <th>ExtensionNumber</th>
+                <td>{{ user_profile.extensionNumber }}</td>
+            </tr>
+            <tr>
+                <th>OfficeLocation</th>
+                <td>{{ user_profile.officeLocation }}</td>
+            </tr>
+            <tr>
+                <th>Note</th>
+                <td>{{ user_profile.note }}</td>
+            </tr>
+            <tr>
+                <th>ProfileVisibility</th>
+                <td>{{ user_profile.profileVisibility }}</td>
+            </tr>
+            <tr>
+                <th>ShowInDirectory</th>
+                <td>{{ user_profile.showInDirectory ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Linkedin</th>
+                <td>{{ user_profile.linkedin }}</td>
+            </tr>
+            <tr>
+                <th>Twitter</th>
+                <td>{{ user_profile.twitter }}</td>
+            </tr>
+            <tr>
+                <th>Facebook</th>
+                <td>{{ user_profile.facebook }}</td>
+            </tr>
+            <tr>
+                <th>Instagram</th>
+                <td>{{ user_profile.instagram }}</td>
+            </tr>
+            <tr>
+                <th>Xing</th>
+                <td>{{ user_profile.xing }}</td>
+            </tr>
+            <tr>
+                <th>Website</th>
+                <td>{{ user_profile.website }}</td>
+            </tr>
+            <tr>
+                <th>Motto</th>
+                <td>{{ user_profile.motto }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_user_profile_index') }}">back to list</a>
+
+    <a href="{{ path('app_admin_user_profile_edit', {'id': user_profile.id}) }}">edit</a>
+
+    {{ include('admin/user_profile/_delete_form.html.twig') }}
+{% endblock %}

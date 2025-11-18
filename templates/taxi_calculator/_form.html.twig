@@ -1,0 +1,102 @@
+{# templates/taxi_calculator/_form.html.twig #}
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        {{ form_start(form, {'attr': {'autocomplete': 'off', 'class': 'row g-3'}}) }}
+
+        <div class="col-md-3">
+            {{ form_label(form.baseFeeDay, 'Grundgebühr Tag') }}
+            {{ form_widget(form.baseFeeDay, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.baseFeeDay) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.baseFeeNight, 'Grundgebühr Nacht/So') }}
+            {{ form_widget(form.baseFeeNight, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.baseFeeNight) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.pricePerKmDay, 'Preis/km Tag') }}
+            {{ form_widget(form.pricePerKmDay, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.pricePerKmDay) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.pricePerKmNight, 'Preis/km Nacht') }}
+            {{ form_widget(form.pricePerKmNight, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.pricePerKmNight) }}
+        </div>
+
+        <div class="col-md-3">
+            {{ form_label(form.sectionMetersDay, 'Meter je 0,10 € (Tag)') }}
+            {{ form_widget(form.sectionMetersDay, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.sectionMetersDay) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.sectionMetersNight, 'Meter je 0,10 € (Nacht)') }}
+            {{ form_widget(form.sectionMetersNight, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.sectionMetersNight) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.waitPriceFirst5MinHour, 'Wartezeit bis 5 Min €/h') }}
+            {{ form_widget(form.waitPriceFirst5MinHour, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.waitPriceFirst5MinHour) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.waitSectionSecondsFirst5Min, 'Wartezeit bis 5 Min Sek/0,10€') }}
+            {{ form_widget(form.waitSectionSecondsFirst5Min, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.waitSectionSecondsFirst5Min) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.waitPriceFrom6MinHour, 'Wartezeit ab 6 Min €/h') }}
+            {{ form_widget(form.waitPriceFrom6MinHour, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.waitPriceFrom6MinHour) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.waitSectionSecondsFrom6Min, 'Wartezeit ab 6 Min Sek/0,10€') }}
+            {{ form_widget(form.waitSectionSecondsFrom6Min, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.waitSectionSecondsFrom6Min) }}
+        </div>
+
+        <div class="col-md-3">
+            {{ form_label(form.largeCabSurcharge, 'Großraum-Zuschlag') }}
+            {{ form_widget(form.largeCabSurcharge, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.largeCabSurcharge) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.withdrawalFee, 'Rücktritts-Gebühr') }}
+            {{ form_widget(form.withdrawalFee, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.withdrawalFee) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.validFrom, 'Gültig ab') }}
+            {{ form_widget(form.validFrom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.validFrom) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.updatedAt, 'Letzte Änderung') }}
+            {{ form_widget(form.updatedAt, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.updatedAt) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.notes, 'Hinweise') }}
+            {{ form_widget(form.notes, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.notes) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.regulationPdfFile, 'Verordnung (PDF)') }}
+            {{ form_widget(form.regulationPdfFile, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.regulationPdfFile) }}
+        </div>
+
+        <div class="col-12 mt-4">
+            <div class="d-flex justify-content-end gap-2">
+                <a href="{{ path('app_taxi_calculator_index') }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Zurück
+                </a>
+                <button class="btn btn-success">
+                    <i class="bi bi-save"></i> Speichern
+                </button>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>

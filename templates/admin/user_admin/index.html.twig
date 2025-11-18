@@ -1,0 +1,135 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container py-4">
+    <h1 class="mb-4">{{ page_title }}</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('info') %}
+        <div class="alert alert-info">{{ message }}</div>
+    {% endfor %}
+
+    <div class="d-flex justify-content-between mb-4">
+        <a href="{{ path('app_admin_user_admin_edit') }}" class="btn btn-primary">
+            ➕ Benutzer erstellen
+        </a>
+        <a href="{{ path('app_admin_user_admin_delete_dummy') }}"
+           class="btn btn-danger"
+           onclick="return confirm('Bist du sicher, dass du **alle** Dummy-User löschen möchtest?\n(Diese Aktion kann nicht rückgängig gemacht werden!)');">
+            🗑️ Alle Dummy-User löschen
+        </a>
+    </div>
+
+    {% if all_users is empty %}
+        <div class="alert alert-warning">Keine Benutzer gefunden.</div>
+    {% else %}
+    <div class="card p-3 mb-4 bg-light shadow-sm">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-3">
+                <label for="filter_name" class="form-label">🔎 Name enthält:</label>
+                <input type="text" name="filter_name" id="filter_name" value="{{ app.request.get('filter_name') }}"
+                       class="form-control" placeholder="Name oder Benutzername">
+            </div>
+    
+            <div class="col-md-3">
+                <label for="filter_role" class="form-label">🛡️ Rolle:</label>
+                <select name="filter_role" id="filter_role" class="form-select">
+                    <option value="">Alle</option>
+                    <option value="ROLE_USER" {{ app.request.get('filter_role') == 'ROLE_USER' ? 'selected' }}>ROLE_USER</option>
+                    <option value="ROLE_ADMIN" {{ app.request.get('filter_role') == 'ROLE_ADMIN' ? 'selected' }}>ROLE_ADMIN</option>
+                    <option value="ROLE_SYSADMIN" {{ app.request.get('filter_role') == 'ROLE_SYSADMIN' ? 'selected' }}>ROLE_SYSADMIN</option>
+                </select>
+            </div>
+    
+            <div class="col-md-3">
+                <label for="filter_ldap" class="form-label">📡 LDAP-Sync:</label>
+                <select name="filter_ldap" id="filter_ldap" class="form-select">
+                    <option value="">Alle</option>
+                    <option value="1" {{ app.request.get('filter_ldap') == '1' ? 'selected' }}>✅ synchronisiert</option>
+                    <option value="0" {{ app.request.get('filter_ldap') == '0' ? 'selected' }}>❌ nicht synchronisiert</option>
+                </select>
+            </div>
+    
+            <div class="col-md-3 d-grid">
+                <button type="submit" class="btn btn-secondary mt-2">Filter anwenden</button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="d-flex justify-content-end mb-4">
+        <a href="{{ path('admin_user_ldap_sync_all') }}"
+           class="btn btn-success"
+           onclick="return confirm('Alle nicht synchronisierten Benutzer jetzt in LDAP schreiben?');">
+            🔁 Alle in LDAP schreiben
+        </a>
+        
+    </div>
+    
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for user in all_users %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm border border-light-subtle">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ user.prename ~ ' ' ~ user.name }}
+                                {% if not user.isVerified %}
+                                    <span class="badge bg-warning text-dark">Dummy</span>
+                                {% endif %}
+                            </h5>
+
+                            <p class="mb-1"><strong>E-Mail:</strong> {{ user.email }}</p>
+                            <p class="mb-1"><strong>Benutzername:</strong> {{ user.username }}</p>
+                            <p class="mb-1"><strong>Rollen:</strong> {{ user.roles|join(', ') }}</p>
+                            <p class="mb-1">
+                                <strong>LDAP-Sync:</strong>
+                                {% if user.ldapSyncedAt %}
+                                    <span class="text-success">✅ {{ user.ldapSyncedAt|date('d.m.Y H:i') }}</span>
+                                {% else %}
+                                    <span class="text-danger">❌ Nicht synchronisiert</span>
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <div class="card-footer bg-light d-flex justify-content-between align-items-center">
+                            <a href="{{ path('app_admin_user_admin_edit', {id: user.id}) }}"
+                               class="btn btn-outline-primary btn-sm">
+                                ✏️ Bearbeiten
+                            </a>
+
+                            {% if not user.isVerified %}
+                                <form method="post" action="{{ path('app_admin_user_admin_cleanup', {id: user.id}) }}"
+                                      onsubmit="return confirm('Benutzer wirklich löschen?');" style="display:inline;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                    <button class="btn btn-outline-danger btn-sm">🗑️ Löschen</button>
+                                </form>
+                            {% else %}
+                                <span class="text-muted"> </span>
+                            {% endif %}
+
+                            {% if user.ldapSyncedAt is empty %}
+                            <a href="{{ path('admin_user_ldap_sync', {id: user.id}) }}"
+                               class="btn btn-outline-success btn-sm"
+                               title="Benutzer in LDAP schreiben">
+                                🔁 In LDAP schreiben
+                            </a>
+                        {% else %}
+                            <a href="{{ path('admin_user_ldap_update', {id: user.id}) }}"
+                               class="btn btn-warning btn-sm"
+                               title="LDAP-Daten aktualisieren">
+                                🛠 LDAP-Update
+                            </a>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

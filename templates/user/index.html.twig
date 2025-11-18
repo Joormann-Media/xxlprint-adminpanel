@@ -1,0 +1,214 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Benutzerverwaltung{% endblock %}
+
+{% block body %}
+<div class="container-fluid px-3">
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body pb-3">
+            <div class="row align-items-center g-2 flex-wrap">
+                <div class="col-auto">
+                    <a href="{{ path('app_register') }}" class="btn btn-success">
+                        <i class="bi bi-person-plus"></i> Neuer Benutzer
+                    </a>
+                </div>
+                <div class="col flex-grow-1">
+                    <input type="text" id="userSearch" class="form-control" placeholder="🔍 Benutzer suchen..." />
+                </div>
+                <div class="col-auto">
+                    <div class="btn-group" role="group">
+                        <a href="?filter=all" class="btn btn-outline-info">Alle</a>
+                        <a href="?filter=active" class="btn btn-outline-info">Aktive</a>
+                        <a href="?filter=inactive" class="btn btn-outline-info">Inaktive</a>
+                        <a href="?filter=locked" class="btn btn-outline-info">Gesperrte</a>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <a href="{{ path('app_user_show', { id: app.user.id }) }}" class="btn btn-outline-secondary" title="Mein Profil">
+                        <i class="bi bi-person-circle"></i>
+                    </a>
+                </div>
+                <div class="col-auto">
+                    <button id="deleteSelected" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Ausgewählte löschen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form id="userForm" action="{{ path('app_user_bulk_delete') }}" method="POST">
+        <input type="hidden" name="_token" value="{{ csrf_token('bulk_delete') }}">
+
+        {% set grouped = {} %}
+        {% for user in users %}
+            {% set groupKey = user.usergroups|join('_') %}
+            {% if grouped[groupKey] is not defined %}
+                {% set grouped = grouped|merge({ (groupKey): [user] }) %}
+            {% else %}
+                {% set grouped = grouped|merge({ (groupKey): grouped[groupKey]|merge([user]) }) %}
+            {% endif %}
+        {% endfor %}
+
+        {% for groupKey, users in grouped %}
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <div class="fw-semibold">
+                        <img src="{{ asset('gfx/systemgfx/setup.png') }}" class="me-2" width="20" height="20"
+                             style="cursor:pointer" data-toggle-sort="{{ groupKey }}">
+                        {% if groupKey is not empty %}
+                            {% set groupNames = groupKey
+                                | split('_')
+                                | map(id => userGroupMap[id]|default('❓'))
+                                | join(', ')
+                            %}
+                            <span title="{{ groupNames }}">{{ groupNames }}</span>
+                        {% else %}
+                            <span>Ohne Benutzergruppen</span>
+                        {% endif %}
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary d-none save-sort-btn" data-group="{{ groupKey }}">
+                        <i class="bi bi-floppy"></i> Reihenfolge speichern
+                    </button>
+                </div>
+
+                <div class="w-100 table-responsive">
+                    <table class="table table-striped align-middle user-table mb-0" data-group="{{ groupKey }}">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th style="width: 40px;">ID</th>
+                                <th>E-Mail</th>
+                                <th>Benutzername</th>
+                                <th>Vorname</th>
+                                <th>Nachname</th>
+                                <th>Benutzergruppen</th>
+                                <th>Rollen</th>
+                                <th>Aktiv</th>
+                                <th>Gesperrt</th>
+
+                                <th class="text-end">Aktionen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                                {% set showUser = true %}
+                                {% if app.request.get('filter') == 'active' and not user.isActive %}
+                                    {% set showUser = false %}
+                                {% elseif app.request.get('filter') == 'inactive' and user.isActive %}
+                                    {% set showUser = false %}
+                                {% elseif app.request.get('filter') == 'locked' and not user.isLocked %}
+                                    {% set showUser = false %}
+                                {% endif %}
+
+                                {% if showUser %}
+                                    <tr data-id="{{ user.id }}">
+                                        <td>{{ user.id }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.username }}</td>
+                                        <td>{{ user.prename }}</td>
+                                        <td>{{ user.name }}</td>
+                                        <td>
+                                            {% if user.usergroups is iterable %}
+                                                {{ user.usergroups
+                                                    | map(id => userGroupMap[id] ?? '❓')
+                                                    | join(', ') }}
+                                            {% else %}
+                                                {{ userGroupMap[user.usergroups] ?? '❓' }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% for role in user.getRoles() %}
+                                                <span class="badge bg-info text-dark">{{ role|replace({'ROLE_':''}) }}</span>
+                                            {% endfor %}
+                                        </td>
+                                        <td class="text-center">{{ user.isActive ? '✔️' : '❌' }}</td>
+                                        <td class="text-center">{{ user.isLocked ? '🔒' : '—' }}</td>
+                                        <td class="text-end">
+                                            <a href="{{ path('app_user_show', {id: user.id}) }}" class="btn btn-sm btn-outline-secondary" title="Anzeigen"><i class="bi bi-eye"></i></a>
+                                            <a href="{{ path('app_user_edit', {id: user.id}) }}" class="btn btn-sm btn-outline-primary" title="Bearbeiten"><i class="bi bi-pencil"></i></a>
+                                            <button type="submit" form="delete-form-{{ user.id }}" class="btn btn-sm btn-outline-danger" title="Löschen"
+                                                    onclick="return confirm('Sicher löschen?')"><i class="bi bi-trash"></i></button>
+                                            <form id="delete-form-{{ user.id }}" method="POST"
+                                                  action="{{ path('app_user_delete', {id: user.id}) }}" style="display:none;">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+    </form>
+</div>
+
+<style>
+    .dragging { opacity: 0.5; background-color: #ffe; }
+    .user-table th, .user-table td { vertical-align: middle; }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Checkbox & Multi-Delete
+        document.querySelectorAll(".selectAllInGroup").forEach(cb => {
+            cb.addEventListener("change", () => {
+                cb.closest("table").querySelectorAll(".userCheckbox").forEach(box => box.checked = cb.checked);
+            });
+        });
+
+        document.getElementById("deleteSelected").addEventListener("click", () => {
+            if (confirm("Sicher?")) document.getElementById("userForm").submit();
+        });
+
+        // Drag & Drop
+        document.querySelectorAll("[data-toggle-sort]").forEach(icon => {
+            icon.addEventListener("click", () => {
+                const group = icon.dataset.toggleSort;
+                const tbody = document.querySelector(`table[data-group="${group}"] tbody`);
+                let draggingRow;
+                tbody.querySelectorAll("tr").forEach(row => {
+                    row.setAttribute('draggable', true);
+                    row.addEventListener("dragstart", () => {
+                        draggingRow = row;
+                        row.classList.add("dragging");
+                    });
+                    row.addEventListener("dragend", () => row.classList.remove("dragging"));
+                    row.addEventListener("dragover", e => {
+                        e.preventDefault();
+                        const offset = row.getBoundingClientRect().y + row.offsetHeight / 2;
+                        (e.clientY - offset > 0) ? row.after(draggingRow) : row.before(draggingRow);
+                    });
+                });
+                document.querySelector(`.save-sort-btn[data-group="${group}"]`).classList.remove("d-none");
+            });
+        });
+
+        // Sort speichern
+        document.querySelectorAll(".save-sort-btn").forEach(button => {
+            button.addEventListener("click", async () => {
+                const group = button.dataset.group;
+                const rows = document.querySelectorAll(`table[data-group="${group}"] tbody tr`);
+                const sorted = Array.from(rows).map((r, i) => ({ id: r.dataset.id, sortOrder: i + 1 }));
+                const response = await fetch("{{ path('app_user_sort') }}", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "X-Requested-With": "XMLHttpRequest" },
+                    body: JSON.stringify({ users: sorted, groupKey: group })
+                });
+                alert(response.ok ? "✅ Sortierung gespeichert!" : "❌ Fehler beim Speichern!");
+                if (response.ok) button.classList.add("d-none");
+            });
+        });
+
+        // 🔍 Suche
+        document.getElementById("userSearch").addEventListener("input", (event) => {
+            const searchValue = event.target.value.toLowerCase();
+            document.querySelectorAll(".user-table tbody tr").forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(searchValue) ? "" : "none";
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container py-4">
+    <h2 class="mb-4">📂 Meine Dateien</h2>
+
+    {# Ordnernavigation #}
+    <div class="mb-3">
+        {% for dir in allowedSubdirs %}
+            <a href="{{ path('app_user_files', {subdir: dir}) }}" class="btn btn-sm me-1 {{ dir == subdir ? 'btn-primary' : 'btn-outline-secondary' }}">
+                📁 {{ dir|capitalize }}
+            </a>
+        {% endfor %}
+    </div>
+
+    {# Upload-Bereich #}
+    <div class="mb-4 p-3 border rounded text-center bg-light" id="dropzone" style="cursor: pointer;">
+        <p class="mb-0">⬆️ Dateien hierher ziehen oder klicken zum Hochladen</p>
+        <input type="file" id="fileInput" multiple hidden>
+        <p class="text-muted small">📁 Speicherpfad: <code>{{ fullPath }}</code></p>
+    </div>
+
+    {# Dateiliste #}
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+        {% for file in files %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    {% set ext = file|split('.')|last|lower %}
+                    {% if ext in ['jpg', 'jpeg', 'png', 'gif', 'webp'] %}
+                        <img src="{{ asset(publicPath ~ file) }}" class="card-img-top" style="height: 180px; object-fit: cover;">
+                    {% elseif ext == 'pdf' %}
+                        <img src="{{ asset('gfx/icons/pdf-icon.png') }}" class="card-img-top p-4" alt="PDF">
+                    {% else %}
+                        <img src="{{ asset('gfx/icons/file-icon.png') }}" class="card-img-top p-4" alt="Datei">
+                    {% endif %}
+                    <div class="card-body text-center">
+                        <p class="card-text small">{{ file }}</p>
+                        <a href="{{ asset(publicPath ~ file) }}" class="btn btn-sm btn-outline-primary" target="_blank">📥 Anzeigen</a>
+                        <form method="post" action="{{ path('app_user_file_delete', {subdir: subdir, filename: file}) }}" class="d-inline">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_file_' ~ file) }}">
+                            <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Wirklich löschen?')">🗑️</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12 text-center text-muted">
+                <p>Keine Dateien gefunden.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const uploadUrl = "{{ path('app_user_file_upload', {subdir: subdir}) }}";
+
+    dropzone.addEventListener('click', () => fileInput.click());
+
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('bg-primary', 'text-white');
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+        dropzone.classList.remove('bg-primary', 'text-white');
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('bg-primary', 'text-white');
+        handleFiles(e.dataTransfer.files);
+    });
+
+    fileInput.addEventListener('change', () => {
+        handleFiles(fileInput.files);
+    });
+
+    function handleFiles(files) {
+    [...files].forEach(file => {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const progressWrapper = document.createElement('div');
+        progressWrapper.className = 'mb-2';
+
+        const label = document.createElement('small');
+        label.textContent = '⬆️ ' + file.name;
+
+        const progress = document.createElement('div');
+        progress.className = 'progress';
+        progress.innerHTML = '<div class="progress-bar" role="progressbar" style="width: 0%"></div>';
+
+        progressWrapper.appendChild(label);
+        progressWrapper.appendChild(progress);
+        dropzone.appendChild(progressWrapper);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', uploadUrl, true);
+
+        xhr.upload.addEventListener('progress', (e) => {
+            if (e.lengthComputable) {
+                const percent = Math.round((e.loaded / e.total) * 100);
+                progress.querySelector('.progress-bar').style.width = percent + '%';
+                progress.querySelector('.progress-bar').textContent = percent + '%';
+            }
+        });
+
+        xhr.onload = () => {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    progress.querySelector('.progress-bar').classList.add('bg-success');
+                    setTimeout(() => location.reload(), 500);
+                } else {
+                    console.error('Upload failed: Server responded with an error.', response);
+                    progress.querySelector('.progress-bar').classList.add('bg-danger');
+                    progress.querySelector('.progress-bar').textContent = 'Fehler';
+                }
+            } else if (xhr.status === 400) {
+                console.error(`Upload failed: HTTP status 400 - Bad Request. Response: ${xhr.responseText}`);
+                progress.querySelector('.progress-bar').classList.add('bg-danger');
+                progress.querySelector('.progress-bar').textContent = 'Fehler';
+            } else {
+                console.error(`Upload failed: HTTP status ${xhr.status} - ${xhr.statusText}`);
+                progress.querySelector('.progress-bar').classList.add('bg-danger');
+                progress.querySelector('.progress-bar').textContent = 'Fehler';
+            }
+        };
+
+        xhr.onerror = () => {
+            console.error('Upload failed: Network error occurred.');
+            progress.querySelector('.progress-bar').classList.add('bg-danger');
+            progress.querySelector('.progress-bar').textContent = 'Netzwerkfehler';
+        };
+
+        xhr.send(formData);
+    });
+
+    }
+</script>
+{% endblock %}

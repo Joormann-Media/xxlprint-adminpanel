@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .sortable-card {
+            cursor: grab;
+            transition: box-shadow 0.2s;
+        }
+        .sortable-card:active {
+            cursor: grabbing;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<div class="container my-5">
+    <div class="bg-light border rounded p-4 mb-4 shadow-sm">
+    <h1 class="mb-3">🧩 Dashboard-Konfiguration</h1>
+    <p class="text-muted">Verwalte hier deine persönlichen Dashboard-Module und deren Einstellungen.</p>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <a href="{{ path('app_user_dashboard_config_me_add') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle me-1"></i> Modul hinzufügen
+        </a>
+        <a href="/help/view/1" class="btn btn-primary open-popup" data-title="📌 Hilfe">
+            📖 Hilfe anzeigen
+        </a>
+    </div>
+</div>
+
+    {% if user_dashboard_configs is not empty %}
+    <div class="row g-4 sortable-container" id="sortableDashboard">
+        {% for config in user_dashboard_configs|sort((a, b) => a.sortOrder <=> b.sortOrder) %}
+            <div class="col-md-6 col-xl-4" data-id="{{ config.id }}">
+                <div class="card h-100 shadow-sm sortable-card">
+                    <div class="card-body">
+                            <h5 class="card-title">{{ config.module.name }}</h5>
+                            <p class="mb-1"><strong>Position:</strong> {{ config.position }}</p>
+                            <p class="mb-1"><strong>Sichtbar:</strong> {{ config.isVisible ? 'Ja' : 'Nein' }}</p>
+                            <p class="mb-1"><strong>Sortierung:</strong> {{ config.sortOrder }}</p>
+                            <p class="mb-0"><strong>Settings:</strong><br>
+                                <code class="small">{{ config.settings|json_encode }}</code>
+                                <p class="mb-0"><strong>Content:</strong><br>
+                                    {{ render_dashboard_module(config) }}
+
+                                </p>
+                                
+                                
+                                
+                        </div>
+
+                        <div class="card-footer bg-transparent border-top-0 d-flex justify-content-end gap-2">
+
+                            <form method="post"
+                                  action="{{ path('app_user_dashboard_config_delete', {'id': config.id}) }}"
+                                  onsubmit="return confirm('Bist du sicher, dass du dieses Modul löschen möchtest?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ config.id) }}">
+                                <button class="custom-button-icon" title="Löschen">
+                                    <img src="/gfx/systemgfx/delete.png" alt="Delete">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="alert alert-info">Du hast noch keine Dashboard-Konfigurationen.</p>
+    {% endif %}
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('sortableDashboard');
+
+            if (container) {
+                new Sortable(container, {
+                    animation: 150,
+                    handle: '.sortable-card',
+                    draggable: '.col-md-6',
+                    onEnd: function () {
+                        const sortedIds = [...container.querySelectorAll('[data-id]')].map(el => el.dataset.id);
+
+                        fetch('{{ path("app_user_dashboard_config_sort") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: JSON.stringify({ ids: sortedIds })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status !== 'ok') {
+                                alert('Fehler beim Speichern der Sortierung.');
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert('Fehler beim Speichern der Sortierung.');
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}

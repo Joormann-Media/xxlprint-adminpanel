@@ -1,0 +1,121 @@
+{# templates/vehicle_tracking/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Vehicle Tracking{% endblock %}
+
+{% block body %}
+<h1>Vehicle Tracking Übersicht</h1>
+
+<div class="row">
+  <div class="col-md-8">
+    <div id="map" style="height: 600px; border: 1px solid #ccc; border-radius: 8px;"></div>
+  </div>
+  <div class="col-md-4">
+    {# deine Tabelle bleibt wie gehabt #}
+    <table class="table table-striped table-hover">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Fahrzeug</th>
+        <th>Fahrer</th>
+        <th>Lat</th>
+        <th>Lng</th>
+        <th>Zeit</th>
+        <th>Aktionen</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for tracking in vehicle_trackings %}
+        <tr>
+          <td>{{ tracking.entity.id }}</td>
+          <td>{{ tracking.vehicle }}</td>
+          <td>{{ tracking.driver }}</td>
+          <td>{{ tracking.entity.latitude }}</td>
+          <td>{{ tracking.entity.longitude }}</td>
+          <td>{{ tracking.entity.timestamp ? tracking.entity.timestamp|date('Y-m-d H:i:s') : '' }}</td>
+          <td>
+            <a href="{{ path('app_vehicle_tracking_show', {'id': tracking.entity.id}) }}" class="btn btn-sm btn-primary">Anzeigen</a>
+            <a href="{{ path('app_vehicle_tracking_edit', {'id': tracking.entity.id}) }}" class="btn btn-sm btn-warning">Bearbeiten</a>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="7">Keine Tracking-Daten gefunden.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet"/>
+
+<script>
+const map = new maplibregl.Map({
+  container: 'map',
+  style: 'https://tiles.joormann-media.de/styles/osm-bright/style.json',
+  center: [7.0, 51.5],
+  zoom: 6
+});
+
+let markers = [];
+
+function colorByAge(isoLocalTime) {
+  if (!isoLocalTime) return 'gray';
+  // Dein Backend liefert "Y-m-d H:i:s" (lokale Zeit), für JS lesbar machen:
+  const t = new Date(isoLocalTime.replace(' ', 'T'));
+  const ageMin = (Date.now() - t.getTime()) / 60000;
+  if (ageMin > 60) return 'gray';
+  if (ageMin > 10) return 'orange';
+  return 'green';
+}
+
+function loadMarkers() {
+  fetch("{{ path('app_vehicle_tracking_map_data')|escape('js') }}", {
+    credentials: 'include' // wichtig, wenn Route geschützt ist
+  })
+  .then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(points => {
+    // alte Marker weg
+    markers.forEach(m => m.remove());
+    markers = [];
+
+    // Marker setzen
+    const bounds = new maplibregl.LngLatBounds();
+    let added = 0;
+
+    points.forEach(p => {
+      if (p.lat == null || p.lng == null) return;
+
+      const color = colorByAge(p.time);
+      const marker = new maplibregl.Marker({ color })
+        .setLngLat([p.lng, p.lat])
+        .setPopup(new maplibregl.Popup().setHTML(`
+          <b>Fahrzeug:</b> ${p.vehicle ?? '-'} (${p.vehicleNr ?? '-'})<br>
+          <b>Fahrer:</b> ${p.driver ?? '-'}<br>
+          <b>Zeit:</b> ${p.time ?? '-'}<br>
+          <b>Speed:</b> ${p.speed ?? '-'} km/h<br>
+          <b>Ort:</b> ${p.city ?? ''} ${p.street ?? ''} ${p.postalcode ?? ''}
+        `))
+        .addTo(map);
+
+      markers.push(marker);
+      bounds.extend([p.lng, p.lat]);
+      added++;
+    });
+
+    // auf Marker zoomen
+    if (added > 0) {
+      map.fitBounds(bounds, { padding: 50 });
+    }
+  })
+  .catch(err => console.error('Fehler beim Laden der Marker:', err));
+}
+
+// initial + Polling
+loadMarkers();
+setInterval(loadMarkers, 10000);
+</script>
+{% endblock %}

@@ -1,0 +1,80 @@
+#########################
+# Symfony/PHP           #
+#########################
+/var/
+/vendor/
+/.env
+.env.*
+/.idea/
+.vscode/
+*.sqlite*
+*.orig
+*.rej
+*.patch
+
+# Log, Cache, Sessions (nur im var-Verzeichnis)
+var/cache/
+var/log/
+var/sessions/
+var/tmp/
+
+#########################
+# Node / JS / Webpack   #
+#########################
+/node_modules/
+public/build/
+public/hot
+public/assets/
+package-lock.json
+yarn.lock
+
+#########################
+# Python / venv         #
+#########################
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.pdb
+
+# Python site-packages (falls versehentlich kopiert)
+public/venv/
+
+#########################
+# OS / Editor / IDE     #
+#########################
+.DS_Store
+Thumbs.db
+*.swp
+
+#########################
+# Bytecode / Binaries   #
+#########################
+*.so
+*.pyc
+
+#########################
+# Large/Binary Files    #
+#########################
+*.log
+*.zip
+*.tar
+
+# Falls du Releases in var/releases ablegst
+var/releases/
+
+# Remove test/output & debug files
+src/Security/refreshuser.log
+var/session_debug.txt
+public/Tekath-NFC-Importer.zip
+
+#########################
+# Docker                #
+#########################
+docker-compose.override.yml
+.env.local
+.env.*.local
+.envrc

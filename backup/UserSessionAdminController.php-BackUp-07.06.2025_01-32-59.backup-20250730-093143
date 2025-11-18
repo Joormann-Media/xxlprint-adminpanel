@@ -1,0 +1,108 @@
+<?php
+
+namespace App\Controller\Admin;
+
+use App\Entity\UserSession;
+use App\Repository\UserSessionRepository;
+use App\Repository\SessionTableRepository;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+
+#[Route('/admin/sessions', name: 'admin_user_sessions_')]
+class UserSessionAdminController extends AbstractController
+{
+    public function __construct(
+        private EntityManagerInterface $em,
+        private UserSessionRepository $sessionRepo,
+        private SessionTableRepository $sessionTableRepo,
+        private Connection $connection
+    ) {}
+
+    #[Route('/', name: 'index', methods: ['GET'])]
+    public function index(): Response
+    {
+        $sessions = $this->sessionRepo->findActiveSessions();
+        $usersessions = $this->sessionTableRepo->findActiveSessions();
+
+        return $this->render('admin/session/index.html.twig', [
+            'sessions' => $usersessions,
+            'usersessions' => $sessions,
+            'page_title' => 'Aktive Benutzer-Sessions',
+        ]);
+    }
+    #[Route('/api/me/sessions/{sessionId}', name: 'api_me_session_delete', methods: ['DELETE'])]
+public function deleteSession(string $sessionId, UserSessionRepository $repo, Security $security, SessionTableRepository $symfonyRepo): JsonResponse
+{
+    $user = $security->getUser();
+    $session = $repo->findOneBy(['sessionId' => $sessionId, 'user' => $user]);
+
+    if (!$session) {
+        return $this->json(['error' => 'Session not found'], 404);
+    }
+
+    $repo->remove($session, true);
+    $symfonyRepo->deleteBySessionId($sessionId);
+
+    return $this->json(['success' => true]);
+}
+
+
+    #[Route('/user-sessions/kill/{id}', name: 'kill_user_session', methods: ['POST'])]
+    public function killUserSession(
+        int $id,
+        Request $request,
+        CsrfTokenManagerInterface $csrfTokenManager
+    ): RedirectResponse {
+        $token = new CsrfToken('kill_session_' . $id, $request->request->get('_token'));
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw $this->createAccessDeniedException('Ungültiges CSRF-Token.');
+        }
+
+        $session = $this->sessionRepo->find($id);
+        if (!$session) {
+            $this->addFlash('danger', 'Benutzer-Session nicht gefunden.');
+        } else {
+            $this->sessionRepo->remove($session, true);
+            $this->sessionTableRepo->deleteBySessionId($session->getSessionId());
+            $this->addFlash('success', 'Benutzer-Session erfolgreich beendet.');
+        }
+
+        return $this->redirectToRoute('admin_user_sessions_index');
+    }
+
+    #[Route('/symfony-sessions/kill/{sessId}', name: 'kill_symfony_session', methods: ['POST'])]
+    public function killSymfonySession(
+        string $sessId,
+        Request $request,
+        CsrfTokenManagerInterface $csrfTokenManager
+    ): RedirectResponse {
+        $token = new CsrfToken('kill_symfony_session_' . $sessId, $request->request->get('_token'));
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw $this->createAccessDeniedException('Ungültiges CSRF-Token.');
+        }
+
+        $this->sessionTableRepo->deleteBySessionId($sessId);
+        $this->addFlash('success', 'Symfony-Session erfolgreich gelöscht.');
+
+        return $this->redirectToRoute('admin_user_sessions_index');
+    }
+
+    #[Route('/cleanup', name: 'cleanup', methods: ['POST'])]
+    public function cleanup(): RedirectResponse
+    {
+        $now = new \DateTime();
+
+        $countUserSessions = $this->sessionRepo->deleteExpiredSessions($now);
+        $countSymfonySessions = $this->sessionTableRepo->deleteExpiredSessions();
+
+        $this->addFlash('info', "$countUserSessions UserSessions & $countSymfonySessions Symfony-Sessions gelöscht.");
+        return $this->redirectToRoute('admin_user_sessions_index');
+    }
+}

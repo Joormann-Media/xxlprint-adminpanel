@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FileChangeLog index{% endblock %}
+
+{% block body %}
+    <h1>FileChangeLog index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>FilePath</th>
+                <th>EventType</th>
+                <th>EventTime</th>
+                <th>OldFilePath</th>
+                <th>FileSize</th>
+                <th>User</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for file_change_log in file_change_logs %}
+            <tr>
+                <td>{{ file_change_log.id }}</td>
+                <td>{{ file_change_log.filePath }}</td>
+                <td>{{ file_change_log.eventType }}</td>
+                <td>{{ file_change_log.eventTime ? file_change_log.eventTime|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ file_change_log.oldFilePath }}</td>
+                <td>{{ file_change_log.fileSize }}</td>
+                <td>{{ file_change_log.user }}</td>
+                <td>
+                    <a href="{{ path('app_file_change_log_show', {'id': file_change_log.id}) }}">show</a>
+                    <a href="{{ path('app_file_change_log_edit', {'id': file_change_log.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_file_change_log_new') }}">Create new</a>
+{% endblock %}

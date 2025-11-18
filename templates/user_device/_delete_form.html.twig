@@ -1,0 +1,8 @@
+<form method="post" action="{{ path('app_user_device_delete', {'id': user_device.id}) }}" 
+      onsubmit="return confirm('Bist du sicher, dass du dieses Gerät löschen möchtest?');" 
+      class="d-inline">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user_device.id) }}">
+    <button class="btn btn-outline-danger btn-sm">
+        <i class="bi bi-trash"></i> Löschen
+    </button>
+</form>

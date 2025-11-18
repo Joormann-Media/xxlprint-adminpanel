@@ -1,0 +1,7 @@
+<form method="post" action="{{ path('app_pop_up_category_delete', {'id': pop_up_category.id}) }}" onsubmit="return confirm('Bist du sicher, dass du dieses Element löschen möchtest?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ pop_up_category.id) }}">
+    
+    <button type="submit" class="btn btn-danger" onclick="return confirm('Möchtest du diese PopUp-Kategorie wirklich löschen?')">
+        <i class="bi bi-trash-fill"></i> Löschen
+    </button>
+</form>

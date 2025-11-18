@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {# Standard Favicons #}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+
+    <meta charset="UTF-8">
+    <title>{% block title %}Gamers Heaven by Joormann-Media - Admin{% endblock %}</title>
+
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+
+    <link rel="stylesheet" href="{{ asset('styles/menu.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <script src="{{ asset('js/live_time.js') }}"></script>
+    <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+
+    <script>
+        function toggleDevMenu() {
+            const list = document.getElementById('dev-routes-list');
+            list.classList.toggle('hidden');
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+    if (typeof tinymce !== 'undefined') {
+        tinymce.remove();
+
+        const baseConfig = {
+            base_url: '/js/tinymce',
+            suffix: '.min',
+            language: 'de',
+            language_url: "{{ asset('js/tinymce/langs/de.js') }}",
+            license_key: 'gpl',
+            plugins: 'lists link image code table',
+            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code | image table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+            automatic_uploads: true,
+            images_upload_url: '{{ path("upload_image") }}',
+            images_upload_credentials: true,
+            file_picker_types: 'image',
+            setup: function (editor) {
+                editor.on('change', function () {
+                    editor.save();
+                });
+            },
+            images_upload_handler: function (blobInfo, progress) {
+                return new Promise(function (resolve, reject) {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', '{{ path("upload_image") }}');
+                    xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token("upload_image") }}');
+
+                    xhr.onload = function () {
+                        if (xhr.status !== 200) {
+                            reject('HTTP Error: ' + xhr.status);
+                            return;
+                        }
+
+                        let json;
+                        try {
+                            json = JSON.parse(xhr.responseText);
+                        } catch (e) {
+                            reject('Invalid JSON: ' + xhr.responseText);
+                            return;
+                        }
+
+                        if (!json || typeof json.location !== 'string') {
+                            reject('Invalid JSON structure: ' + xhr.responseText);
+                            return;
+                        }
+
+                        console.log("Image upload successful, location:", json.location);
+                        resolve(json.location);
+                    };
+
+                    xhr.onerror = function () {
+                        reject('XHR transport error.');
+                    };
+
+                    const formData = new FormData();
+                    formData.append('file', blobInfo.blob(), blobInfo.filename());
+                    xhr.send(formData);
+                });
+            }
+        };
+
+        // 🟩 Init für die spezielle Signatur
+        tinymce.init({
+            ...baseConfig,
+            selector: 'textarea.tinymce-signatur',
+            width: 400,
+            
+            setup: function (editor) {
+    editor.on('change keyup input paste', function () {
+        editor.save(); // synchronisiert den Inhalt zur Textarea
+        updatePreview(); // feuert deine bestehende Vorschau
+    });
+}
+        });
+
+        // 🟦 Init für alle anderen
+        tinymce.init({
+            ...baseConfig,
+            selector: 'textarea.tinymce:not(.tinymce-signatur)',
+            width: 850,
+            
+        });
+
+        console.log("✅ TinyMCE Instanzen erfolgreich geladen.");
+    } else {
+        console.error("❌ TinyMCE konnte nicht geladen werden.");
+    }
+});
+
+
+    </script>
+</head>
+<body>
+    {% if app.user %}
+    {% include 'sidebar.html.twig' %}
+    {% endif %}
+
+    <main class="ms-250 p-4">
+        <div class="xxl-wrapper">
+            {% if app.user %}
+            {% include 'header.html.twig' with { 'page_title': page_title|default('Standardtitel') } %}
+            {% endif %}
+
+            <main class="xxl-content">
+                <div class="xxl-container">
+                    {% block body %}{% endblock %}
+                </div>
+            </main>
+            {%if app.user %}
+                      
+
+            {# Footer #}
+            {% include 'footer.html.twig' %}
+            {% endif %}
+        </div>
+    </main>
+
+    {# Global Modal #}
+    <div class="modal fade" id="globalModalViewer" tabindex="-1" inert>
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="globalModalTitle">🔔 Info</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+                </div>
+                <div class="modal-body" id="globalModalBody">
+                    <div class="text-center text-muted">⏳ Lade Inhalt...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

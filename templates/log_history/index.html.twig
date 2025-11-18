@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LogHistory index{% endblock %}
+
+{% block body %}
+    <h1>LogHistory index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Target</th>
+                <th>UserID</th>
+                <th>Username</th>
+                <th>Timestamp</th>
+                <th>Logdump</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for log_history in log_histories %}
+            <tr>
+                <td>{{ log_history.id }}</td>
+                <td>{{ log_history.target }}</td>
+                <td>{{ log_history.userID }}</td>
+                <td>{{ log_history.username }}</td>
+                <td>{{ log_history.timestamp ? log_history.timestamp|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ log_history.logdump }}</td>
+                <td>
+                    <a href="{{ path('app_log_history_show', {'id': log_history.id}) }}">show</a>
+                    <a href="{{ path('app_log_history_edit', {'id': log_history.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_log_history_new') }}">Create new</a>
+{% endblock %}

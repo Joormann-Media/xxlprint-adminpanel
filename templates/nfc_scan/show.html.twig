@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}NFCScan{% endblock %}
+
+{% block body %}
+    <h1>NFCScan</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ nfc_scan.id }}</td>
+            </tr>
+            <tr>
+                <th>Uid</th>
+                <td>{{ nfc_scan.uid }}</td>
+            </tr>
+            <tr>
+                <th>ScannedAt</th>
+                <td>{{ nfc_scan.scannedAt ? nfc_scan.scannedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ATR</th>
+                <td>{{ nfc_scan.atr }}</td>
+            </tr>
+            <tr>
+                <th>Chip Type</th>
+                <td>{{ nfc_scan.chipType }}</td>
+            </tr>
+            <tr>
+                <th>Memory</th>
+                <td>{{ nfc_scan.memory }}</td>
+            </tr>
+            <tr>
+                <th>Raw Info</th>
+                <td>{{ nfc_scan.rawInfo is not null ? nfc_scan.rawInfo|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Manufacturer</th>
+                <td>{{ nfc_scan.manufacturer }}</td>
+            </tr>
+            <tr>
+                <th>Features</th>
+                <td>{{ nfc_scan.features is not null ? nfc_scan.features|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Protocols</th>
+                <td>{{ nfc_scan.protocols }}</td>
+            </tr>
+            <tr>
+                <th>Lock Status</th>
+                <td>{{ nfc_scan.lockStatus is not null ? nfc_scan.lockStatus|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Is Writable</th>
+                <td>{{ nfc_scan.isWritable is not null ? (nfc_scan.isWritable ? 'Ja' : 'Nein') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Write Endurance</th>
+                <td>{{ nfc_scan.writeEndurance }}</td>
+            </tr>
+            <tr>
+                <th>Write Counter</th>
+                <td>{{ nfc_scan.writeCounter }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_nfc_scan_index') }}">back to list</a>
+
+    <a href="{{ path('app_nfc_scan_edit', {'id': nfc_scan.id}) }}">edit</a>
+
+    {{ include('nfc_scan/_delete_form.html.twig') }}
+{% endblock %}

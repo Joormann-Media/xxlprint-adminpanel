@@ -1,0 +1,40 @@
+{# templates/vrr_busstop/_table.html.twig #}
+<table class="table table-striped align-middle mb-0" id="stopsTable">
+    <thead class="table-light">
+        <tr>
+            {% set sortableColumns = [
+                'Stop Nr',  'Stop Name', 'Stop Name ohne Ort',
+                'Stop Kurzname', 'Position X (Lng)', 'Position Y (Lat)', 'Place',
+                'Global ID', 'Place ID', 'Aktionen'
+            ] %}
+            {% for col in sortableColumns %}
+                <th class="sortable">{{ col }} <span class="sort-arrow">⇅</span></th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for stop in vrr_busstops %}
+        <tr>
+            <td>{{ stop.stopNr }}</td>
+            <td>{{ stop.stopName }}</td>
+            <td>{{ stop.stopNameWoLocality ?? '-' }}</td>
+            <td>{{ stop.stopShortName ?? '-' }}</td>
+            <td>{{ stop.stopPosX ?? '-' }}</td>
+            <td>{{ stop.stopPosY ?? '-' }}</td>
+            <td>{{ stop.place ?? '-' }}</td>
+            <td>{{ stop.globalId }}</td>
+            <td>{{ stop.placeId ?? '-' }}</td>
+            <td>
+                <a href="{{ path('app_vrr_busstop_show', {'STOP_NR': stop.stopNr}) }}" class="btn btn-sm btn-primary" title="Anzeigen">
+                    <i class="bi bi-eye"></i>
+                </a>
+                <a href="{{ path('app_vrr_busstop_edit', {'STOP_NR': stop.stopNr}) }}" class="btn btn-sm btn-secondary ms-1" title="Bearbeiten">
+                    <i class="bi bi-pencil"></i>
+                </a>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="26" class="text-center">Keine Haltestellen gefunden.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>

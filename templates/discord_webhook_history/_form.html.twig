@@ -1,0 +1,34 @@
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+<div class="card shadow-lg border-0 mb-4">
+    <div class="card-body">
+        <h2 class="card-title fs-4 mb-4">{{ form.vars.value.id ? 'Bearbeiten' : 'Neuer Webhook-Eintrag' }}</h2>
+
+        <div class="mb-3">
+            <label for="{{ form.timestamp.vars.id }}" class="form-label">Zeitpunkt</label>
+            {{ form_widget(form.timestamp, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.timestamp) }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.username.vars.id }}" class="form-label">Benutzer</label>
+            {{ form_widget(form.username, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.username) }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.hooktext.vars.id }}" class="form-label">Hooktext / Inhalt</label>
+            {{ form_widget(form.hooktext, {'attr': {'class': 'form-control', 'rows': '6', 'style': 'font-family:monospace'}}) }}
+            {{ form_errors(form.hooktext) }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.hookstatus.vars.id }}" class="form-label">Status</label>
+            {{ form_widget(form.hookstatus, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.hookstatus) }}
+        </div>
+    </div>
+    <div class="card-footer bg-light d-flex justify-content-between">
+        <a href="{{ path('app_discord_webhook_history_index') }}" class="btn btn-outline-secondary">Zurück zur Übersicht</a>
+        <button class="btn btn-success px-4" type="submit">
+            <i class="bi bi-save"></i> Speichern
+        </button>
+    </div>
+</div>
+{{ form_end(form) }}

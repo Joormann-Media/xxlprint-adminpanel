@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Live Vehicle Tracking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+        #map {
+            position: absolute;
+            top: 0; left: 0;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+    <script>
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: 'https://tiles.joormann-media.de/styles/osm-bright/style.json',
+      center: [7.0, 51.5],
+      zoom: 8
+    });
+
+    let markers = [];
+
+    function loadMarkers() {
+      fetch("{{ path('app_live_tracking_map_data') }}")
+        .then(r => r.json())
+        .then(points => {
+          markers.forEach(m => m.remove());
+          markers = [];
+
+          points.forEach(p => {
+            if (!p.lat || !p.lng) return; // keine Koordinaten -> skip
+
+            // Markerfarbe nach Alter
+            let markerColor = "blue";
+            if (p.time) {
+              const t = new Date(p.time);
+              const ageMinutes = (Date.now() - t.getTime()) / 60000;
+              if (ageMinutes > 60) markerColor = "gray"; // älter als 1h
+              else if (ageMinutes > 10) markerColor = "orange"; // älter als 10min
+              else markerColor = "green"; // frisch
+            }
+
+            const marker = new maplibregl.Marker({ color: markerColor })
+              .setLngLat([p.lng, p.lat])
+              .setPopup(new maplibregl.Popup().setHTML(
+                `<b>Fahrzeug:</b> ${p.vehicle ?? '-'}<br>
+                <b>Nummer:</b> ${p.vehicleNr ?? '-'}<br>
+                <b>Fahrer:</b> ${p.driver ?? '-'}<br>
+                <b>Zeit:</b> ${p.time ?? '-'}<br>
+                <b>Geschwindigkeit:</b> ${p.speed ?? '-'} km/h<br>
+                <b>Ort:</b> ${p.city ?? ''} ${p.street ?? ''}<br>
+                <a href="/live/follow/${encodeURIComponent(p.vehicle)}" class="btn btn-sm btn-primary">➡ Folgen</a>`
+              ))
+              .addTo(map);
+
+            markers.push(marker);
+          });
+        })
+        .catch(err => console.error("Fehler beim Laden der Marker:", err));
+    }
+
+    // Initial laden + alle 10 Sekunden updaten
+    loadMarkers();
+    setInterval(loadMarkers, 10000);
+    </script>
+</body>
+</html>

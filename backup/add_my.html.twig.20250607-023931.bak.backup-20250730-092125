@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{# {% block title %} #}➕ Gerät hinzufügen{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="mb-3">➕ Neues Gerät registrieren</h1>
+    <p class="text-muted">Fülle die Daten für dein neues Gerät aus.</p>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            {{ form_start(form) }}
+
+            <div class="mb-3">
+                {{ form_label(form.deviceName) }}
+                {{ form_widget(form.deviceName, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.deviceName) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.deviceFingerprint) }}
+                {{ form_widget(form.deviceFingerprint, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.deviceFingerprint) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.ipAddress) }}
+                {{ form_widget(form.ipAddress, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.ipAddress) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.userAgent) }}
+                {{ form_widget(form.userAgent, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.userAgent) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.registeredAt) }}
+                {{ form_widget(form.registeredAt, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.registeredAt) }}
+            </div>
+
+            <div class="mb-3 form-check">
+                {{ form_widget(form.isTrusted, {'attr': {'class': 'form-check-input'}}) }}
+                {{ form_label(form.isTrusted, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                {{ form_errors(form.isTrusted) }}
+            </div>
+
+            <div class="mb-3 form-check">
+                {{ form_widget(form.isActive, {'attr': {'class': 'form-check-input'}}) }}
+                {{ form_label(form.isActive, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                {{ form_errors(form.isActive) }}
+            </div>
+
+            <div class="d-none">
+                {{ form_widget(form.user) }}
+            </div>
+
+            <div class="text-end mt-4 d-flex justify-content-end gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <img src="{{ asset('gfx/systemgfx/ok_arrow.png') }}" alt="Speichern" style="height: 18px; margin-right: 4px;">
+                    Speichern
+                </button>
+                <a href="{{ path('app_user_device_me') }}" class="btn btn-secondary">
+                    <img src="{{ asset('gfx/systemgfx/cancel.png') }}" alt="Abbrechen" style="height: 18px; margin-right: 4px;">
+                    Abbrechen
+                </a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

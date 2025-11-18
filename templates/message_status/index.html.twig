@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MessageStatus index{% endblock %}
+
+{% block body %}
+    <h1>MessageStatus index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>DeliveredAt</th>
+                <th>DisplayedAt</th>
+                <th>ConfirmedAt</th>
+                <th>DeviceInfo</th>
+                <th>Ip</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for message_status in message_statuses %}
+            <tr>
+                <td>{{ message_status.id }}</td>
+                <td>{{ message_status.deliveredAt ? message_status.deliveredAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ message_status.displayedAt ? message_status.displayedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ message_status.confirmedAt ? message_status.confirmedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ message_status.deviceInfo }}</td>
+                <td>{{ message_status.ip }}</td>
+                <td>
+                    <a href="{{ path('app_message_status_show', {'id': message_status.id}) }}">show</a>
+                    <a href="{{ path('app_message_status_edit', {'id': message_status.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_message_status_new') }}">Create new</a>
+{% endblock %}

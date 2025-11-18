@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nicht erlaubt{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/error.css') }}">
+{% endblock %}
+{% block body %}
+<div class="error-page">
+    <div class="error-code">405</div>
+    <h1>Nicht erlaubt</h1>
+    <p>Diese Methode ist hier nicht erlaubt.</p>
+    <a href="{{ path('app_home') }}" class="btn btn-primary">Zur Startseite</a>
+</div>
+{% endblock %}

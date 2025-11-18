@@ -1,0 +1,18 @@
+when@dev:
+    web_profiler:
+        toolbar: false
+        intercept_redirects: false
+        excluded_ajax_paths: '^/_(profiler|wdt)|^/dav'  # hier /dav ausschließen
+
+    framework:
+        profiler:
+            only_exceptions: false
+            collect_serializer_data: true
+
+when@test:
+    web_profiler:
+        toolbar: false
+        intercept_redirects: false
+
+    framework:
+        profiler: { collect: false }

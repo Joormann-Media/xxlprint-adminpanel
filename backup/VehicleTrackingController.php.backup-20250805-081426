@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\VehicleTracking;
+use App\Form\VehicleTrackingType;
+use App\Repository\VehicleTrackingRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+#[Route('/vehicle/tracking')]
+final class VehicleTrackingController extends AbstractController
+{
+    #[Route(name: 'app_vehicle_tracking_index', methods: ['GET'])]
+    public function index(VehicleTrackingRepository $vehicleTrackingRepository): Response
+    {
+        return $this->render('vehicle_tracking/index.html.twig', [
+            'vehicle_trackings' => $vehicleTrackingRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/new', name: 'app_vehicle_tracking_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $vehicleTracking = new VehicleTracking();
+        $form = $this->createForm(VehicleTrackingType::class, $vehicleTracking);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($vehicleTracking);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_vehicle_tracking_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('vehicle_tracking/new.html.twig', [
+            'vehicle_tracking' => $vehicleTracking,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}', name: 'app_vehicle_tracking_show', methods: ['GET'])]
+    public function show(VehicleTracking $vehicleTracking): Response
+    {
+        return $this->render('vehicle_tracking/show.html.twig', [
+            'vehicle_tracking' => $vehicleTracking,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}/edit', name: 'app_vehicle_tracking_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, VehicleTracking $vehicleTracking, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(VehicleTrackingType::class, $vehicleTracking);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_vehicle_tracking_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('vehicle_tracking/edit.html.twig', [
+            'vehicle_tracking' => $vehicleTracking,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}', name: 'app_vehicle_tracking_delete', methods: ['POST'])]
+    public function delete(Request $request, VehicleTracking $vehicleTracking, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$vehicleTracking->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($vehicleTracking);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_vehicle_tracking_index', [], Response::HTTP_SEE_OTHER);
+    }
+}

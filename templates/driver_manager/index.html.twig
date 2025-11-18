@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fahrer-Profile{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">
+            <i class="bi bi-person-badge"></i> Fahrer-Profile
+        </h2>
+        <a href="{{ path('app_driver_manager_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Neuer Fahrer
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col"><i class="bi bi-calendar-event"></i> Gültig bis</th>
+                            <th scope="col"><i class="bi bi-info-circle"></i> Fahrer-Info</th>
+                            <th scope="col"><i class="bi bi-tools"></i> Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for driver_manager in driver_managers %}
+                        <tr>
+                            <td>{{ driver_manager.id }}</td>
+                            <td>
+                                {% if driver_manager.licenceExpires %}
+                                    <span class="badge bg-primary">
+                                        {{ driver_manager.licenceExpires|date('d.m.Y') }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted">–</span>
+                                {% endif %}
+                            </td>
+                            <td style="max-width: 250px;">
+                                <span class="d-block text-truncate" title="{{ driver_manager.specialDriverInfo }}">
+                                    {{ driver_manager.specialDriverInfo|default('-') }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{{ path('app_driver_manager_show', {'id': driver_manager.id}) }}" class="btn btn-outline-info btn-sm" title="Anzeigen">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{{ path('app_driver_manager_edit', {'id': driver_manager.id}) }}" class="btn btn-outline-primary btn-sm" title="Bearbeiten">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">
+                                <i class="bi bi-exclamation-circle"></i> Keine Fahrerprofile gefunden
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

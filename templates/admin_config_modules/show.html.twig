@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AdminConfigModules{% endblock %}
+
+{% block body %}
+    <h1>AdminConfigModules</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ admin_config_module.id }}</td>
+            </tr>
+            <tr>
+                <th>ModuleName</th>
+                <td>{{ admin_config_module.moduleName }}</td>
+            </tr>
+            <tr>
+                <th>ModuleDescription</th>
+                <td>{{ admin_config_module.moduleDescription }}</td>
+            </tr>
+            <tr>
+                <th>MinRole</th>
+                <td>{{ admin_config_module.minRole }}</td>
+            </tr>
+            <tr>
+                <th>ModuleCreate</th>
+                <td>{{ admin_config_module.moduleCreate ? admin_config_module.moduleCreate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ModuleBy</th>
+                <td>{{ admin_config_module.moduleBy }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_config_modules_index') }}">back to list</a>
+
+    <a href="{{ path('app_admin_config_modules_edit', {'id': admin_config_module.id}) }}">edit</a>
+
+    {{ include('admin_config_modules/_delete_form.html.twig') }}
+{% endblock %}

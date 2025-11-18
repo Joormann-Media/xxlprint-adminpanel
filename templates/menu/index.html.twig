@@ -1,0 +1,171 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menü-Übersicht{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">
+            <i class="bi bi-list-ul"></i> Menüverwaltung
+        </h2>
+        <div class="d-flex gap-2">
+            <a href="{{ path('app_menu_new') }}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Neues Menü
+            </a>
+            <button id="deleteSelected" class="btn btn-danger">
+                <i class="bi bi-trash"></i> Ausgewählte löschen
+            </button>
+        </div>
+    </div>
+
+    <form id="menuForm" action="{{ path('app_menu_bulk_delete') }}" method="POST">
+        <input type="hidden" name="_token" value="{{ csrf_token('bulk_delete') }}">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0" id="menuTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width:40px;"><input type="checkbox" id="selectAll"></th>
+                                {% set columns = [
+                                    {'name': 'Id', 'field': 'id'},
+                                    {'name': 'Name', 'field': 'name'},
+                                    {'name': 'Status', 'field': 'status'},
+                                    {'name': 'Erstellt am', 'field': 'createAt'},
+                                    {'name': 'Geändert am', 'field': 'updateAt'},
+                                    {'name': 'Geändert von', 'field': 'updateBy'},
+                                    {'name': 'Min. Rolle', 'field': 'minRole'}
+                                ] %}
+                                {% for column in columns %}
+                                    <th>
+                                        <div class="d-flex flex-column align-items-center">
+                                            <span>{{ column.name }}</span>
+                                            <div class="sort-arrows d-flex flex-row">
+                                                <button type="button" class="btn btn-sm btn-link sort-btn p-0" data-column="{{ column.field }}" data-order="asc" title="Aufsteigend sortieren">&#9650;</button>
+                                                <button type="button" class="btn btn-sm btn-link sort-btn p-0" data-column="{{ column.field }}" data-order="desc" title="Absteigend sortieren">&#9660;</button>
+                                            </div>
+                                        </div>
+                                    </th>
+                                {% endfor %}
+                                <th class="text-center">Aktionen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for menu in menus %}
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="menuCheckbox" name="menus[]" value="{{ menu.id }}">
+                                </td>
+                                <td>{{ menu.id }}</td>
+                                <td>{{ menu.name }}</td>
+                                <td>
+                                    {% if menu.status == 'active' %}
+                                        <span class="badge bg-success">Aktiv</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ menu.status|capitalize }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ menu.createAt ? menu.createAt|date('d.m.Y H:i') : '-' }}</td>
+                                <td>{{ menu.updateAt ? menu.updateAt|date('d.m.Y H:i') : '-' }}</td>
+                                <td>{{ menu.updateBy|default('-') }}</td>
+                                <td>{{ menu.minRole|default('-') }}</td>
+                                <td class="text-center">
+                                    <a href="{{ path('app_menu_show', {'id': menu.id}) }}" class="btn btn-outline-info btn-sm me-1" title="Anzeigen">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ path('app_menu_edit', {'id': menu.id}) }}" class="btn btn-outline-primary btn-sm me-1" title="Bearbeiten">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="{{ path('app_menu_sub_menu_new') }}" class="btn btn-outline-secondary btn-sm me-1" title="Sub-Menü hinzufügen">
+                                        <i class="bi bi-diagram-3"></i>
+                                    </a>
+                                    <a href="{{ path('app_menu_item_new') }}" class="btn btn-outline-success btn-sm" title="Menüpunkt hinzufügen">
+                                        <i class="bi bi-plus-square"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="10" class="text-center text-muted py-4">
+                                    <i class="bi bi-exclamation-circle"></i> Keine Menüs gefunden
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    .sort-arrows button {
+        font-size: 1rem;
+        color: #888;
+        background: none;
+        border: none;
+        line-height: 1;
+        margin: 0 2px;
+    }
+    .sort-arrows button:hover {
+        color: #0d6efd;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const selectAllCheckbox = document.getElementById("selectAll");
+        const checkboxes = document.querySelectorAll(".menuCheckbox");
+        const deleteButton = document.getElementById("deleteSelected");
+        const form = document.getElementById("menuForm");
+
+        // Alle Checkboxen aktivieren/deaktivieren
+        selectAllCheckbox.addEventListener("change", function() {
+            checkboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
+        });
+
+        // Löschen-Button klicken → Form absenden
+        deleteButton.addEventListener("click", function(e) {
+            e.preventDefault();
+            if (document.querySelectorAll('.menuCheckbox:checked').length === 0) {
+                alert("Bitte mindestens ein Menü auswählen!");
+                return;
+            }
+            if (confirm("Möchtest du die ausgewählten Menüs wirklich löschen?")) {
+                form.submit();
+            }
+        });
+
+        // Sortierfunktion
+        document.querySelectorAll(".sort-btn").forEach(button => {
+            button.addEventListener("click", function(e) {
+                e.preventDefault();
+                let column = this.getAttribute("data-column");
+                let order = this.getAttribute("data-order");
+                let table = document.querySelector("#menuTable tbody");
+                let rows = Array.from(table.querySelectorAll("tr"));
+
+                // Spalten-Index bestimmen (skip Checkbox, also +2)
+                let colIndex = Array.from(this.closest('tr').children).findIndex(th => {
+                    return th.querySelector('.sort-btn[data-column="' + column + '"]');
+                });
+
+                rows.sort((a, b) => {
+                    let cellA = a.children[colIndex].innerText.trim();
+                    let cellB = b.children[colIndex].innerText.trim();
+
+                    // Für numerische Spalten (z.B. id)
+                    if (!isNaN(cellA) && !isNaN(cellB)) {
+                        return order === "asc" ? cellA - cellB : cellB - cellA;
+                    } else {
+                        return order === "asc" ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+                    }
+                });
+
+                rows.forEach(row => table.appendChild(row));
+            });
+        });
+    });
+</script>
+{% endblock %}

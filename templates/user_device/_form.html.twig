@@ -1,0 +1,75 @@
+{{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">
+            {{ is_edit is defined and is_edit ? 'Gerät bearbeiten' : 'Neues Gerät hinzufügen' }}
+        </h5>
+    </div>
+    <div class="card-body row g-3">
+
+        <div class="col-md-6">
+            {{ form_label(form.deviceName) }}
+            {{ form_widget(form.deviceName, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.deviceName) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_label(form.deviceFingerprint) }}
+            {{ form_widget(form.deviceFingerprint, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.deviceFingerprint) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_label(form.ipAddress) }}
+            {{ form_widget(form.ipAddress, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.ipAddress) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_label(form.userAgent) }}
+            {{ form_widget(form.userAgent, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.userAgent) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_label(form.registeredAt) }}
+            {{ form_widget(form.registeredAt, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.registeredAt) }}
+        </div>
+
+        <div class="col-md-3">
+            {{ form_label(form.isTrusted) }}
+            <div class="form-check form-switch">
+                {{ form_widget(form.isTrusted, {'attr': {'class': 'form-check-input'}}) }}
+            </div>
+            {{ form_errors(form.isTrusted) }}
+        </div>
+
+        <div class="col-md-3">
+            {{ form_label(form.isActive) }}
+            <div class="form-check form-switch">
+                {{ form_widget(form.isActive, {'attr': {'class': 'form-check-input'}}) }}
+            </div>
+            {{ form_errors(form.isActive) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_label(form.user) }}
+            {{ form_widget(form.user, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.user) }}
+        </div>
+
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{{ path('app_user_device_index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Zurück
+        </a>
+        <button class="btn btn-success">
+            <i class="bi bi-check-circle"></i> Speichern
+        </button>
+    </div>
+</div>
+
+{{ form_end(form) }}

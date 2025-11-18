@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}KI-Manager Übersicht{% endblock %}
+
+{% block body %}
+<div class="container-fluid my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h2 class="mb-0" style="color:#2fc8fa;letter-spacing:1px;">AI-Instanzen verwalten</h2>
+        <a href="{{ path('app_ai_manager_new') }}" class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-lg"></i> Neue KI anlegen
+        </a>
+    </div>
+
+    {% if ai_managers|length == 0 %}
+        <div class="alert alert-info mt-4">
+            Noch keine AIs angelegt. <a href="{{ path('app_ai_manager_new') }}" class="alert-link">Jetzt erste KI registrieren!</a>
+        </div>
+    {% endif %}
+
+    <div class="row g-4">
+    {% for ai in ai_managers %}
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="card h-100 border-0 shadow-lg bg-dark text-light position-relative">
+                <div class="card-header bg-transparent border-0 d-flex align-items-center gap-3">
+                    {% set avatarSrc = (
+                        ai.aiAvatar is not empty
+                            ? (ai.aiAvatar starts with 'http'
+                                ? ai.aiAvatar
+                                : asset(ai.aiAvatar)
+                              )
+                            : asset('gfx/ai_placeholder.png')
+                    ) %}
+                    <img src="{{ avatarSrc }}"
+                         alt="AI-Avatar"
+                         class="rounded-circle border border-2"
+                         style="width:56px; height:56px; object-fit:cover; background:#fff;">
+                    <div>
+                        <div class="fw-bold fs-5" style="color:#2fc8fa;">{{ ai.aiName }}</div>
+                        <div class="text-muted" style="font-size:.99em;">{{ ai.aiModel ?: '–' }} &bullet; {{ ai.aiCategory|upper ?: '–' }}</div>
+                    </div>
+                </div>
+                <div class="card-body pt-2">
+                    <div class="mb-1 small">
+                        <span class="badge bg-secondary me-1">{{ ai.aiStatus|upper }}</span>
+                        {% if ai.aiMaintainer %}
+                            <span class="badge bg-info text-dark">Maintainer: {{ ai.aiMaintainer.username }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="mb-2" style="min-height:48px;">
+                        <span class="text-light small">{{ ai.aiDescription|u.truncate(80, '...') }}</span>
+                    </div>
+                    <ul class="list-unstyled small mb-0">
+                        <li><strong>Host:</strong> {{ ai.aiHost ?: '–' }}</li>
+                        <li><strong>Pfad:</strong> <span class="text-break">{{ ai.aiPath ?: '–' }}</span></li>
+                        <li><strong>Setup:</strong> {{ ai.aiSetup|u.truncate(40, '...') ?: '–' }}</li>
+                        <li>
+                            <strong>Health:</strong>
+                            {% if ai.aiHealthUrl %}
+                                <a href="{{ ai.aiHealthUrl }}" class="link-info" target="_blank" rel="noopener">
+                                    {{ ai.aiHealthUrl|u.truncate(30, '...') }}
+                                </a>
+                            {% else %}–{% endif %}
+                        </li>
+                        <li>
+                            <strong>Letzter Check:</strong>
+                            {{ ai.aiLastCheckedAt ? ai.aiLastCheckedAt|date('d.m.Y H:i') : '–' }}
+                        </li>
+                    </ul>
+                    {% if ai.aiLastError %}
+                        <div class="alert alert-danger py-1 px-2 mt-2 small mb-0">
+                            <i class="bi bi-exclamation-triangle"></i> {{ ai.aiLastError|u.truncate(80, '...') }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center bg-transparent border-0 pt-0 pb-3 px-3">
+                    <div>
+                        <span class="small text-muted">ID: {{ ai.id }}</span>
+                        <span class="mx-2">|</span>
+                        <span class="small text-muted">Token: {{ ai.aiApiToken ? '••••••••' : '–' }}</span>
+                    </div>
+                    <div>
+                        <a href="{{ path('app_ai_manager_show', {'id': ai.id}) }}" class="btn btn-outline-info btn-sm me-1">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="{{ path('app_ai_manager_edit', {'id': ai.id}) }}" class="btn btn-outline-warning btn-sm">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                    </div>
+                </div>
+                <span class="position-absolute top-0 end-0 badge rounded-pill bg-{{ ai.aiStatus == 'active' ? 'success' : (ai.aiStatus == 'maintenance' ? 'warning' : 'danger') }} m-3 fs-6 shadow">{{ ai.aiStatus|upper }}</span>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

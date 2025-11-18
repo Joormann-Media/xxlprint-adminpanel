@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">{{ page_title ?? 'Datei hochladen' }}</h1>
+
+    <div class="card shadow-sm rounded-3">
+        <div class="card-body">
+            <h5 class="card-title mb-3">
+                📦 Release: {{ release.softwareName }} – {{ release.version }}
+            </h5>
+
+            {{ form_start(form, { attr: { enctype: 'multipart/form-data' } }) }}
+
+            <div class="mb-3">
+                {{ form_label(form.file, 'Datei auswählen') }}
+                {{ form_widget(form.file, { attr: { class: 'form-control' } }) }}
+                {{ form_errors(form.file) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.platform) }}
+                {{ form_widget(form.platform, { attr: { class: 'form-select' } }) }}
+                {{ form_errors(form.platform) }}
+            </div>
+
+            <div class="mb-3 form-check">
+                {{ form_widget(form.isPublic, { attr: { class: 'form-check-input' } }) }}
+                {{ form_label(form.isPublic, null, { label_attr: { class: 'form-check-label' } }) }}
+                {{ form_errors(form.isPublic) }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                🚀 Hochladen
+            </button>
+            <a href="{{ path('app_release_edit', { id: release.id }) }}" class="btn btn-secondary ms-2">
+                🔙 Zurück zum Release
+            </a>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

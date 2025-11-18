@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}IconIndex index{% endblock %}
+
+{% block body %}
+    <h1>IconIndex index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>IconPath</th>
+                <th>IconName</th>
+                <th>IconCategory</th>
+                <th>IconTags</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for icon_index in icon_indices %}
+            <tr>
+                <td>{{ icon_index.id }}</td>
+                <td>{{ icon_index.iconPath }}</td>
+                <td>{{ icon_index.iconName }}</td>
+                <td>{{ icon_index.iconCategory }}</td>
+                <td>{{ icon_index.iconTags ? icon_index.iconTags|json_encode : '' }}</td>
+                <td>
+                    <a href="{{ path('app_icon_index_show', {'id': icon_index.id}) }}">show</a>
+                    <a href="{{ path('app_icon_index_edit', {'id': icon_index.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_icon_index_new') }}">Create new</a>
+{% endblock %}

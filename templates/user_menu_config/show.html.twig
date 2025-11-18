@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserMenuConfig{% endblock %}
+
+{% block body %}
+    <h1>UserMenuConfig</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user_menu_config.id }}</td>
+            </tr>
+            <tr>
+                <th>SortOrder</th>
+                <td>{{ user_menu_config.sortOrder }}</td>
+            </tr>
+            <tr>
+                <th>MenuPosition</th>
+                <td>{{ user_menu_config.menuPosition }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_menu_config_index') }}">back to list</a>
+
+    <a href="{{ path('app_user_menu_config_edit', {'id': user_menu_config.id}) }}">edit</a>
+
+    {{ include('user_menu_config/_delete_form.html.twig') }}
+{% endblock %}

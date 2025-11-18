@@ -1,0 +1,26 @@
+<div class="chat-thread p-3">
+    {% for status in messages %}
+        {% set message = status.recipient.message %}
+        <div class="mb-3">
+            <div class="d-flex {{ message.sender.id == app.user.id ? 'justify-content-end' : 'justify-content-start' }}">
+                <div class="p-2 rounded-3 {{ message.sender.id == app.user.id ? 'bg-primary text-white' : 'bg-light' }}" style="max-width: 75%;">
+                    <div class="small text-muted mb-1">
+                        {{ message.sender.username }}
+                        <span class="float-end">{{ message.createdAt|date('H:i') }}</span>
+                    </div>
+                    <div>{{ message.content|nl2br }}</div>
+                    {% if message.attachments|length > 0 %}
+                        <div class="mt-2 small">
+                            <strong>Anhänge:</strong><br>
+                            {% for att in message.attachments %}
+                                <a href="{{ asset(att.filepath) }}" target="_blank">{{ att.filename }}</a><br>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-muted text-center my-5">Keine Nachrichten von diesem Absender.</div>
+    {% endfor %}
+</div>

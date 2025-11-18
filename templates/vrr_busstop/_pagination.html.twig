@@ -1,0 +1,51 @@
+{# templates/vrr_busstop/_pagination.html.twig #}
+{% if maxPages > 1 %}
+<div class="text-center mt-2">
+    <nav aria-label="Page navigation">
+        <ul class="pagination mb-0 justify-content-center">
+            <li class="page-item {{ currentPage == 1 ? 'disabled' : '' }}">
+                <a class="page-link pagination-link" href="#" data-page="{{ currentPage - 1 }}" aria-label="Previous">&laquo;</a>
+            </li>
+            {% set maxDisplay = 20 %}
+            {% set half = (maxDisplay // 2) %}
+            {% set start = currentPage - half %}
+            {% set end = currentPage + half - 1 %}
+            {% if start < 1 %}
+                {% set end = end + (1 - start) %}
+                {% set start = 1 %}
+            {% endif %}
+            {% if end > maxPages %}
+                {% set start = start - (end - maxPages) %}
+                {% set end = maxPages %}
+            {% endif %}
+            {% set start = start < 1 ? 1 : start %}
+            {% set end = end > maxPages ? maxPages : end %}
+
+            {% if start > 1 %}
+                <li class="page-item">
+                    <a class="page-link pagination-link" href="#" data-page="1">1</a>
+                </li>
+                {% if start > 2 %}
+                    <li class="page-item disabled"><span class="page-link">…</span></li>
+                {% endif %}
+            {% endif %}
+            {% for i in start..end %}
+                <li class="page-item {{ i == currentPage ? 'active' : '' }}">
+                    <a class="page-link pagination-link" href="#" data-page="{{ i }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+            {% if end < maxPages %}
+                {% if end < maxPages - 1 %}
+                    <li class="page-item disabled"><span class="page-link">…</span></li>
+                {% endif %}
+                <li class="page-item">
+                    <a class="page-link pagination-link" href="#" data-page="{{ maxPages }}">{{ maxPages }}</a>
+                </li>
+            {% endif %}
+            <li class="page-item {{ currentPage == maxPages ? 'disabled' : '' }}">
+                <a class="page-link pagination-link" href="#" data-page="{{ currentPage + 1 }}" aria-label="Next">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endif %}

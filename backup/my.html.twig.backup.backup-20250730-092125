@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{# {% block title %} #}📱 Meine Geräte{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="bg-light border rounded p-4 mb-4 shadow-sm">
+    <h1 class="mb-3">📱 Meine Geräte</h1>
+    <p class="text-muted">Verwalte hier deine registrierten Geräte und deren Vertrauensstatus.</p>
+    </div>
+
+    
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <a href="{{ path('app_user_device_me_add') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle me-1"></i> Gerät hinzufügen
+        </a>
+        <a href="/help/view/5" class="btn btn-primary open-popup" data-title="📌 Hilfe">
+            📖 Hilfe anzeigen
+        </a>
+    </div>
+
+    {% if user_devices is not empty %}
+        <div class="row g-4">
+            {% for device in user_devices %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ device.deviceName ?: 'Unbenanntes Gerät' }}</h5>
+                            <p class="mb-1"><strong>Fingerprint:</strong> {{ device.deviceFingerprint ?: '–' }}</p>
+                            <p class="mb-1"><strong>IP-Adresse:</strong> {{ device.ipAddress ?: '–' }}</p>
+                            <p class="mb-1"><strong>User-Agent:</strong> <small>{{ device.userAgent ?: '–' }}</small></p>
+                            <p class="mb-1"><strong>Registriert am:</strong> {{ device.registeredAt ? device.registeredAt|date('d.m.Y H:i') : '–' }}</p>
+                            <p class="mb-1"><strong>Vertrauenswürdig:</strong> {{ device.isTrusted ? '✅ Ja' : '❌ Nein' }}</p>
+                            <p class="mb-1"><strong>Aktiv:</strong> {{ device.isActive ? '🟢 Aktiv' : '🔴 Inaktiv' }}</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0 d-flex justify-content-end gap-2">
+                            <a href="{{ path('app_user_device_show', {'id': device.id}) }}" class="custom-button-icon" title="Anzeigen">
+                                <img src="/gfx/systemgfx/show.png" alt="Show">
+                            </a>
+                            <a href="{{ path('app_user_device_me_edit', {'id': device.id}) }}" class="custom-button-icon" title="Bearbeiten">
+                                <img src="/gfx/systemgfx/edit.png" alt="Edit">
+                            </a>
+                            <form method="post" action="{{ path('app_user_device_me_delete', {'id': device.id}) }}" onsubmit="return confirm('❗️ Möchtest du dieses Gerät wirklich löschen?');" class="d-inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ device.id) }}">
+                                <button class="custom-button-icon" title="Löschen">
+                                    <img src="/gfx/systemgfx/delete.png" alt="Delete">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">🚫 Du hast noch keine Geräte registriert.</div>
+    {% endif %}
+</div>
+{% endblock %}

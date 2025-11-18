@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SchoolTime index{% endblock %}
+
+{% block body %}
+    <h1>SchoolTime index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Weekday</th>
+                <th>SchoolStart</th>
+                <th>ArrivalTime</th>
+                <th>SchoolEnd</th>
+                <th>Breaks</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for school_time in school_times %}
+            <tr>
+                <td>{{ school_time.id }}</td>
+                <td>{{ school_time.weekday }}</td>
+                <td>{{ school_time.schoolStart ? school_time.schoolStart|date('H:i:s') : '' }}</td>
+                <td>{{ school_time.arrivalTime ? school_time.arrivalTime|date('H:i:s') : '' }}</td>
+                <td>{{ school_time.schoolEnd ? school_time.schoolEnd|date('H:i:s') : '' }}</td>
+                <td>{{ school_time.breaks ? school_time.breaks|json_encode : '' }}</td>
+                <td>
+                    <a href="{{ path('app_school_time_show', {'id': school_time.id}) }}">show</a>
+                    <a href="{{ path('app_school_time_edit', {'id': school_time.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_school_time_new') }}">Create new</a>
+{% endblock %}

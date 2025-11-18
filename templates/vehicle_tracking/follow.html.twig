@@ -1,0 +1,229 @@
+{% extends 'base.html.twig' %}
+{% block title %}Follow Vehicle{% endblock %}
+
+{% block body %}
+<div class="container py-3">
+
+  <div class="d-flex flex-wrap align-items-end gap-2 mb-3">
+    <div>
+      <label class="form-label mb-1">Fahrzeug</label>
+      <select id="vehicleId" class="form-select">
+        <option value="">– wählen –</option>
+        {% for v in vehicles %}
+          <option value="{{ v.id }}">{{ v.vehicleNumber ?? '' }} — {{ v.licensePlate ?? '' }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="d-flex gap-2">
+      <button id="btn-follow" class="btn btn-primary">🛰️ Follow ON</button>
+      <button id="btn-clear-trail" class="btn btn-outline-secondary">Spur löschen</button>
+    </div>
+    <div id="live-info" class="ms-2 small text-muted flex-grow-1"></div>
+  </div>
+
+  <div id="map" style="height:70vh;border-radius:12px;overflow:hidden;"></div>
+</div>
+
+<link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+<script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+<script>
+(() => {
+  // === Config ===
+  const STYLE_URL = '{{ tiles_style_url }}';                                // eigener Tileserver-Style.json
+  const LIVE_URL  = '{{ path("app_vehicle_tracking_live") }}';              // /vehicle-tracking/live
+  const URL_VEH  = new URLSearchParams(window.location.search).get('vehicleId'); // optionaler Auto-Start
+  const POLL_MS  = 3000;                                                    // Poll-Intervall
+  const TRAIL_MAX = 500;                                                    // max. Punkte in der Spur
+
+  // === Map ===
+  const map = new maplibregl.Map({
+    container: 'map',
+    style: STYLE_URL,
+    center: [6.62, 51.65],
+    zoom: 13
+  });
+
+  let follow = true;
+  let pollHandle = null;
+  let currentVehicleId = null;
+  let lastFix = null;
+  let markerEl = null, marker = null;
+  let trail = [];
+
+  // Quelle/Layers sobald Style geladen ist
+  map.on('load', () => {
+    if (!map.getSource('trail')) {
+      map.addSource('trail', { type: 'geojson', data: { type:'FeatureCollection', features: [] } });
+    }
+    if (!map.getLayer('trail-line')) {
+      map.addLayer({
+        id: 'trail-line', type: 'line', source: 'trail',
+        paint: { 'line-width': 4, 'line-color': '#ff2d55' }
+      });
+    }
+  });
+
+  function makeMarker() {
+    const el = document.createElement('div');
+    el.style.width = '22px';
+    el.style.height = '22px';
+    el.style.borderRadius = '50%';
+    el.style.background = '#2e86de';
+    el.style.boxShadow = '0 0 0 2px #fff';
+    el.style.transform = 'rotate(0deg)';
+    el.style.transition = 'transform 0.2s linear';
+
+    const arrow = document.createElement('div');
+    arrow.style.width = '0';
+    arrow.style.height = '0';
+    arrow.style.borderLeft  = '6px solid transparent';
+    arrow.style.borderRight = '6px solid transparent';
+    arrow.style.borderBottom= '10px solid #e74c3c';
+    arrow.style.position = 'absolute';
+    arrow.style.top  = '-10px';
+    arrow.style.left = '5px';
+    el.appendChild(arrow);
+
+    markerEl = el;
+    marker = new maplibregl.Marker(el, { anchor: 'center' })
+      .setLngLat([6.62, 51.65])
+      .addTo(map);
+  }
+
+  function updateTrail() {
+    const feat = {
+      type: 'Feature',
+      geometry: { type:'LineString', coordinates: trail.map(p => [p.lng, p.lat]) },
+      properties: {}
+    };
+    const data = (trail.length >= 2)
+      ? { type:'FeatureCollection', features: [feat] }
+      : { type:'FeatureCollection', features: [] };
+
+    const src = map.getSource('trail');
+    if (src) src.setData(data);
+  }
+
+  function haversine(lat1, lon1, lat2, lon2) {
+    const R=6371000, toRad = d=>d*Math.PI/180;
+    const dLat = toRad(lat2-lat1), dLon = toRad(lon2-lon1);
+    const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+    return 2*R*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  }
+
+  function moveCameraTo({lng, lat, bearing}) {
+    const opts = { center:[lng,lat], duration:800, easing:t=>t };
+    if (typeof bearing === 'number') {
+      const cur = map.getBearing();
+      const diff = ((bearing - cur + 540) % 360) - 180; // kleinstmögliche Drehung
+      opts.bearing = cur + diff * 0.6;                  // etwas gedämpft
+    }
+    map.easeTo(opts);
+  }
+
+  async function pollOnce() {
+    if (!currentVehicleId) return;
+
+    const url = new URL(LIVE_URL, window.location.origin);
+    url.searchParams.set('vehicleId', currentVehicleId);
+
+    try {
+      const res = await fetch(url.toString(), {
+        cache: 'no-store',
+        credentials: 'same-origin'
+      });
+
+      // Schutz: Falls Security uns auf HTML schickt (Login), nicht JSON parsen
+      const ctype = res.headers.get('content-type') || '';
+      if (!res.ok || !ctype.startsWith('application/json')) {
+        console.error('[live] Bad response', res.status, ctype);
+        document.getElementById('live-info').innerText = 'Auth/Netz-Problem beim Live-Abruf…';
+        return;
+      }
+
+      const j = await res.json();
+      const d = j?.data;
+      if (!d) {
+        document.getElementById('live-info').innerText = 'Kein Fix';
+        return;
+      }
+
+      if (!marker) makeMarker();
+
+      const fix = { lat:d.lat, lng:d.lng, time:d.time, speed:d.speed, course:d.course };
+      const moved = !lastFix ? true : (haversine(lastFix.lat,lastFix.lng, fix.lat,fix.lng) > 1.5);
+      lastFix = fix;
+
+      if (moved) {
+        trail.push({ lat:fix.lat, lng:fix.lng });
+        if (trail.length > TRAIL_MAX) trail = trail.slice(-TRAIL_MAX);
+        updateTrail();
+      }
+
+      marker.setLngLat([fix.lng, fix.lat]);
+      if (markerEl && typeof fix.course === 'number') {
+        markerEl.style.transform = `rotate(${fix.course}deg)`;
+      }
+
+      if (follow) {
+        moveCameraTo({
+          lng: fix.lng,
+          lat: fix.lat,
+          bearing: (typeof fix.course === 'number' ? fix.course : undefined)
+        });
+      }
+
+      const spd = (fix.speed != null) ? `${Math.round(fix.speed)} km/h` : '–';
+      document.getElementById('live-info').innerText =
+        `📍 ${fix.lat.toFixed(5)}, ${fix.lng.toFixed(5)}  ⏱ ${new Date(fix.time).toLocaleTimeString()}  🚐 ${spd}`;
+
+    } catch (e) {
+      console.error('live poll failed', e);
+      document.getElementById('live-info').innerText = 'Fehler beim Live-Abruf…';
+    }
+  }
+
+  function startPolling() { stopPolling(); pollHandle = setInterval(pollOnce, POLL_MS); pollOnce(); }
+  function stopPolling() { if (pollHandle) clearInterval(pollHandle); pollHandle = null; }
+
+  // UI bindings
+  document.getElementById('vehicleId').addEventListener('change', (e) => {
+    currentVehicleId = e.target.value || null;
+    trail = []; updateTrail(); lastFix = null;
+    if (currentVehicleId) startPolling(); else stopPolling();
+  });
+
+  document.getElementById('btn-follow').addEventListener('click', () => {
+    follow = !follow;
+    document.getElementById('btn-follow').textContent = follow ? '🛰️ Follow ON' : '🛰️ Follow OFF';
+  });
+
+  document.getElementById('btn-clear-trail').addEventListener('click', () => {
+    trail = []; updateTrail();
+  });
+
+  // User greift die Karte an → Follow aus
+  map.on('dragstart', () => {
+    follow = false;
+    document.getElementById('btn-follow').textContent = '🛰️ Follow OFF';
+  });
+
+  // === Auto-Start via URL ?vehicleId=... ===
+  (function boot() {
+    const sel = document.getElementById('vehicleId');
+    if (URL_VEH) {
+      // Vorbelegen der Auswahl, falls Fahrzeug in der Liste existiert
+      if ([...sel.options].some(o => o.value === String(URL_VEH))) {
+        sel.value = String(URL_VEH);
+        currentVehicleId = sel.value;
+        trail = []; updateTrail(); lastFix = null;
+        startPolling();
+      } else {
+        console.warn('vehicleId aus URL nicht in Auswahl gefunden:', URL_VEH);
+      }
+    }
+  })();
+
+})();
+</script>
+{% endblock %}

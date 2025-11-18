@@ -1,0 +1,270 @@
+{# templates/chat/chat_widget.html.twig #}
+<div id="chat-widget">
+    <button id="chat-toggle" class="btn btn-primary rounded-circle shadow position-relative">
+        💬
+        <span id="chat-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">!</span>
+    </button>
+
+    <div id="chat-box" class="card d-none shadow-sm mt-2" style="width: 300px;">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <strong>Chat</strong>
+            <button id="chat-close" class="btn btn-sm btn-outline-secondary">✖</button>
+        </div>
+        <div class="card-body p-2">
+            <label for="chat-recipient">Empfänger:</label>
+            <select id="chat-recipient" class="form-select form-select-sm mb-2">
+                <option value="" disabled selected>Wähle einen Nutzer</option>
+                {% for user in usersOnline %}
+                    {% if user.id != app.user.id %}
+                        <option value="{{ user.id }}">{{ user.username }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <div id="chat-messages" class="overflow-auto mb-2" style="height: 200px;"></div>
+            <div class="input-group">
+                <input type="text" id="chat-input" class="form-control form-control-sm" placeholder="Nachricht eingeben..." autocomplete="off">
+                <button id="chat-send" class="btn btn-sm btn-success">⮞</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+#chat-toggle.btn-attention {
+    animation: pulse 1.2s infinite;
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+
+@keyframes pulse {
+    0%   { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+    50%  { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+}
+
+    #chat-widget {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        z-index: 9999;
+    }
+
+    .chat-toggle {
+        background-color: #0d6efd;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 18px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .chat-badge {
+        margin-left: 5px;
+        font-size: 0.75rem;
+    }
+
+    .chat-box {
+        width: 320px;
+        height: 420px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 16px rgba(0,0,0,0.3);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-body {
+        flex-grow: 1;
+        overflow-y: auto;
+        font-size: 0.9rem;
+        background-color: #f8f9fa;
+    }
+
+    .chat-body .message {
+        margin: 4px 0;
+        padding: 6px 10px;
+        border-radius: 8px;
+        display: inline-block;
+        max-width: 80%;
+        word-break: break-word;
+    }
+
+    .message-incoming {
+        background-color: #e2e6ea;
+        align-self: flex-start;
+    }
+
+    .message-outgoing {
+        background-color: #d1e7dd;
+        align-self: flex-end;
+    }
+
+    .chat-footer {
+        padding: 8px;
+        gap: 8px;
+    }
+    
+    #chat-toggle.btn-attention {
+        all: unset;
+        display: inline-block;
+        padding: 0.6rem;
+        border-radius: 999px;
+        background-color: #dc3545;
+        color: white;
+        animation: pulse-alert 1s infinite;
+    }
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0.4rem rgba(255, 0, 0, 0.75);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 0.7rem rgba(255, 0, 0, 0.5);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0.4rem rgba(255, 0, 0, 0.75);
+    }
+
+}
+</style>
+
+<script>
+    const ws = new WebSocket("ws://localhost:8075");
+    let chatRefreshInterval = null;
+
+    ws.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        const currentUser = "{{ app.user.username }}";
+        const recipientSelect = document.getElementById('chat-recipient');
+        const selectedId = recipientSelect?.value;
+        const chatBox = document.getElementById('chat-box');
+        const chatButton = document.getElementById('chat-toggle');
+        const badge = document.getElementById('chat-badge');
+        const messages = document.getElementById('chat-messages');
+
+        // Debug-Output
+        console.log("[WS] Eingehende Nachricht:", data);
+        console.log("[WS] Aktueller Benutzer:", currentUser, "| Ziel:", data.recipient);
+
+        if (data.recipient !== currentUser) return;
+
+        const isChatOpen = !chatBox.classList.contains('d-none');
+        const isCorrectChatOpen = selectedId && selectedId === String(data.senderId);
+
+        if (!isChatOpen || !isCorrectChatOpen) {
+            badge.classList.remove('d-none');
+            chatButton.classList.add('btn-attention');
+        }
+
+        if (isChatOpen && isCorrectChatOpen) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('message', 'message-incoming', 'bg-light', 'rounded');
+            bubble.textContent = `[${data.sender}] ${data.content}`;
+            messages.appendChild(bubble);
+            messages.scrollTop = messages.scrollHeight;
+        }
+    };
+
+    document.getElementById('chat-toggle').addEventListener('click', () => {
+        const chatBox = document.getElementById('chat-box');
+        const chatButton = document.getElementById('chat-toggle');
+        const badge = document.getElementById('chat-badge');
+        const isOpening = chatBox.classList.contains('d-none');
+
+        chatBox.classList.toggle('d-none');
+
+        if (isOpening) {
+            badge.classList.add('d-none');
+            chatButton.classList.remove('btn-attention');
+
+            // Live-Poll starten
+            chatRefreshInterval = setInterval(() => {
+                const recipientId = document.getElementById('chat-recipient').value;
+                if (recipientId) {
+                    fetch(`/chat/messages/${recipientId}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            const messages = document.getElementById('chat-messages');
+                            messages.innerHTML = '';
+                            data.forEach(msg => {
+                                const div = document.createElement('div');
+                                div.classList.add('message', msg.from === "{{ app.user.username }}" ? 'message-outgoing' : 'message-incoming');
+                                div.textContent = `[${msg.from}] ${msg.content}`;
+                                messages.appendChild(div);
+                            });
+                            messages.scrollTop = messages.scrollHeight;
+                        });
+                }
+            }, 3000);
+        } else {
+            clearInterval(chatRefreshInterval);
+        }
+    });
+
+    document.getElementById('chat-close').addEventListener('click', () => {
+        document.getElementById('chat-box').classList.add('d-none');
+        clearInterval(chatRefreshInterval);
+    });
+
+    document.getElementById('chat-send').addEventListener('click', sendMessage);
+    document.getElementById('chat-input').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    function sendMessage() {
+        const input = document.getElementById('chat-input');
+        const recipientSelect = document.getElementById('chat-recipient');
+        const messages = document.getElementById('chat-messages');
+        const recipientId = recipientSelect.value;
+
+        const content = input.value.trim();
+        if (!content || !recipientId) return;
+
+        const message = {
+            sender: "Du",
+            recipientId: recipientId,
+            content: content
+        };
+
+        ws.send(JSON.stringify(message));
+
+        fetch('/chat/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(message)
+        });
+
+        const bubble = document.createElement('div');
+        bubble.classList.add('message', 'message-outgoing', 'bg-success', 'text-white');
+        bubble.textContent = `Du → ${recipientSelect.options[recipientSelect.selectedIndex].text}: ${content}`;
+        messages.appendChild(bubble);
+        messages.scrollTop = messages.scrollHeight;
+        input.value = "";
+    }
+
+    document.getElementById('chat-recipient').addEventListener('change', function () {
+        const recipientId = this.value;
+        fetch(`/chat/messages/${recipientId}`)
+            .then(res => res.json())
+            .then(data => {
+                const messages = document.getElementById('chat-messages');
+                messages.innerHTML = '';
+                data.forEach(msg => {
+                    const div = document.createElement('div');
+                    div.classList.add('message', msg.from === "{{ app.user.username }}" ? 'message-outgoing' : 'message-incoming');
+                    div.textContent = `[${msg.from}] ${msg.content}`;
+                    messages.appendChild(div);
+                });
+                messages.scrollTop = messages.scrollHeight;
+            });
+    });
+</script>
+
+

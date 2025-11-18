@@ -1,0 +1,220 @@
+{# templates/schoolkids/_form.html.twig #}
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+<style>
+/* ---- Bootstrap 5 Tabs mit Pepp ---- */
+.nav-tabs {
+    border-bottom: none;
+    background: #f8fafc;
+    border-radius: 1rem 1rem 0 0;
+    box-shadow: 0 0.1rem 0.4rem #0001;
+}
+.nav-tabs .nav-link {
+    background: #f8fafc;
+    color: #444;
+    font-weight: 500;
+    border: none;
+    border-radius: 1rem 1rem 0 0;
+    margin-right: 2px;
+    transition: background 0.15s, color 0.15s;
+}
+.nav-tabs .nav-link.active, .nav-tabs .nav-link:focus {
+    background: #0d6efd !important;
+    color: #fff !important;
+    box-shadow: 0 0.2rem 0.4rem #08429811;
+}
+.tab-content {
+    background: #f8fafc;
+    border-radius: 0 0 1rem 1rem;
+    box-shadow: 0 0.1rem 0.4rem #0001;
+    padding: 2rem 1rem 1rem 1rem;
+    min-height: 360px;
+}
+
+/* Select2 für Adressfeld */
+.select2-container--default .select2-selection--single {
+    height: 2.9rem;
+    padding: 0.375rem 1rem;
+    border-radius: 0.7rem;
+    border: 1px solid #dee2e6;
+    font-size: 1.1rem;
+    background: #fff;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 2.1rem;
+    color: #222;
+}
+.select2-container--default .select2-results__option--highlighted {
+    background: #0d6efd;
+    color: #fff;
+}
+</style>
+
+<div class="container px-0">
+    <!-- Bootstrap Nav Tabs -->
+    <ul class="nav nav-tabs mb-4 bg-light rounded-4 shadow-sm" id="schoolkidsTabs" role="tablist" style="overflow-x:auto;">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-stammdaten" data-bs-toggle="tab" data-bs-target="#stammdaten" type="button" role="tab" aria-controls="stammdaten" aria-selected="true">📝 Stammdaten</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-kontakt" data-bs-toggle="tab" data-bs-target="#kontakt" type="button" role="tab" aria-controls="kontakt" aria-selected="false">☎️ Kontakt</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-begleitung" data-bs-toggle="tab" data-bs-target="#begleitung" type="button" role="tab" aria-controls="begleitung" aria-selected="false">🧑‍🦽 Begleitung & Hilfe</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-adresse" data-bs-toggle="tab" data-bs-target="#adresse" type="button" role="tab" aria-controls="adresse" aria-selected="false">🏠 Adresse</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-sonstiges" data-bs-toggle="tab" data-bs-target="#sonstiges" type="button" role="tab" aria-controls="sonstiges" aria-selected="false">🔧 Sonstiges</button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="schoolkidsTabsContent">
+        <!-- Stammdaten -->
+        <div class="tab-pane fade show active" id="stammdaten" role="tabpanel" aria-labelledby="tab-stammdaten">
+            <div class="row g-3">
+                <div class="col-md-6">{{ form_row(form.lastName) }}</div>
+                <div class="col-md-6">{{ form_row(form.firstName) }}</div>
+                <div class="col-md-6">{{ form_row(form.dateOfBirth) }}</div>
+                <div class="col-md-6">{{ form_row(form.school) }}</div>
+                <div class="col-12">{{ form_row(form.active) }}</div>
+            </div>
+        </div>
+
+        <!-- Kontakt -->
+        <div class="tab-pane fade" id="kontakt" role="tabpanel" aria-labelledby="tab-kontakt">
+            <div class="row g-3">
+                <div class="col-md-6">{{ form_row(form.contactPersonName) }}</div>
+                <div class="col-md-6">{{ form_row(form.contactPersonPhone) }}</div>
+                <div class="col-md-6">{{ form_row(form.kidPhone) }}</div>
+                <div class="col-md-6">{{ form_row(form.contactEmail) }}</div>
+                <div class="col-md-12">{{ form_row(form.contactPerson) }}</div>
+                {% if form.contactPersons is defined %}
+                    <div class="col-md-12">
+                        <label class="form-label">Weitere Kontaktpersonen</label>
+                        {{ form_widget(form.contactPersons) }}
+                        {{ form_errors(form.contactPersons) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Begleitung & Hilfsmittel -->
+        <div class="tab-pane fade" id="begleitung" role="tabpanel" aria-labelledby="tab-begleitung">
+            <div class="row g-3">
+                <div class="col-md-4">{{ form_row(form.needsAid) }}</div>
+                <div class="col-md-8">{{ form_row(form.aidType) }}</div>
+                <div class="col-md-4">{{ form_row(form.hasCompanion) }}</div>
+                <div class="col-md-8">{{ form_row(form.companionName) }}</div>
+                <div class="col-md-4">{{ form_row(form.requiredSeats) }}</div>
+            </div>
+        </div>
+
+        <!-- Adresse -->
+        <div class="tab-pane fade" id="adresse" role="tabpanel" aria-labelledby="tab-adresse">
+            <div class="row g-3">
+                <div class="col-md-6">{{ form_row(form.street) }}</div>
+                <div class="col-md-3">{{ form_row(form.streetNumber) }}</div>
+                <div class="col-md-3">{{ form_row(form.zip) }}</div>
+                <div class="col-md-6">{{ form_row(form.city) }}</div>
+                <div class="col-md-6">{{ form_row(form.district) }}</div>
+                <div class="col-12 mb-3">
+                    <label class="form-label fw-bold mb-1" for="{{ form.address.vars.id }}">Adresse (aus DB-Verzeichnis)</label>
+                    {{ form_widget(form.address, {'attr': {
+                        'class': 'form-control select2-address w-100',
+                        'data-placeholder': 'Adresse suchen...'
+                    }}) }}
+                    <div class="form-text">
+                        <span class="text-warning">Adresse einfach tippen, dann auswählen!</span>
+                    </div>
+                    {{ form_errors(form.address) }}
+                </div>
+                <div class="col-md-6">{{ form_row(form.latitude) }}</div>
+                <div class="col-md-6">{{ form_row(form.longitude) }}</div>
+            </div>
+        </div>
+
+        <!-- Sonstiges -->
+        <div class="tab-pane fade" id="sonstiges" role="tabpanel" aria-labelledby="tab-sonstiges">
+            <div class="row g-3">
+                <div class="col-12">{{ form_row(form.specialInfos) }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary btn-lg me-2">
+            💾 Speichern
+        </button>
+        <a href="{{ path('app_schoolkids_index') }}" class="btn btn-secondary btn-lg">
+            ❌ Abbrechen
+        </a>
+    </div>
+</div>
+{{ form_end(form) }}
+
+{# Scripts: Bootstrap5 Tab-Fallback, jQuery, Select2 #}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    // Tab-Persistenz (bleibt beim Fehler auf dem letzten Tab)
+    document.addEventListener('DOMContentLoaded', function() {
+        let triggerTabList = [].slice.call(document.querySelectorAll('#schoolkidsTabs button'))
+        triggerTabList.forEach(function(triggerEl) {
+            triggerEl.addEventListener('shown.bs.tab', function (event) {
+                localStorage.setItem('lastSchoolkidTab', event.target.id);
+            });
+        });
+        let lastTab = localStorage.getItem('lastSchoolkidTab');
+        if (lastTab) {
+            let lastTabButton = document.getElementById(lastTab);
+            if (lastTabButton) {
+                new bootstrap.Tab(lastTabButton).show();
+            }
+        }
+    });
+
+    // Select2 Address Autocomplete
+    $(function() {
+    var $addr = $('.select2-address');
+    var initId = $addr.val();
+    var initText = $addr.data('initial-text') || '';
+    $addr.select2({
+        placeholder: $addr.data('placeholder') || 'Adresse suchen...',
+        allowClear: true,
+        minimumInputLength: 3,
+        width: '100%',
+        ajax: {
+            url: "{{ path('api_address_suggest') }}",
+            dataType: 'json',
+            delay: 200,
+            data: function (params) {
+                return { q: params.term };
+            },
+            processResults: function (data) {
+                return { results: data.results };
+            }
+        },
+        templateResult: function (item) {
+            if (!item.id) return item.text;
+            return `<div>
+                <strong>${item.street ?? ''} ${item.houseNumber ?? ''}</strong><br>
+                <small>${item.postcode ?? ''} ${item.city ?? ''}${item.district ? ' (' + item.district + ')' : ''}</small>
+            </div>`;
+        },
+        templateSelection: function (item) {
+            return item.text || '';
+        }
+    });
+    // ---- Initialwert für Select2 setzen ----
+    if (initId && initText) {
+        var option = new Option(initText, initId, true, true);
+        $addr.append(option).trigger('change');
+    }
+});
+</script>

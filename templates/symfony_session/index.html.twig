@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SymfonySession index{% endblock %}
+
+{% block body %}
+    <h1>SymfonySession index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>SessId</th>
+                <th>SessData</th>
+                <th>SessLifetime</th>
+                <th>SessTime</th>
+                <th>UserId</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for symfony_session in symfony_sessions %}
+            <tr>
+                <td>{{ symfony_session.sessId }}</td>
+                <td>{{ symfony_session.sessData }}</td>
+                <td>{{ symfony_session.sessLifetime }}</td>
+                <td>{{ symfony_session.sessTime }}</td>
+                <td>{{ symfony_session.userId }}</td>
+                <td>
+                    <a href="{{ path('app_symfony_session_show', {'sessId': symfony_session.sessId}) }}">show</a>
+                    <a href="{{ path('app_symfony_session_edit', {'sessId': symfony_session.sessId}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_symfony_session_new') }}">Create new</a>
+{% endblock %}

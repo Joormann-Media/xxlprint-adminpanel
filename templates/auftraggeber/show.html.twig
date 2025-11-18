@@ -1,0 +1,47 @@
+{# templates/auftraggeber/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Client Details{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Client Details</h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Name</dt>
+                        <dd class="col-sm-8">{{ auftraggeber.name }}</dd>
+
+                        <dt class="col-sm-4">Contact Person</dt>
+                        <dd class="col-sm-8">{{ auftraggeber.ansprechpartner }}</dd>
+
+                        <dt class="col-sm-4">Street</dt>
+                        <dd class="col-sm-8">{{ auftraggeber.strasse }} {{ auftraggeber.strasseNr }}</dd>
+
+                        <dt class="col-sm-4">ZIP / City</dt>
+                        <dd class="col-sm-8">{{ auftraggeber.plz }} {{ auftraggeber.stadt }}</dd>
+
+                        <dt class="col-sm-4">Phone</dt>
+                        <dd class="col-sm-8">{{ auftraggeber.telefon }}</dd>
+
+                        <dt class="col-sm-4">E-Mail</dt>
+                        <dd class="col-sm-8">
+                            {% if auftraggeber.email %}
+                                <a href="mailto:{{ auftraggeber.email }}">{{ auftraggeber.email }}</a>
+                            {% endif %}
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer text-end">
+                    <a href="{{ path('app_auftraggeber_edit', {'id': auftraggeber.id}) }}" class="btn btn-warning">✏️ Edit</a>
+                    <a href="{{ path('app_auftraggeber_index') }}" class="btn btn-secondary ms-2">⬅️ Back to list</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

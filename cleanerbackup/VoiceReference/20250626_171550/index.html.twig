@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}VoiceReference index{% endblock %}
+
+{% block body %}
+    <h1>VoiceReference index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>RoomName</th>
+                <th>VoiceFileID</th>
+                <th>VoiceFilepath</th>
+                <th>VoiceFilewave</th>
+                <th>VoiceFilemeta</th>
+                <th>NewVoiceFilepath</th>
+                <th>NewVoiceFilewave</th>
+                <th>NewVoiceFilemeta</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for voice_reference in voice_references %}
+            <tr>
+                <td>{{ voice_reference.id }}</td>
+                <td>{{ voice_reference.roomName }}</td>
+                <td>{{ voice_reference.voiceFileID }}</td>
+                <td>{{ voice_reference.voiceFilepath }}</td>
+                <td>{{ voice_reference.voiceFilewave }}</td>
+                <td>{{ voice_reference.voiceFilemeta }}</td>
+                <td>{{ voice_reference.newVoiceFilepath }}</td>
+                <td>{{ voice_reference.newVoiceFilewave }}</td>
+                <td>{{ voice_reference.newVoiceFilemeta }}</td>
+                <td>
+                    <a href="{{ path('app_voice_reference_show', {'id': voice_reference.id}) }}">show</a>
+                    <a href="{{ path('app_voice_reference_edit', {'id': voice_reference.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_voice_reference_new') }}">Create new</a>
+{% endblock %}

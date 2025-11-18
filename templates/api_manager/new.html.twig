@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ApiManager{% endblock %}
+
+{% block body %}
+    <h1>Create new ApiManager</h1>
+
+    {{ include('api_manager/_form.html.twig') }}
+
+    <a href="{{ path('app_api_manager_index') }}">back to list</a>
+{% endblock %}

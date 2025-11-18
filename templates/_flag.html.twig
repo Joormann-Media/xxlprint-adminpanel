@@ -1,0 +1,28 @@
+{# _flag.html.twig - Flaggen-Helper für Sprachen #}
+
+{% macro renderLanguages(languages) %}
+    {% if languages %}
+        <div class="d-flex flex-wrap gap-1">
+            {% set flagMap = {
+                'de': 'germany.png',
+                'en': 'united-kingdom.png',
+                'fr': 'france.png',
+                'gr': 'greece.png',
+                'nl': 'netherland.png',
+                'tr': 'turkey.png'
+            } %}
+            {% for lang in languages %}
+                {% if flagMap[lang] is defined %}
+                    <img src="{{ asset('Flags/' ~ flagMap[lang]) }}" 
+                         alt="{{ lang }}" 
+                         title="{{ lang|upper }}" 
+                         style="width: 24px; height: 16px;">
+                {% else %}
+                    <span class="badge bg-secondary">{{ lang|upper }}</span>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <span class="text-muted">–</span>
+    {% endif %}
+{% endmacro %}

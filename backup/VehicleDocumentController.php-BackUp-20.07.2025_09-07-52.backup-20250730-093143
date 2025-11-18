@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\VehicleDocument;
+use App\Form\VehicleDocumentType;
+use App\Repository\VehicleDocumentRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+#[Route('/vehicle/document')]
+final class VehicleDocumentController extends AbstractController
+{
+    #[Route(name: 'app_vehicle_document_index', methods: ['GET'])]
+    public function index(VehicleDocumentRepository $vehicleDocumentRepository): Response
+    {
+        return $this->render('vehicle_document/index.html.twig', [
+            'vehicle_documents' => $vehicleDocumentRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/new', name: 'app_vehicle_document_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $vehicleDocument = new VehicleDocument();
+        $form = $this->createForm(VehicleDocumentType::class, $vehicleDocument);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($vehicleDocument);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_vehicle_document_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('vehicle_document/new.html.twig', [
+            'vehicle_document' => $vehicleDocument,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_vehicle_document_show', methods: ['GET'])]
+    public function show(VehicleDocument $vehicleDocument): Response
+    {
+        return $this->render('vehicle_document/show.html.twig', [
+            'vehicle_document' => $vehicleDocument,
+        ]);
+    }
+
+    #[Route('/{id}/edit', name: 'app_vehicle_document_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, VehicleDocument $vehicleDocument, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(VehicleDocumentType::class, $vehicleDocument);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_vehicle_document_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('vehicle_document/edit.html.twig', [
+            'vehicle_document' => $vehicleDocument,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_vehicle_document_delete', methods: ['POST'])]
+    public function delete(Request $request, VehicleDocument $vehicleDocument, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$vehicleDocument->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($vehicleDocument);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_vehicle_document_index', [], Response::HTTP_SEE_OTHER);
+    }
+}

@@ -1,0 +1,158 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Abmeldung (Schüler & Mitarbeiter){% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="card shadow-lg border-0 mb-4" style="background: rgba(225,240,255,0.95);">
+    <div class="card-body d-flex align-items-center py-4">
+        <span class="display-5 lh-1 text-primary me-3">
+            <i class="bi bi-person-x-fill"></i>
+        </span>
+        <div>
+            <h1 class="fw-bold mb-1">Abmeldung <span class="fs-4 fw-normal text-muted">Schüler &amp; Mitarbeiter</span></h1>
+            <div class="text-muted small">Trage hier eine Abwesenheit für ein Schulkind <b>oder</b> einen Mitarbeiter ein.</div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+    {% if submitted %}
+        <div class="alert alert-success">
+            Abmeldung für <b>{{ type == 'schoolkid' ? 'Schüler' : 'Mitarbeiter' }}</b> gespeichert!
+        </div>
+    {% endif %}
+
+    <div class="row g-4">
+        <!-- Schüler-Abmeldung -->
+        <div class="col-md-6">
+            <div class="card border-primary shadow-sm">
+                <div class="card-header bg-primary text-white">Schüler-Abmeldung</div>
+                <div class="card-body">
+                    {{ form_start(schoolkid_form) }}
+    <div class="mb-3">
+        {{ form_label(schoolkid_form.schoolkid, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(schoolkid_form.schoolkid, {'attr': {'class': 'form-select'}}) }}
+        {{ form_errors(schoolkid_form.schoolkid) }}
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ form_label(schoolkid_form.startAway, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(schoolkid_form.startAway, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(schoolkid_form.startAway) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form_label(schoolkid_form.endAway, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(schoolkid_form.endAway, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(schoolkid_form.endAway) }}
+        </div>
+    </div>
+    <div class="mb-3">
+        {{ form_label(schoolkid_form.reasonAway, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(schoolkid_form.reasonAway, {'attr': {'class': 'form-control', 'rows': 2}}) }}
+        {{ form_errors(schoolkid_form.reasonAway) }}
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ form_label(schoolkid_form.reportedBy, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(schoolkid_form.reportedBy, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(schoolkid_form.reportedBy) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form_label(schoolkid_form.reportMethod, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(schoolkid_form.reportMethod, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(schoolkid_form.reportMethod) }}
+        </div>
+    </div>
+    <div class="mb-3">
+        {{ form_label(schoolkid_form.receivedBy, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(schoolkid_form.receivedBy, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(schoolkid_form.receivedBy) }}
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ form_label(schoolkid_form.reportedAt, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(schoolkid_form.reportedAt, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(schoolkid_form.reportedAt) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form_label(schoolkid_form.createdAt, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(schoolkid_form.createdAt, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(schoolkid_form.createdAt) }}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Schüler abmelden</button>
+{{ form_end(schoolkid_form, {'render_rest': false}) }}
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Mitarbeiter-Abmeldung -->
+        <div class="col-md-6">
+            <div class="card border-info shadow-sm">
+                <div class="card-header bg-info text-white">Mitarbeiter-Abmeldung</div>
+                <div class="card-body">
+                    {{ form_start(employee_form) }}
+    <div class="mb-3">
+        {{ form_label(employee_form.employee, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(employee_form.employee, {'attr': {'class': 'form-select'}}) }}
+        {{ form_errors(employee_form.employee) }}
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ form_label(employee_form.startAway, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(employee_form.startAway, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(employee_form.startAway) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form_label(employee_form.endAway, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(employee_form.endAway, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(employee_form.endAway) }}
+        </div>
+    </div>
+    <div class="mb-3">
+        {{ form_label(employee_form.reasonAway, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(employee_form.reasonAway, {'attr': {'class': 'form-control', 'rows': 2}}) }}
+        {{ form_errors(employee_form.reasonAway) }}
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ form_label(employee_form.reportedBy, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(employee_form.reportedBy, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(employee_form.reportedBy) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form_label(employee_form.reportMethod, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(employee_form.reportMethod, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(employee_form.reportMethod) }}
+        </div>
+    </div>
+    <div class="mb-3">
+        {{ form_label(employee_form.receivedBy, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(employee_form.receivedBy, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(employee_form.receivedBy) }}
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ form_label(employee_form.reportedAt, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(employee_form.reportedAt, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(employee_form.reportedAt) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form_label(employee_form.createdAt, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(employee_form.createdAt, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(employee_form.createdAt) }}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-info w-100">Mitarbeiter abmelden</button>
+{{ form_end(employee_form, {'render_rest': false}) }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New IdeaPool{% endblock %}
+
+{% block body %}
+    <h1>Create new IdeaPool</h1>
+
+    {{ include('idea_pool/_form.html.twig') }}
+
+    <a href="{{ path('app_idea_pool_index') }}">back to list</a>
+{% endblock %}

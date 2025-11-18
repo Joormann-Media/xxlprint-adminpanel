@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Partner-Firmen{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">
+            <i class="bi bi-buildings"></i> Partner-Firmen
+        </h1>
+        <a href="{{ path('app_partner_company_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Neue Firma anlegen
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Slug</th>
+                    <th>Adresse</th>
+                    <th>PLZ</th>
+                    <th>Ort</th>
+                    <th>E-Mail</th>
+                    <th>Telefon</th>
+                    <th>Aktiv</th>
+                    <th>Notiz</th>
+                    <th>Erstellt</th>
+                    <th>Geändert</th>
+                    <th>Aktionen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for partner_company in partner_companies %}
+                    <tr>
+                        <td>{{ partner_company.id }}</td>
+                        <td>{{ partner_company.name }}</td>
+                        <td>{{ partner_company.slug }}</td>
+                        <td>{{ partner_company.address }}</td>
+                        <td>{{ partner_company.postalcode }}</td>
+                        <td>{{ partner_company.city }}</td>
+                        <td>{{ partner_company.contactEmail }}</td>
+                        <td>{{ partner_company.contactPhone }}</td>
+                        <td>
+                            {% if partner_company.isActive %}
+                                <span class="badge bg-success">Ja</span>
+                            {% else %}
+                                <span class="badge bg-danger">Nein</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ partner_company.note }}</td>
+                        <td>{{ partner_company.createdAt ? partner_company.createdAt|date('Y-m-d H:i') : '-' }}</td>
+                        <td>{{ partner_company.updatedAt ? partner_company.updatedAt|date('Y-m-d H:i') : '-' }}</td>
+                        <td class="text-nowrap">
+                            <a href="{{ path('app_partner_company_show', {'id': partner_company.id}) }}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{{ path('app_partner_company_edit', {'id': partner_company.id}) }}" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="13" class="text-center text-muted">Keine Partner-Firmen gefunden.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

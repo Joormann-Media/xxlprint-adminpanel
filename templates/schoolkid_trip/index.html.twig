@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SchoolkidTrip index{% endblock %}
+
+{% block body %}
+    <h1>SchoolkidTrip index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Weekday</th>
+                <th>TripType</th>
+                <th>PickupTime</th>
+                <th>WeekPattern</th>
+                <th>PickupAddress</th>
+                <th>Destination</th>
+                <th>Comment</th>
+                <th>SpecialTrip</th>
+                <th>ValidFrom</th>
+                <th>ValidTo</th>
+                <th>Canceled</th>
+                <th>CanceledAt</th>
+                <th>CancellationType</th>
+                <th>CancellationReason</th>
+                <th>CanceledBy</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for schoolkid_trip in schoolkid_trips %}
+            <tr>
+                <td>{{ schoolkid_trip.id }}</td>
+                <td>{{ schoolkid_trip.weekday }}</td>
+                <td>{{ schoolkid_trip.tripType }}</td>
+                <td>{{ schoolkid_trip.pickupTime ? schoolkid_trip.pickupTime|date('H:i:s') : '' }}</td>
+                <td>{{ schoolkid_trip.weekPattern }}</td>
+                <td>{{ schoolkid_trip.pickupAddress }}</td>
+                <td>{{ schoolkid_trip.destination }}</td>
+                <td>{{ schoolkid_trip.comment }}</td>
+                <td>{{ schoolkid_trip.specialTrip ? 'Yes' : 'No' }}</td>
+                <td>{{ schoolkid_trip.validFrom ? schoolkid_trip.validFrom|date('Y-m-d') : '' }}</td>
+                <td>{{ schoolkid_trip.validTo ? schoolkid_trip.validTo|date('Y-m-d') : '' }}</td>
+                <td>{{ schoolkid_trip.canceled ? 'Yes' : 'No' }}</td>
+                <td>{{ schoolkid_trip.canceledAt ? schoolkid_trip.canceledAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ schoolkid_trip.cancellationType }}</td>
+                <td>{{ schoolkid_trip.cancellationReason }}</td>
+                <td>{{ schoolkid_trip.canceledBy }}</td>
+                <td>
+                    <a href="{{ path('app_schoolkid_trip_show', {'id': schoolkid_trip.id}) }}">show</a>
+                    <a href="{{ path('app_schoolkid_trip_edit', {'id': schoolkid_trip.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="17">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_schoolkid_trip_new') }}">Create new</a>
+{% endblock %}

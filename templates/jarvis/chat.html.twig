@@ -1,0 +1,304 @@
+{% extends 'base.html.twig' %}
+
+{% if app.user and app.user.avatar and app.user.userDir %}
+    {% set avatarPath = 'user_data/' ~ app.user.userDir ~ '/avatar/' ~ app.user.avatar %}
+{% else %}
+    {% set avatarPath = 'gfx/profilpic_placeholder_ger.jpeg' %}
+{% endif %}
+{% set avatarUrl = asset(avatarPath) %}
+
+{% block title %}Jarvis Chat{% endblock %}
+
+
+
+{% block body %}
+<div class="jarvis-chat-wrapper">
+    <div class="jarvis-header">
+        <img src="/gfx/jarvis-logo.png" class="jarvis-avatar" alt="Jarvis Avatar">
+        <div>
+            <h2 class="m-0" style="color:#39c9fa;letter-spacing:1px;">Jarvis – Admin Chat</h2>
+            <div style="color:#7eb6cc;font-size:1.08em;">Frag Jarvis nach Code, IT-Wissen oder Monkey Island Witzen…</div>
+        </div>
+    </div>
+    <div class="jarvis-chat-history" id="jarvis-history">
+        {% for log in chat_logs|reverse %}
+            {# User-Prompt (rechts) #}
+            <div class="chat-row user">
+                <div class="chat-bubble chat-bubble-user">{{ log.prompt|e }}</div>
+                <img src="{{ avatarUrl }}" class="user-avatar" alt="Dein Avatar">
+
+
+
+            </div>
+            <div class="bubble-meta chat-row user">
+                <span class="badge bg-secondary">{{ log.createdAt|date('d.m.Y H:i') }}</span>
+                {% if log.status != 'done' %}
+                    <span class="badge bg-danger">{{ log.status|upper }}</span>
+                {% endif %}
+            </div>
+            {# Jarvis-Antwort (links) #}
+            <div class="chat-row jarvis">
+                <img src="/gfx/jarvis-logo.png" class="jarvis-avatar" alt="Jarvis Avatar">
+                <div class="chat-bubble chat-bubble-jarvis">{{ log.response|e }}</div>
+            </div>
+            <div class="bubble-meta chat-row jarvis">
+                <span class="badge bg-secondary">{{ log.createdAt|date('d.m.Y H:i') }}</span>
+                {% if log.status != 'done' %}
+                    <span class="badge bg-danger">{{ log.status|upper }}</span>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="text-muted">Noch keine Prompts geloggt.</div>
+        {% endfor %}
+        <div id="new-msg-anchor"></div>
+    </div>
+    <form id="jarvis-prompt-form" class="jarvis-input-bar" autocomplete="off">
+        <textarea name="prompt" id="jarvis-prompt" class="form-control" rows="1" placeholder="Schreib was an Jarvis…" required></textarea>
+        <button type="submit" class="jarvis-send-btn" id="jarvis-send-btn">
+            <i class="bi bi-send"></i> Senden
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    function scrollChatToEnd() {
+        let anchor = document.getElementById('new-msg-anchor');
+        if (anchor) anchor.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        scrollChatToEnd();
+
+        const form = document.getElementById('jarvis-prompt-form');
+        const textarea = document.getElementById('jarvis-prompt');
+        const btn = document.getElementById('jarvis-send-btn');
+
+        textarea.addEventListener('keydown', function(e) {
+            if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                form.dispatchEvent(new Event('submit', {cancelable:true}));
+            }
+        });
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const prompt = textarea.value.trim();
+            if (!prompt) return;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Sendet…';
+
+            // Bubble für „live“ Prompt und Jarvis-Tip-Bubble
+            const userBubbleRow = document.createElement('div');
+            userBubbleRow.className = "chat-row user";
+            userBubbleRow.innerHTML = '<img src="{{ avatarUrl }}" class="user-avatar" alt="Dein Avatar"><div><div class="chat-bubble chat-bubble-user">'+prompt+'</div><div class="bubble-meta">'+(new Date()).toLocaleString("de-DE", {hour12:false, hour:"2-digit", minute:"2-digit", day:"2-digit", month:"2-digit", year:"numeric"})+'</div></div>';
+
+
+            const jarvisBubbleRow = document.createElement('div');
+            jarvisBubbleRow.className = "chat-row jarvis";
+            jarvisBubbleRow.innerHTML = '<img src="/gfx/jarvis-logo.png" class="jarvis-avatar" alt="Jarvis Avatar"><div><div class="chat-bubble chat-bubble-jarvis"><span class="typing"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></span> Jarvis schreibt…</div><div class="bubble-meta"></div></div>';
+
+            let anchor = document.getElementById('new-msg-anchor');
+            anchor.parentNode.insertBefore(userBubbleRow, anchor);
+            anchor.parentNode.insertBefore(jarvisBubbleRow, anchor);
+            scrollChatToEnd();
+
+            fetch('{{ path("jarvis_prompt") }}', {
+                method: 'POST',
+                headers: {'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'prompt=' + encodeURIComponent(prompt)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    jarvisBubbleRow.querySelector('.chat-bubble-jarvis').innerHTML = data.response ? data.response.replace(/</g,"&lt;").replace(/>/g,"&gt;") : "<em>(Leere Antwort)</em>";
+                    jarvisBubbleRow.querySelector('.bubble-meta').textContent = (new Date()).toLocaleString('de-DE', {hour12:false, hour:"2-digit", minute:"2-digit", day:"2-digit", month:"2-digit", year:"numeric"});
+                    // Beispiel: Neuen Verlaufseintrag direkt unten anhängen
+const historyBox = document.getElementById('jarvis-history');
+const entry = document.createElement('div');
+entry.className = "chat-row user";
+entry.innerHTML = `
+    <div class="chat-bubble chat-bubble-user">${prompt}</div>
+    <img src="{{ avatarUrl }}" class="user-avatar" alt="Dein Avatar">
+`;
+historyBox.appendChild(entry);
+
+// Dann Jarvis-Antwort anhängen
+const jarvisEntry = document.createElement('div');
+jarvisEntry.className = "chat-row jarvis";
+jarvisEntry.innerHTML = `
+    <img src="/gfx/jarvis-logo.png" class="jarvis-avatar" alt="Jarvis Avatar">
+    <div class="chat-bubble chat-bubble-jarvis">${data.response ? data.response.replace(/</g,"&lt;").replace(/>/g,"&gt;") : "<em>(Leere Antwort)</em>"}</div>
+`;
+historyBox.appendChild(jarvisEntry);
+
+scrollChatToEnd();
+
+                } else {
+                    jarvisBubbleRow.querySelector('.chat-bubble-jarvis').innerHTML = '<span class="text-danger">Fehler: ' + (data.error || 'Unbekannter Fehler') + '</span>';
+                }
+            })
+            .catch(err => {
+                jarvisBubbleRow.querySelector('.chat-bubble-jarvis').innerHTML = '<span class="text-danger">Fehler bei der Kommunikation mit Jarvis.</span>';
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-send"></i> Senden';
+                textarea.value = '';
+                textarea.focus();
+            });
+        });
+    });
+    </script>
+        <style>
+        .jarvis-chat-wrapper {
+            max-width: 760px;
+            margin: 0.7em auto 0 auto;
+
+            height: 85vh;
+            display: flex;
+            flex-direction: column;
+            background: #181d24;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px #2225;
+            border: 2px solid #3ac8fb66;
+        }
+        .jarvis-header {
+            margin: 0.7em auto 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.3em 2em 1em 2em;
+            background: #181d24;
+            border-bottom: 1.5px solid #39c9fa55;
+            border-radius: 16px 16px 0 0;
+        }
+        /* Dein eigenes CSS so LATE wie möglich einfügen (im Template NACH Bootstrap) */
+.jarvis-chat-wrapper img.user-avatar,
+.jarvis-chat-wrapper img.jarvis-avatar {
+    width: 45px !important;             /* Oder deine Wunschgröße */
+    height: 45px !important;
+    border-radius: 50% !important;
+    border: 2px solid #39c9fa !important;
+    background: #fff !important;
+    object-fit: cover !important;
+    aspect-ratio: 1 / 1 !important;
+    display: block !important;
+    box-shadow: 0 0 4px #39c9fa99 !important;
+    margin-bottom: 4px !important;
+    padding: 0 !important;              /* Falls Bootstrap-Resets nerven */
+    max-width: none !important;         /* img-fluid killen */
+    max-height: none !important;
+}
+
+        .jarvis-chat-history {
+            flex: 1 1 0;
+            overflow-y: auto;
+            padding: 2em 1.2em 1em 1.2em;
+            background: #22262d;
+            display: flex;
+            flex-direction: column;
+            gap: 1.15em;
+            border-left: 2px solid #283848;
+            border-right: 2px solid #283848;
+        }
+        .chat-row {
+            display: flex;
+            align-items: flex-end;
+            width: 100%;
+        }
+        .chat-row.jarvis {
+            flex-direction: row;
+            justify-content: flex-start;
+        }
+        .chat-row.user {
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+        .chat-bubble {
+            max-width: 70%;
+            padding: 0.95em 1.25em;
+            border-radius: 20px;
+            font-size: 1.08em;
+            word-break: break-word;
+            white-space: pre-line;
+            box-shadow: 0 2px 8px #2225;
+            position: relative;
+        }
+        .chat-bubble-user {
+            background: linear-gradient(90deg, #38c9f9 60%, #218fff 100%);
+            color: #fff;
+            margin-right: 0.9em;
+            margin-left: 0;
+            border-bottom-right-radius: 8px;
+            border-top-right-radius: 20px;
+            border: 1.2px solid #39c9fa22;
+        }
+        .chat-bubble-jarvis {
+            background: #2c3038;
+            color: #e9f7ff;
+            margin-left: 0.9em;
+            margin-right: 0;
+            border-bottom-left-radius: 8px;
+            border-top-left-radius: 20px;
+            border: 1.2px solid #39c9fa55;
+        }
+        .bubble-meta {
+            font-size: .86em;
+            color: #7eb6cc;
+            margin: 0 0.7em 3px 0.7em;
+            min-width: 85px;
+            text-align: center;
+            align-self: flex-end;
+        }
+        .chat-row.user .user-avatar {
+            margin-left: .6em;
+        }
+        .chat-row.jarvis .jarvis-avatar {
+            margin-right: .6em;
+        }
+        .jarvis-input-bar {
+            background: #181d24;
+            border-top: 1.5px solid #39c9fa33;
+            padding: 1.1em 1.8em 1.1em 1.8em;
+            display: flex;
+            gap: 1em;
+            align-items: flex-end;
+            border-radius: 0 0 16px 16px;
+            position: sticky;
+            bottom: 0;
+        }
+        .jarvis-input-bar textarea {
+            resize: none;
+            min-height: 46px;
+            max-height: 120px;
+            font-size: 1.08em;
+            flex: 1 1 0;
+        }
+        .jarvis-send-btn {
+            padding: 0.65em 1.6em;
+            border-radius: 11px;
+            font-size: 1.16em;
+            background: linear-gradient(90deg,#2fc8fa,#007fff);
+            border: none;
+            color: #fff;
+            font-weight: 700;
+            box-shadow: 0 2px 8px #2224;
+        }
+        .typing { display: inline-block; vertical-align: middle; }
+        .typing-dot { background: #39c9fa; border-radius: 50%; width: 8px; height: 8px; margin: 0 2px; display: inline-block; opacity: 0.4; animation: typing 1.4s infinite; }
+        .typing-dot:nth-child(2) { animation-delay: .2s; }
+        .typing-dot:nth-child(3) { animation-delay: .4s; }
+        @keyframes typing {
+            0%   { opacity: 0.4; }
+            20%  { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+        @media (max-width: 900px) {
+            .jarvis-chat-wrapper { max-width: 99vw; }
+            .jarvis-header, .jarvis-input-bar { padding-left: 0.7em; padding-right: 0.7em; }
+            .chat-bubble { max-width: 95vw; }
+        }
+    </style>
+{% endblock %}

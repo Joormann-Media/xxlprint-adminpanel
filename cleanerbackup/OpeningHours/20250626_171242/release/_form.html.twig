@@ -1,0 +1,89 @@
+{# templates/release/_form.html.twig #}
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        ✏️ Release bearbeiten / erstellen
+    </div>
+
+    <div class="card-body">
+        {{ form_start(form) }}
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                {{ form_label(form.softwareId) }}
+                {{ form_widget(form.softwareId, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.softwareId) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.softwareName) }}
+                {{ form_widget(form.softwareName, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.softwareName) }}
+            </div>
+
+            <div class="col-md-4">
+                {{ form_label(form.version) }}
+                {{ form_widget(form.version, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.version) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.releaseDate) }}
+                {{ form_widget(form.releaseDate, {'attr': {'class': 'form-control', 'value': "now"|date("Y-m-d H:i:s"), 'readonly': 'readonly'}}) }}
+                {{ form_errors(form.releaseDate) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.platform) }}
+                {{ form_widget(form.platform, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.platform) }}
+            </div>
+
+            <div class="col-md-12">
+                {{ form_label(form.downloadUrl) }}
+                {{ form_widget(form.downloadUrl, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
+                {{ form_errors(form.downloadUrl) }}
+            </div>
+
+            <div class="col-md-12">
+                {{ form_label(form.releaseNotes) }}
+                {{ form_widget(form.releaseNotes, {'attr': {'class': 'form-control', 'rows': 3}}) }}
+                {{ form_errors(form.releaseNotes) }}
+            </div>
+
+            <div class="col-md-12">
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description) }}
+                {{ form_errors(form.description) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_label(form.releaseCreatedBy) }}
+                {{ form_widget(form.releaseCreatedBy, {'attr': {'class': 'form-control', 'value': app.user.username, 'readonly': 'readonly'}}) }}
+                {{ form_errors(form.releaseCreatedBy) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.releaseCreatedAt) }}
+                {{ form_widget(form.releaseCreatedAt, {'attr': {'class': 'form-control', 'value': "now"|date("Y-m-d H:i:s"), 'readonly': 'readonly'}}) }}
+                {{ form_errors(form.releaseCreatedAt) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_label(form.releaseDevStatus) }}
+                {{ form_widget(form.releaseDevStatus, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.releaseDevStatus) }}
+            </div>
+            <div class="col-md-6 d-flex align-items-center">
+                <div class="form-check mt-4">
+                    {{ form_widget(form.isPublic, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_label(form.isPublic, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                    {{ form_errors(form.isPublic) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+            <button class="btn btn-success">
+                💾 Speichern
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>

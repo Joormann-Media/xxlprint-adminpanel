@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+{% for label, messages in app.flashes %}
+{% for message in messages %}
+<div class="alert alert-{{ label == 'success' ? 'success' : (label == 'danger' ? 'danger' : 'info') }} alert-dismissible fade show" role="alert">
+{{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endfor %}
+    <div class="container mt-5 text-center">
+        <h1>👋 Du wurdest erfolgreich abgemeldet</h1>
+        
+        <img src="/gfx/tekath-control-schriftzug-black.png" alt="Tekath - Controll" class="logo-formular"><br>
+        
+        {{last_username}}
+        <a href="{{ path('app_login') }}" class="btn btn-primary mt-3">Zurück zum Login</a>
+    </div>
+{% endblock %}

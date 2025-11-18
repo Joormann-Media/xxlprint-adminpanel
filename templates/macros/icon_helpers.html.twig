@@ -1,0 +1,9 @@
+{% macro renderIcon(path, alt = 'Icon', size = 32) %}
+    {% set validPath = path is not empty ? (path starts with '/' ? path : '/' ~ path) : '/gfx/icons/no-icon.png' %}
+    <img src="{{ validPath }}"
+         alt="{{ alt }}"
+         height="{{ size }}"
+         loading="lazy"
+         class="img-thumbnail me-2"
+         onerror="this.onerror=null;this.src='/gfx/icons/no-icon.png';">
+{% endmacro %}

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Webhook-Details{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-9">
+            <div class="card shadow-lg border-0">
+                <div class="card-header d-flex justify-content-between align-items-center bg-white border-bottom-0">
+                    <h2 class="fs-4 m-0">Webhook Details</h2>
+                    <a href="{{ path('app_discord_webhook_history_index') }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left"></i> Zurück
+                    </a>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-4">Zeitpunkt</dt>
+                        <dd class="col-8">{{ discord_webhook_history.timestamp ? discord_webhook_history.timestamp|date('d.m.Y H:i') : '—' }}</dd>
+                        
+                        <dt class="col-4">Benutzer</dt>
+                        <dd class="col-8">{{ discord_webhook_history.username ? discord_webhook_history.username.username : '-' }}</dd>
+                        
+                        <dt class="col-4">Status</dt>
+                        <dd class="col-8">
+                            <span class="badge bg-{{ discord_webhook_history.hookstatus == 'success' ? 'success' : (discord_webhook_history.hookstatus == 'error' ? 'danger' : 'secondary') }}">
+                                {{ discord_webhook_history.hookstatus|upper }}
+                            </span>
+                        </dd>
+                        
+                        <dt class="col-4">Inhalt (Text/Code)</dt>
+                        <dd class="col-8">
+                            <pre class="bg-light rounded p-3 text-break" style="font-size:1rem;">{{ discord_webhook_history.hooktext }}</pre>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-light d-flex justify-content-end">
+                    <a href="{{ path('app_discord_webhook_history_edit', {'id': discord_webhook_history.id}) }}" class="btn btn-outline-primary me-2">
+                        <i class="bi bi-pencil"></i> Bearbeiten
+                    </a>
+                    {{ include('discord_webhook_history/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

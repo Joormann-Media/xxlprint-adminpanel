@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">👥 Benutzerprofile</h1>
+        <a href="{{ path('app_user_profile_new') }}" class="btn btn-primary">
+            ➕ Neues Profil
+        </a>
+    </div>
+
+    {% if user_profiles is empty %}
+        <div class="alert alert-info">Keine Benutzerprofile gefunden.</div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Avatar</th>
+                        <th>Name</th>
+                        <th>E-Mail</th>
+                        <th>Sprache</th>
+                        <th>Geburtstag</th>
+                        <th>Ort</th>
+                        <th>Aktionen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for profile in user_profiles %}
+                    <tr>
+                        <td>{{ profile.id }}</td>
+                        <td>
+                            {% if profile.user and profile.user.avatar %}
+                                <img src="{{ asset('user_data/' ~ profile.user.userDir ~ '/avatar/' ~ profile.user.avatar) }}" 
+                                     alt="Avatar" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                            {% else %}
+                                <img src="{{ asset('gfx/systemgfx/profilpic_placeholder_ger.jpeg') }}" 
+                                     alt="Avatar" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if profile.user %}
+                                {{ profile.user.prename }} {{ profile.user.name }}
+                            {% else %}
+                                <span class="text-muted">Kein Benutzer</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if profile.user %}
+                                <a href="mailto:{{ profile.user.email }}">{{ profile.user.email }}</a>
+                            {% else %}
+                                <span class="text-muted">–</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if profile.language %}
+                                <div class="d-flex flex-wrap gap-1">
+                                    {% set flagMap = {
+                                        'de': 'germany.png',
+                                        'en': 'united-kingdom.png',
+                                        'fr': 'france.png',
+                                        'gr': 'greece.png',
+                                        'nl': 'netherland.png',
+                                        'tr': 'turkey.png'
+                                    } %}
+                                    {% for lang in profile.language %}
+                                        {% if flagMap[lang] is defined %}
+                                            <img src="{{ asset('Flags/' ~ flagMap[lang]) }}" 
+                                                 alt="{{ lang }}" 
+                                                 title="{{ lang|upper }}" 
+                                                 style="width: 24px; height: 16px;">
+                                        {% else %}
+                                            <span class="text-muted">{{ lang|upper }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <span class="text-muted">–</span>
+                            {% endif %}
+                        </td>
+                        
+                        
+                        
+                        <td>
+                            {% if profile.birthdate %}
+                                {{ profile.birthdate|date('d.m.Y') }}
+                            {% else %}
+                                <span class="text-muted">–</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ profile.city ?: '-' }}
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{{ path('app_user_profile_show', {id: profile.id}) }}" class="btn btn-outline-primary">Ansehen</a>
+                                <a href="{{ path('app_user_profile_edit', {id: profile.id}) }}" class="btn btn-outline-secondary">Bearbeiten</a>
+                                <form method="post" action="{{ path('app_user_profile_delete', {id: profile.id}) }}" onsubmit="return confirm('Wirklich löschen?');" style="display: inline;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ profile.id) }}">
+                                    <button class="btn btn-outline-danger" type="submit">Löschen</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

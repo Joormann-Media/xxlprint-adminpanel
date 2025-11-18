@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}QrCodeEntry{% endblock %}
+
+{% block body %}
+    <h1>QrCodeEntry</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ qr_code_entry.id }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ qr_code_entry.content }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ qr_code_entry.type }}</td>
+            </tr>
+            <tr>
+                <th>ColorDark</th>
+                <td>{{ qr_code_entry.colorDark }}</td>
+            </tr>
+            <tr>
+                <th>ColorLight</th>
+                <td>{{ qr_code_entry.colorLight }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ qr_code_entry.createdAt ? qr_code_entry.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>FilePath</th>
+                <td>{{ qr_code_entry.filePath }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_qr_code_entry_index') }}">back to list</a>
+
+    <a href="{{ path('app_qr_code_entry_edit', {'id': qr_code_entry.id}) }}">edit</a>
+
+    {{ include('qr_code_entry/_delete_form.html.twig') }}
+{% endblock %}

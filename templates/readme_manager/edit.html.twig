@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ReadmeManager{% endblock %}
+
+{% block body %}
+    <h1>Edit ReadmeManager</h1>
+
+    {{ include('readme_manager/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_readme_manager_index') }}">back to list</a>
+
+    {{ include('readme_manager/_delete_form.html.twig') }}
+{% endblock %}

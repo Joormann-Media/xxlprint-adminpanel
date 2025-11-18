@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TranslationKey{% endblock %}
+
+{% block body %}
+    <h1>TranslationKey</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ translation_key.id }}</td>
+            </tr>
+            <tr>
+                <th>Key</th>
+                <td>{{ translation_key.key }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_translation_key_index') }}">back to list</a>
+
+    <a href="{{ path('app_translation_key_edit', {'id': translation_key.id}) }}">edit</a>
+
+    {{ include('translation_key/_delete_form.html.twig') }}
+{% endblock %}

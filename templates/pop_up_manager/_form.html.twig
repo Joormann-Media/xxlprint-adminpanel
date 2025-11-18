@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+<div class="bg-light border rounded p-4 mb-4 shadow-sm">
+    <h2 class="mb-0">📢 PopUp Manager</h2>
+    <p class="text-muted">{{ page_title ?? 'Formular bearbeiten' }}</p>
+
+
+
+</div>
+    {{ form_start(form) }}
+    <div class="text-end">
+        <a href="{{ back_link ?? path('app_pop_up_manager_index') }}" class="btn btn-warning">
+            <i class="bi bi-arrow-left"></i> Zurück
+        </a>
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i> Speichern
+        </button>
+    </div>
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            ✏️ Allgemeine Angaben
+        </div>
+        <div class="card-body row g-3">
+
+            <div class="col-md-6">
+                <label class="form-label">{{ form_label(form.popupName) }}</label>
+                {{ form_widget(form.popupName, {'attr': {'class': 'form-control'}}) }}
+                <div class="text-danger small">{{ form_errors(form.popupName) }}</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">{{ form_label(form.popupStatus) }}</label>
+                {{ form_widget(form.popupStatus, {'attr': {'class': 'form-select'}}) }}
+                <div class="text-danger small">{{ form_errors(form.popupStatus) }}</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">{{ form_label(form.popupActiveFrom) }}</label>
+                {{ form_widget(form.popupActiveFrom, {'attr': {'class': 'form-control'}}) }}
+                <div class="text-danger small">{{ form_errors(form.popupActiveFrom) }}</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">{{ form_label(form.popupExpires) }}</label>
+                {{ form_widget(form.popupExpires, {'attr': {'class': 'form-control'}}) }}
+                <div class="text-danger small">{{ form_errors(form.popupExpires) }}</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">{{ form_label(form.popupCategory) }}</label>
+                {{ form_widget(form.popupCategory, {'attr': {'class': 'form-control'}}) }}
+                <div class="text-danger small">{{ form_errors(form.popupCategory) }}</div>
+            </div>
+
+            <div class="col-md-6 d-none">
+                <label class="form-label">{{ form_label(form.popupUser) }}</label>
+                {{ form_widget(form.popupUser, {'attr': {'class': 'form-control'}}) }}
+                <div class="text-danger small">{{ form_errors(form.popupUser) }}</div>
+            </div>
+
+            <div class="col-md-6 d-none">
+                <label class="form-label">{{ form_label(form.popupCreate) }}</label>
+                {{ form_widget(form.popupCreate, {'attr': {'class': 'form-control'}}) }}
+                <div class="text-danger small">{{ form_errors(form.popupCreate) }}</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-secondary text-white">
+            📝 Beschreibung
+        </div>
+        <div class="card-body">
+            <label class="form-label">{{ form_label(form.popupDescription) }}</label>
+            {{ form_widget(form.popupDescription, {'attr': {'class': 'form-control'}}) }}
+            <div class="text-danger small">{{ form_errors(form.popupDescription) }}</div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white">
+            🧠 Popup-Inhalt
+        </div>
+        <div class="card-body">
+            {{ form_widget(form.popupContent) }}
+            <div class="text-danger small">{{ form_errors(form.popupContent) }}</div>
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ApikeyManager{% endblock %}
+
+{% block body %}
+    <h1>ApikeyManager</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ apikey_manager.id }}</td>
+            </tr>
+            <tr>
+                <th>Apiname</th>
+                <td>{{ apikey_manager.apiname }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_apikey_manager_index') }}">back to list</a>
+
+    <a href="{{ path('app_apikey_manager_edit', {'id': apikey_manager.id}) }}">edit</a>
+
+    {{ include('apikey_manager/_delete_form.html.twig') }}
+{% endblock %}

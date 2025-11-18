@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">{{ page_title }}</h1>
+
+    <form method="post" action="{{ path('admin_user_sessions_cleanup') }}" class="mb-4">
+        <button type="submit" class="btn btn-outline-danger btn-sm">
+            🧹 Abgelaufene Sessions bereinigen
+        </button>
+    </form>
+
+    <h2 class="h5 mt-4">👤 Benutzer-Sessions (user_sessions)</h2>
+    <div class="table-responsive mb-5">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Session-ID</th>
+                    <th>User</th>
+                    <th>IP</th>
+                    <th>Browser</th>
+                    <th>Erstellt</th>
+                    <th>Letzte Aktivität</th>
+                    <th>Aktiv</th>
+                    <th>Aktion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for session in usersessions %}
+                    <tr class="{{ not session.isActive ? 'table-warning' : '' }}">
+                        <td>{{ session.id }}</td>
+                        <td>{{ session.sessionId }}</td>
+                        <td>{{ session.user.username ?? '-' }}</td>
+                        <td>{{ session.ip ?? '—' }}</td>
+                        <td>{{ session.userAgent ? session.userAgent|slice(0, 40) ~ '…' : '—' }}</td>
+                        <td>{{ session.createdAt|date('d.m.Y H:i') }}</td>
+                        <td>{{ session.lastActiveAt ? session.lastActiveAt|date('d.m.Y H:i') : '—' }}</td>
+                        <td>{{ session.isActive ? '✅' : '❌' }}</td>
+                        <td>
+                            {% if session.isActive %}
+                                <form method="post" action="{{ path('admin_user_sessions_kill_user_session', { id: session.id }) }}" onsubmit="return confirm('Session wirklich beenden?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('kill_session_' ~ session.id) }}">
+                                    <button class="btn btn-sm btn-danger">Logout</button>
+                                </form>
+                            {% else %}
+                                <span class="text-muted small">Beendet</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center text-muted">Keine Benutzer-Sessions gefunden.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="h5">🧠 Symfony-Sessions (sessions)</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Session-ID</th>
+                    <th>User-ID</th>
+                    <th>Lifetime</th>
+                    <th>Letzte Aktivität</th>
+                    <th>Aktion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sess in sessions %}
+                    <tr>
+                        <td>{{ sess.sess_id }}</td>
+                        <td>{{ sess.user_id ?? '—' }}</td>
+                        <td>{{ sess.sess_lifetime }}s</td>
+                        <td>{{ sess.sess_time ? sess.sess_time|date('d.m.Y H:i') : '—' }}</td>
+                        <td>
+                            <form method="post" action="{{ path('admin_user_sessions_kill_symfony_session', { sessId: sess.sess_id }) }}" onsubmit="return confirm('Symfony-Session wirklich löschen?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('kill_symfony_session_' ~ sess.sess_id) }}">
+                                <button class="btn btn-sm btn-outline-danger">Kill</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">Keine aktiven Symfony-Sessions gefunden.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

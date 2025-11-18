@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ReadmeManager{% endblock %}
+
+{% block body %}
+    <h1>Create new ReadmeManager</h1>
+
+    {{ include('readme_manager/_form.html.twig') }}
+
+    <a href="{{ path('app_readme_manager_index') }}">back to list</a>
+{% endblock %}

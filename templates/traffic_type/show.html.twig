@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Verkehrsart anzeigen: {{ traffic_type.name }}{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h2 class="mb-0">
+            <i class="bi bi-signpost"></i> Verkehrsart: <span class="text-primary">{{ traffic_type.name }}</span>
+        </h2>
+        <div>
+            <a href="{{ path('app_traffic_type_edit', {'id': traffic_type.id}) }}" class="btn btn-primary me-2">
+                <i class="bi bi-pencil"></i> Bearbeiten
+            </a>
+            <a href="{{ path('app_traffic_type_index') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Zurück zur Übersicht
+            </a>
+        </div>
+    </div>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title mb-3">{{ traffic_type.name }}</h4>
+            <div class="mb-3">
+                {% if traffic_type.category == 'bus' %}
+                    <span class="badge bg-info text-dark me-2">Bus</span>
+                {% elseif traffic_type.category == 'truck' %}
+                    <span class="badge bg-warning text-dark me-2">LKW</span>
+                {% else %}
+                    <span class="badge bg-secondary me-2">Beides</span>
+                {% endif %}
+                <span class="badge bg-light text-dark">{{ traffic_type.regulation }}</span>
+            </div>
+            <div class="mb-3">
+                <strong>Beschreibung:</strong><br>
+                <span class="text-break">{{ traffic_type.description|nl2br }}</span>
+            </div>
+            {% if traffic_type.specialNotes %}
+            <div class="mb-3">
+                <strong>Hinweise:</strong>
+                <div class="alert alert-info py-2 px-3 mb-0">{{ traffic_type.specialNotes|nl2br }}</div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

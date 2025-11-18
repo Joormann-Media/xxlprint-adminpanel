@@ -1,0 +1,119 @@
+{# templates/module_manager/_form.html.twig #}
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+            <div class="card shadow rounded-4">
+                <div class="card-header bg-dark text-light d-flex align-items-center">
+                    <i class="bi bi-hammer me-2"></i>
+                    {{ module_manager.id is defined and module_manager.id ? 'Modul bearbeiten' : 'Neues Modul anlegen' }}
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {{ form_label(form.name, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Name des Moduls'}}) }}
+                                {{ form_errors(form.name) }}
+                            </div>
+                            <div class="mb-3">
+    {{ form_label(form.create, null, {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.create, {'attr': {'class': 'form-control', 'readonly': true}}) }}
+    {{ form_errors(form.create) }}
+</div>
+<div class="mb-3">
+    {{ form_label(form.lastUpdate, null, {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.lastUpdate, {'attr': {'class': 'form-control', 'readonly': true}}) }}
+    {{ form_errors(form.lastUpdate) }}
+</div>
+
+                            <div class="mb-3">
+                                {{ form_label(form.logId, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.logId, {'attr': {'class': 'form-control', 'placeholder': 'Log-ID'}}) }}
+                                {{ form_errors(form.logId) }}
+                            </div>
+                            <div class="mb-3">
+    {{ form_label(form.correspondingFiles, null, {'label_attr': {'class': 'form-label'}}) }}
+    <div class="input-group">
+        {{ form_widget(form.correspondingFiles, {'attr': {'readonly': true, 'id': 'correspondingFilesInput'}}) }}
+
+        <button type="button" class="btn btn-outline-secondary" onclick="openFilePickerModal()">
+            <i class="bi bi-folder2-open"></i> Dateien auswählen
+        </button>
+    </div>
+    {{ form_errors(form.correspondingFiles) }}
+    <div id="correspondingFilesPreview" class="small text-secondary mt-2"></div>
+</div>
+
+                            <div class="mb-3">
+                                {{ form_label(form.moduleID, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.moduleID, {'attr': {'class': 'form-control', 'placeholder': 'Module ID'}}) }}
+                                {{ form_errors(form.moduleID) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {{ form_label(form.status, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.status, {'attr': {'class': 'form-select'}}) }}
+                                {{ form_errors(form.status) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.mappedEntitys, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.mappedEntitys, {'attr': {'class': 'form-control', 'placeholder': 'Gemappte Entities'}}) }}
+                                {{ form_errors(form.mappedEntitys) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.readme, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.readme, {'attr': {'class': 'form-control', 'placeholder': 'Readme'}}) }}
+                                {{ form_errors(form.readme) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.description, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Beschreibung', 'rows': 4}}) }}
+                                {{ form_errors(form.description) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.maintainer, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.maintainer, {'attr': {'class': 'form-select', 'multiple': 'multiple'}}) }}
+                                {{ form_errors(form.maintainer) }}
+                            </div>
+                            <div class="mb-3">
+    {{ form_label(form.dependencies, null, {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.dependencies, {'attr': {'class': 'form-control', 'placeholder': 'Enter dependencies'}}) }}
+    {{ form_errors(form.dependencies) }}
+</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end bg-light">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save"></i>
+                        Speichern
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}
+<script>
+    function openFilePickerModal() {
+        // Debugging: Log selected files to the console
+        const selectedFiles = ['file1.txt', 'file2.txt']; // Example
+        console.log('Selected files:', selectedFiles);
+
+        // Populate the input field with JSON data
+        document.getElementById('correspondingFilesInput').value = JSON.stringify(selectedFiles);
+    }
+      document.addEventListener('DOMContentLoaded', () => {
+        initFilePicker?.();
+    });
+</script>
+<script>
+    // Sicherheitshalber prüfen, ob die Funktion verfügbar ist
+    if (typeof initFilePicker === 'function') {
+        initFilePicker();
+    } else {
+        console.warn("initFilePicker is not defined – JS wurde evtl. nicht geladen.");
+    }
+</script>

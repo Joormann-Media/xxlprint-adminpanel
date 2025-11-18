@@ -1,0 +1,23 @@
+.bootstrap-modal .modal {
+    display: block;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Bootstrap nur im Modal zulassen */
+.bootstrap-modal .modal-content {
+    border-radius: 8px;
+    background-color: white;
+}
+
+/* Alle anderen Bootstrap-Regeln mit `.bootstrap-modal` scopen */
+.bootstrap-modal .btn {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Falls nötig, Bootstrap außerhalb des Modals deaktivieren */
+:not(.bootstrap-modal) .modal,
+:not(.bootstrap-modal) .btn {
+    all: unset;
+}

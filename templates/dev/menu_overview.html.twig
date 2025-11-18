@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>🧩 Menü Debug Übersicht</h1>
+
+    <h3>🧪 HARDCODE-CHECK Menü 13</h3>
+    {% set test_menu = structured.menus|filter(m => m.id == 13) %}
+    {{ dump(test_menu|first) }}
+
+    <!-- Strukturierte Menüs -->
+    <div style="flex: 1;">
+        <h2>🧠 Struktur laut Service</h2>
+        {% for menu in structured.menus %}
+            <div style="margin-bottom: 20px; border: 1px solid #000; padding: 10px;">
+                <strong>📁 {{ menu.title }}</strong><br>
+                ID: {{ menu.id }}
+                {% if menu.items is not empty %}
+                    <ul>
+                        {% for item in menu.items %}
+                            <li>🔹 {{ item.title }} ({{ item.route }})</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p style="color: grey; margin-left: 15px;">Keine direkten Items</p>
+                {% endif %}
+                {% if menu.sub_menus is not empty %}
+                    <ul>
+                        {% for sub in menu.sub_menus %}
+                            <li>
+                                📂 <strong>{{ sub.title }}</strong>
+                                {% if sub.items is not empty %}
+                                    <ul>
+                                        {% for subItem in sub.items %}
+                                            <li>🔸 {{ subItem.title }} ({{ subItem.route }})</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <p style="color: grey; margin-left: 15px;">Keine Sub-Items</p>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p style="color: grey; margin-left: 15px;">Keine Sub-Menüs</p>
+                {% endif %}
+            </div>
+        {% else %}
+            <p>Keine Menüs gefunden.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Debug-Spalte -->
+    <div style="flex: 1;">
+        <h2>🪵 Debug Log</h2>
+        <ul>
+            {% for log in structured.debug %}
+                <li>
+                    <strong>{{ log.context }}</strong><br>
+                    {% for key, val in log %}
+                    {% if key != 'context' %}
+                        {{ key }}: 
+                        {% if val is iterable %}
+                            <pre>{{ dump(val) }}</pre>
+                        {% else %}
+                            {{ val }}
+                        {% endif %}
+                        <br>
+                    {% endif %}
+                {% endfor %}
+                
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+   
+    <h2>Debug Log:</h2>
+    <ul>
+        {% for log in debug %}
+            <li>{{ log.context }} - {{ log.title }} ({{ log.id }})</li>
+        {% endfor %}
+    </ul>
+
+
+{% endblock %}

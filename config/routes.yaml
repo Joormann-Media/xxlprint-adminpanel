@@ -1,0 +1,21 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+get_time:
+    path: /get-time
+    controller: App\Controller\TimeController::getTime
+
+# config/routes.yaml
+app.swagger_ui:
+    path: /api/doc
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+
+# config/routes.yaml
+api_validate_auth:
+    path: /api/validate-auth
+    controller: App\Controller\Api\AuthValidationController::validate
+    methods: [POST]
+

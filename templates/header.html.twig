@@ -1,0 +1,177 @@
+{# templates/_header.html.twig #}
+
+
+{# === DESKTOP HEADER === #}
+<header class="d-none d-md-block header_background  shadow-sm">
+    <div class="container-fluid py-2 px-3">
+        <div class="row align-items-center">
+            <!-- Logo -->
+            <div class="col-md-3 d-flex align-items-center">
+                <img src="/gfx/xxl_logo_clean.png" alt="Logo" class="img-fluid bg-white p-1 rounded" style="max-height: 60px;">
+            </div>
+
+                       <div class="col-md-8 d-flex justify-content-center align-items-center gap-3">
+                <h1 class="fs-5 fw-semibold text-light text-truncate m-0" style="min-width:0; flex:0 1 auto;">
+                    {{ page_title }}
+                </h1>
+                <form class="d-flex position-relative" autocomplete="off" style="width:280px;">
+                    <input id="admin-search" class="form-control" type="search" placeholder="Suchen…" aria-label="Suche" autocomplete="off" style="width:100%;">
+                    <div id="admin-search-results" class="dropdown-menu w-100 p-0" style="max-height:300px; overflow-y:auto;"></div>
+                </form>
+            </div>
+
+
+
+            <!-- User-Navigation -->
+            <div class="col-md-2 d-flex justify-content-end align-items-center gap-2 Custom-Header_User">
+                {% if app.user %}
+                <!-- Nachrichten/News-Icon -->
+                    <a href="{{ path('app_message_inbox') }}" class="position-relative ms-1 me-1">
+    <img src="/gfx/SystemGFX/Icons/message-list.png" alt="Nachrichten" height="26">
+    <span id="globalMessageBadge"
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow"
+          style="font-size:0.9em; z-index:10; min-width:22px; display: {{ unreadMessagesCount > 0 or urgentNewsCount > 0 ? 'inline-block' : 'none' }};">
+        {{ unreadMessagesCount > 0 ? unreadMessagesCount : '' }}{{ urgentNewsCount > 0 ? '!' : '' }}
+        <span class="visually-hidden">Neue Nachrichten</span>
+    </span>
+</a>
+
+                <!-- User-Icon -->
+                    <span class="text-dark small d-none d-lg-inline">👋 Hallo, {{ app.user.username }}</span>
+                    <a href="{{ path('app_home') }}"><img src="/gfx/shortcode/home.png" alt="Home" height="26"></a>
+                    <a href="{{ path('app_user_show', { id: app.user.id }) }}"><img src="/gfx/icon-username-black.png" alt="Account" height="26"></a>
+                    <a href="{{ path('app_logout') }}"><img src="/gfx/icon-logout-black.png" alt="Logout" height="26" ></a>
+                {% else %}
+                    <a href="{{ path('app_login') }}"><img src="/gfx/icon-login-black.png" alt="Login" height="26"></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
+
+{# Mobiler Header (d-block d-md-none) #}
+<header class="d-block d-md-none header_background ">
+    <div class="container-fluid d-flex justify-content-between align-items-center px-3 py-2">
+        <img src="/gfx/xxl_logo_clean.png"
+             alt="Logo"
+             class="img-fluid"
+             style="max-height: 36px; background-color: rgb(0, 0, 0);">
+
+                    <div class="col-md-8 d-flex justify-content-center align-items-center gap-3">
+                
+                <form class="d-flex position-relative" autocomplete="off" style="width:280px;">
+                    <input id="admin-search" class="form-control" type="search" placeholder="Suchen…" aria-label="Suche" autocomplete="off" style="width:100%;">
+                    <div id="admin-search-results" class="dropdown-menu w-100 p-0" style="max-height:300px; overflow-y:auto;"></div>
+                </form>
+            </div>
+
+        <div class="d-flex align-items-center gap-2 ms-2 Custom-Header_User">
+            {% if app.user %}
+                <a href="{{ path('app_home') }}">
+                    <img src="/gfx/shortcode/home.png" alt="Home" height="24">
+                </a>
+                <a href="{{ path('app_user_show', { id: app.user.id }) }}">
+                    <img src="/gfx/icon-username-black.png" alt="Account" height="24">
+                </a>
+                <a href="{{ path('app_logout') }}">
+                    <img src="/gfx/icon-logout-black.png" alt="Logout" height="24">
+                </a>
+            {% else %}
+                <a href="{{ path('app_login') }}">
+                    <img src="/gfx/icon-login-black.png" alt="Login" height="24">
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+
+
+{# Am Ende von _header.html.twig einfügen #}
+<style>
+#admin-search-results {
+    position: absolute;
+    z-index: 3000;
+    left: 0; top: 100%;
+    min-width: 320px;
+    max-width: 600px;
+    width: 450px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    background: #222;
+    display: none;
+}
+#admin-search-results .dropdown-item {
+    cursor: pointer;
+    color: #fff;
+    border-bottom: 1px solid #333;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    padding-right: 2rem;
+}
+#admin-search-results .dropdown-item:last-child {
+    border-bottom: none;
+}
+#admin-search-results .text-muted,
+#admin-search-results .text-danger {
+    color: #aaa !important;
+}
+#admin-search-results .badge {
+    background: #6c757d;
+}
+
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('admin-search');
+    const resultBox = document.getElementById('admin-search-results');
+    let debounceTimeout = null;
+
+    if (!searchInput) return; // Safety
+
+    searchInput.addEventListener('input', function () {
+        clearTimeout(debounceTimeout);
+        const query = this.value.trim();
+        if (!query) {
+            resultBox.style.display = "none";
+            resultBox.innerHTML = "";
+            return;
+        }
+        debounceTimeout = setTimeout(() => {
+            fetch(`/admin/search?q=${encodeURIComponent(query)}`)
+                .then(r => r.json())
+                .then(results => renderSearchResults(results))
+                .catch(() => { 
+                    resultBox.innerHTML = "<div class='dropdown-item text-danger'>Fehler bei der Suche</div>"; 
+                    resultBox.style.display = "block";
+                });
+        }, 300);
+    });
+
+    function renderSearchResults(results) {
+        if (!results.length) {
+            resultBox.innerHTML = "<div class='dropdown-item text-muted'>Keine Treffer</div>";
+            resultBox.style.display = "block";
+            return;
+        }
+        resultBox.innerHTML = results.map(item => `
+            <a class="dropdown-item d-flex align-items-center" href="${item.url ?? '#'}" title="${item.name}">
+                <span class="badge bg-secondary me-2">${item.type}</span>
+                <span>${item.name}</span>
+            </a>
+            `).join('');
+        resultBox.style.display = "block";
+    }
+
+    // Dropdown schließt bei Klick außerhalb oder Escape
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !resultBox.contains(e.target)) {
+            resultBox.style.display = "none";
+        }
+    });
+    searchInput.addEventListener('keydown', function(e){
+        if(e.key === "Escape") resultBox.style.display = "none";
+    });
+});
+</script>

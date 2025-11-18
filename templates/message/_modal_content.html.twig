@@ -1,0 +1,21 @@
+{# templates/message/_modal_content.html.twig #}
+<div class="mb-2 text-muted small">
+    von <strong>{{ message.sender.username }}</strong>
+    am {{ message.createdAt|date('d.m.Y H:i') }}
+</div>
+<hr>
+<div class="mb-3 fs-5">
+    {{ message.content|nl2br }}
+</div>
+
+{% if message.attachments|length > 0 %}
+    <hr>
+    <div>
+        <strong>Dateianhänge:</strong>
+        <ul>
+            {% for att in message.attachments %}
+                <li><a href="{{ asset(att.filepath) }}" target="_blank">{{ att.filename }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

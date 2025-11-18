@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New TranslationKey{% endblock %}
+
+{% block body %}
+    <h1>Create new TranslationKey</h1>
+
+    {{ include('translation_key/_form.html.twig') }}
+
+    <a href="{{ path('app_translation_key_index') }}">back to list</a>
+{% endblock %}

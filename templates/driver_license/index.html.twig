@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DriverLicense index{% endblock %}
+
+{% block body %}
+    <h1>DriverLicense index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>LastName</th>
+                <th>FirstName</th>
+                <th>BirthPlace</th>
+                <th>BirthDate</th>
+                <th>IssuedAt</th>
+                <th>ExpiresAt</th>
+                <th>Authority</th>
+                <th>LicenseNumber</th>
+                <th>SignatureImage</th>
+                <th>Address</th>
+                <th>ClassAM</th>
+                <th>ClassA1</th>
+                <th>ClassA2</th>
+                <th>ClassA</th>
+                <th>ClassB</th>
+                <th>ClassBE</th>
+                <th>ClassC1</th>
+                <th>ClassC1E</th>
+                <th>ClassC</th>
+                <th>ClassCE</th>
+                <th>ClassD1</th>
+                <th>ClassD1E</th>
+                <th>ClassD</th>
+                <th>ClassDE</th>
+                <th>ClassL</th>
+                <th>ClassM</th>
+                <th>ClassT</th>
+                <th>Remarks</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for driver_license in driver_licenses %}
+            <tr>
+                <td>{{ driver_license.id }}</td>
+                <td>{{ driver_license.lastName }}</td>
+                <td>{{ driver_license.firstName }}</td>
+                <td>{{ driver_license.birthPlace }}</td>
+                <td>{{ driver_license.birthDate ? driver_license.birthDate|date('Y-m-d') : '' }}</td>
+                <td>{{ driver_license.issuedAt ? driver_license.issuedAt|date('Y-m-d') : '' }}</td>
+                <td>{{ driver_license.expiresAt ? driver_license.expiresAt|date('Y-m-d') : '' }}</td>
+                <td>{{ driver_license.authority }}</td>
+                <td>{{ driver_license.licenseNumber }}</td>
+                <td>{{ driver_license.signatureImage }}</td>
+                <td>{{ driver_license.address }}</td>
+                <td>{{ driver_license.classAM ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classA1 ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classA2 ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classA ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classB ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classBE ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classC1 ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classC1E ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classC ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classCE ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classD1 ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classD1E ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classD ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classDE ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classL ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classM ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.classT ? 'Yes' : 'No' }}</td>
+                <td>{{ driver_license.remarks }}</td>
+                <td>{{ driver_license.createdAt ? driver_license.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ driver_license.updatedAt ? driver_license.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_driver_license_show', {'id': driver_license.id}) }}">show</a>
+                    <a href="{{ path('app_driver_license_edit', {'id': driver_license.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="32">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_driver_license_new') }}">Create new</a>
+{% endblock %}

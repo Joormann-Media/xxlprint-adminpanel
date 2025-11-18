@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LogHistory{% endblock %}
+
+{% block body %}
+    <h1>LogHistory</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ log_history.id }}</td>
+            </tr>
+            <tr>
+                <th>Target</th>
+                <td>{{ log_history.target }}</td>
+            </tr>
+            <tr>
+                <th>UserID</th>
+                <td>{{ log_history.userID }}</td>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <td>{{ log_history.username }}</td>
+            </tr>
+            <tr>
+                <th>Timestamp</th>
+                <td>{{ log_history.timestamp ? log_history.timestamp|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Logdump</th>
+                <td>{{ log_history.logdump }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_log_history_index') }}">back to list</a>
+
+    <a href="{{ path('app_log_history_edit', {'id': log_history.id}) }}">edit</a>
+
+    {{ include('log_history/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DownloadToken index{% endblock %}
+
+{% block body %}
+    <h1>DownloadToken index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Token</th>
+                <th>ExpiresAt</th>
+                <th>Used</th>
+                <th>UsedAt</th>
+                <th>Ip</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for download_token in download_tokens %}
+            <tr>
+                <td>{{ download_token.id }}</td>
+                <td>{{ download_token.token }}</td>
+                <td>{{ download_token.expiresAt ? download_token.expiresAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ download_token.used ? 'Yes' : 'No' }}</td>
+                <td>{{ download_token.usedAt }}</td>
+                <td>{{ download_token.ip }}</td>
+                <td>
+                    <a href="{{ path('app_download_token_show', {'id': download_token.id}) }}">show</a>
+                    <a href="{{ path('app_download_token_edit', {'id': download_token.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_download_token_new') }}">Create new</a>
+{% endblock %}

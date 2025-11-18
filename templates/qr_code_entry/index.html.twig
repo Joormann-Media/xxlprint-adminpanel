@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}QrCodeEntry index{% endblock %}
+
+{% block body %}
+    <h1>QrCodeEntry index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Content</th>
+                <th>Type</th>
+                <th>ColorDark</th>
+                <th>ColorLight</th>
+                <th>CreatedAt</th>
+                <th>FilePath</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qr_code_entry in qr_code_entries %}
+            <tr>
+                <td>{{ qr_code_entry.id }}</td>
+                <td>{{ qr_code_entry.content }}</td>
+                <td>{{ qr_code_entry.type }}</td>
+                <td>{{ qr_code_entry.colorDark }}</td>
+                <td>{{ qr_code_entry.colorLight }}</td>
+                <td>{{ qr_code_entry.createdAt ? qr_code_entry.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ qr_code_entry.filePath }}</td>
+                <td>
+                    <a href="{{ path('app_qr_code_entry_show', {'id': qr_code_entry.id}) }}">show</a>
+                    <a href="{{ path('app_qr_code_entry_edit', {'id': qr_code_entry.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_qr_code_entry_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ReadmeManager{% endblock %}
+
+{% block body %}
+    <h1>ReadmeManager</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ readme_manager.id }}</td>
+            </tr>
+            <tr>
+                <th>Target</th>
+                <td>{{ readme_manager.target }}</td>
+            </tr>
+            <tr>
+                <th>TargetId</th>
+                <td>{{ readme_manager.targetId }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ readme_manager.title }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ readme_manager.content }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ readme_manager.status }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ readme_manager.createdAt ? readme_manager.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_readme_manager_index') }}">back to list</a>
+
+    <a href="{{ path('app_readme_manager_edit', {'id': readme_manager.id}) }}">edit</a>
+
+    {{ include('readme_manager/_delete_form.html.twig') }}
+{% endblock %}

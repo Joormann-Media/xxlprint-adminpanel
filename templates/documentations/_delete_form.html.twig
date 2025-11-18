@@ -1,0 +1,10 @@
+<form method="post" action="{{ path('app_documentations_delete', {'id': documentation.id}) }}" 
+      onsubmit="return confirm('Are you sure you want to delete this item?');" style="display:inline;">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ documentation.id) }}">
+    <button class="{{ button_class|default('btn btn-danger') }}" title="Delete">
+        {% if icon is defined and icon %}
+            <i class="bi bi-trash"></i>
+        {% endif %}
+        Delete
+    </button>
+</form>

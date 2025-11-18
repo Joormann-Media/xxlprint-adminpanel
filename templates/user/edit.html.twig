@@ -1,0 +1,243 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container py-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">👤 Benutzer-Account bearbeiten</h3>
+        </div>
+        <div class="card-body">
+            {{ form_start(form, {'attr': {'class': 'row g-4'}}) }}
+
+            {% if form.vars.value.avatar and form.vars.value.userDir %}
+                <div class="col-12 text-center">
+                    <img src="{{ asset('user_data/' ~ form.vars.value.userDir ~ '/avatar/' ~ form.vars.value.avatar) }}"
+                         alt="Benutzeravatar"
+                         class="rounded-circle shadow mb-4"
+                         style="width: 120px; height: 120px; object-fit: cover;">
+                </div>
+            {% endif %}
+            <div class="col-12 mt-4">
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        💾 Speichern
+                    </button>
+                    <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary">
+                        ⬅️ Zurück
+                    </a>
+                </div>
+            </div>
+            
+            <ul class="nav nav-tabs mb-4" id="userTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#zugang" type="button" role="tab">🔐 Zugang</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#person" type="button" role="tab">👤 Person</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#sicherheit" type="button" role="tab">🛡️ Sicherheit</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#rollen" type="button" role="tab">🎭 Rollen</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#permissions" type="button" role="tab">🔑 Berechtigungen</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#system" type="button" role="tab">⚙️ System</button>
+                </li>
+            </ul>
+
+            {% set isAdmin = is_granted('ROLE_USERADMIN') or is_granted('ROLE_SYSTEM_OWNER') or is_granted('ROLE_SUPREME_ADMINISTRATOR') %}
+
+
+
+            <div class="tab-content col-12">
+                {# 🔐 Zugang #}
+                <div class="tab-pane fade show active" id="zugang" role="tabpanel">
+    <div class="row g-3">
+        <div class="col-md-6">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'readonly': not isAdmin}}) }}
+            {{ form_errors(form.email) }}
+
+            {{ form_label(form.mobile) }}
+            {{ form_widget(form.mobile, {'attr': {'class': 'form-control','readonly': (form.mobile.vars.data is not empty and not isAdmin)}}) }}
+            {{ form_errors(form.mobile) }}
+
+
+            {{ form_label(form.mobileVerified) }}
+            {{ form_widget(form.mobileVerified, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.mobileVerified) }}
+
+            {% if not form.mobileVerified.vars.data %}
+                <a href="{{ path('app_verify_mobile') }}" class="btn btn-outline-primary btn-sm mt-2">
+                📤 SMS-Code senden
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_label(form.username) }}
+            {{ form_widget(form.username, {'attr': {'class': 'form-control', 'readonly': not isAdmin}}) }}
+            {{ form_errors(form.username) }}
+
+            {{ form_label(form.customerId) }}
+            {{ form_widget(form.customerId, {'attr': {'class': 'form-control', 'readonly': not isAdmin}}) }}
+            {{ form_errors(form.customerId) }}<br>
+            {{ '[[shortcode_button tag="password_reset" id=3 modal=true]]' | shortcode | raw }}
+            {{ '[[shortcode_button tag="PIN-Reset" id=4 modal=true]]' | shortcode | raw }}
+        </div>
+    </div>
+</div>
+
+                
+
+                {# 👤 Person #}
+                <div class="tab-pane fade" id="person" role="tabpanel">
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-4">
+                            {{ form_label(form.prename) }}
+                            {{ form_widget(form.prename, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.name) }}
+                            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.avatar) }}
+                            {{ form_widget(form.avatar, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                {# 🛡️ Sicherheit #}
+                <div class="tab-pane fade" id="sicherheit" role="tabpanel">
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-4">
+                            {{ form_label(form.isTwoFactorEnabled) }}
+                            {{ form_widget(form.isTwoFactorEnabled, {'attr': {'class': 'form-select'}}) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.twoFactorSecret) }}
+                            {{ form_widget(form.twoFactorSecret, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.failedAttempts) }}
+                            {{ form_widget(form.failedAttempts, {'attr': {'class': 'form-control', 'readonly': not isAdmin}}) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.isActive) }}
+                            {{ form_widget(form.isActive, {'attr': {'class': 'form-select', 'readonly': not isAdmin}}) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.isLocked) }}
+                            {{ form_widget(form.isLocked, {'attr': {'class': 'form-select', 'readonly': not isAdmin}}) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.isVerified) }}
+                            {{ form_widget(form.isVerified, {'attr': {'class': 'form-select', 'readonly': not isAdmin}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                {# 🎭 Rollen #}
+                <div class="tab-pane fade" id="rollen" role="tabpanel">
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-12">
+                            {{ form_label(form.roles) }}
+                            <div class="row">
+                                {% for choice in form.roles %}
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            {{ form_widget(choice, {'attr': {'class': 'form-check-input', 'disabled': not isAdmin}}) }}
+                                            {{ form_label(choice, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            {{ form_label(form.usergroups) }}
+                            {{ form_widget(form.usergroups, {'attr': {'class': 'form-control', 'disabled': not isAdmin}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                {# 🔑 Berechtigungen #}
+                <div class="tab-pane fade" id="permissions" role="tabpanel">
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-12">
+                            {{ form_label(form.permissions) }}
+                            <div class="row">
+                                {% for choice in form.permissions %}
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            {{ form_widget(choice, {'attr': {'class': 'form-check-input', 'disabled': not isAdmin}}) }}
+                                            {{ form_label(choice, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# ⚙️ System #}
+                <div class="tab-pane fade" id="system" role="tabpanel">
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-4">
+                            {{ form_label(form.regDate) }}
+                            {{ form_widget(form.regDate, {'attr': {'class': 'form-control', 'readonly': true}}) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.lastlogindate) }}
+                            {{ form_widget(form.lastlogindate, {'attr': {'class': 'form-control', 'readonly': true}}) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.passwordChangedAt) }}
+                            {{ form_widget(form.passwordChangedAt, {'attr': {'class': 'form-control', 'readonly': true}}) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.userDir) }}
+                            {{ form_widget(form.userDir, {'attr': {'class': 'form-control', 'readonly': true}}) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.maxDevice) }}
+                            {{ form_widget(form.maxDevice, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.adminOverride) }}
+                            {{ form_widget(form.adminOverride, {'attr': {'class': 'form-select'}}) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.adminOverrideId) }}
+                            {{ form_widget(form.adminOverrideId, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ form_widget(form.password) }}
+            {{ form_widget(form.userpin) }}
+
+
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
+<script>
+    const triggerTabList = document.querySelectorAll('#userTabs button');
+    triggerTabList.forEach(triggerEl => {
+        const tabTrigger = new bootstrap.Tab(triggerEl);
+        triggerEl.addEventListener('click', event => {
+            event.preventDefault();
+            tabTrigger.show();
+        });
+    });
+</script>
+{% endblock %}

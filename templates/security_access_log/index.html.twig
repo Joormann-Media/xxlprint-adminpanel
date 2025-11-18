@@ -1,0 +1,331 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Security Access Log{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap5.min.css"/>
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.min.css"/>
+<style>
+    .table td, .table th { vertical-align: middle !important; }
+    .bg-gradient { background: linear-gradient(120deg, #eaf6ff 80%, #ffffff 100%); }
+    .dataTables_wrapper .dataTables_filter,
+    .dataTables_wrapper .dataTables_paginate,
+    .dataTables_wrapper .dt-buttons {
+        display: none !important;
+    }
+    #datatableButtonsArea .btn,
+    #datatableButtonsArea .dt-button {
+        --bs-btn-bg: #fff !important;
+        --bs-btn-color: #1752a2 !important;
+        --bs-btn-border-color: #b5c6e0 !important;
+        background: #fff !important;
+        color: #1752a2 !important;
+        border-color: #b5c6e0 !important;
+    }
+    #datatableButtonsArea .btn:hover,
+    #datatableButtonsArea .btn:focus,
+    #datatableButtonsArea .dt-button:hover,
+    #datatableButtonsArea .dt-button:focus {
+        --bs-btn-bg: #1752a2 !important;
+        --bs-btn-color: #fff !important;
+        background: #1752a2 !important;
+        color: #fff !important;
+        border-color: #1752a2 !important;
+    }
+    #paginationArea .pagination { margin: 0 !important; }
+    #datatableSearchBox input {
+        border-radius: 1.2rem;
+        border: 1px solid #bbb;
+        min-width: 200px;
+        padding: 0.4em 1em;
+    }
+    #headerBox {
+        position: relative;
+    }
+    #paginationArea {
+        margin-top: 0.3rem;
+        margin-bottom: 0.6rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+</style>
+<div class="container my-5 px-2 px-md-0">
+    <div class="bg-gradient bg-light border shadow-sm rounded-4 p-4 mb-3" id="headerBox">
+        <div class="row g-3 align-items-center flex-wrap">
+            <div class="col-lg-7 col-md-12 d-flex flex-wrap gap-3 align-items-center">
+                <h1 class="mb-0 fs-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-shield-lock text-danger fs-2"></i>
+                    Security Access Log
+                </h1>
+                <div id="datatableSearchBox" style="min-width:220px;"></div>
+                <input type="text" id="userFilter" class="form-control" style="min-width:150px;" placeholder="User suchen…">
+                <select id="statusFilter" class="form-select" style="min-width:140px;">
+                    <option value="">Status (alle)</option>
+                    <option value="EXIT 0">Erfolg (EXIT 0)</option>
+                    <option value="EXIT 1">Fehler (EXIT 1)</option>
+                    <option value="EXIT">EXIT Sonstige</option>
+                </select>
+            </div>
+            <div class="col-lg-5 col-md-12 d-flex flex-wrap align-items-center gap-2 justify-content-lg-end mt-2 mt-lg-0">
+                <div class="d-flex flex-wrap gap-2 align-items-center mb-2 mb-md-0">
+                    <div class="d-flex gap-1 align-items-center">
+                        <input type="date" id="dateFrom" class="form-control" style="max-width:120px;">
+                        <span class="mx-1">–</span>
+                        <input type="date" id="dateTo" class="form-control" style="max-width:120px;">
+                    </div>
+                    <button class="btn btn-outline-secondary" id="resetFilterBtn" title="Filter zurücksetzen">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+                <div class="btn-group" id="datatableButtonsArea" role="group"></div>
+                <div class="btn-group" role="group">
+                    <a href="{{ path('app_security_access_log_new') }}" class="btn btn-success">
+                        <i class="bi bi-plus-circle"></i> Neuer Eintrag
+                    </a>
+                    <button class="btn btn-outline-danger" id="bulkDeleteBtn" disabled>
+                        <i class="bi bi-trash"></i> Ausgewählte löschen
+                    </button>
+                </div>
+            </div>
+        </div>
+        {# Pagination entfernt aus dem Header #}
+        {# <div id="paginationArea" class="mt-2"></div> #}
+    </div>
+
+    {# Pagination jetzt direkt über der Tabelle #}
+    <div id="paginationArea" class="mt-2"></div>
+
+    <div class="table-responsive">
+        <table id="securityAccessLogTable" class="table table-hover align-middle table-bordered table-striped rounded-3 overflow-hidden" style="width:100%">
+            <thead class="table-light">
+                <tr>
+                    <th><input type="checkbox" id="selectAll"></th>
+                    <th>Id</th>
+                    <th>Timestamp</th>
+                    <th>User</th>
+                    <th>Source IP</th>
+                    <th>Session</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                    <th>Aktionen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in security_access_logs %}
+                <tr>
+                    <td>
+                        <input type="checkbox" class="row-select" value="{{ log.id }}">
+                    </td>
+                    <td>{{ log.id }}</td>
+                    <td data-date="{{ log.timestamp ? log.timestamp|date('Y-m-d') : '' }}">
+                        {{ log.timestamp ? log.timestamp|date('Y-m-d H:i:s') : '' }}
+                    </td>
+                    <td>{{ log.user }}</td>
+                    <td>{{ log.sourceIp }}</td>
+                    <td>
+                        <span class="badge bg-secondary">{{ log.sessionType|upper }}</span>
+                    </td>
+                    <td>
+                        <span class="badge {% if log.status starts with 'EXIT 0' %}bg-success{% else %}bg-danger{% endif %}">
+                            {{ log.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <span data-bs-toggle="tooltip" title="{{ log.details|e }}">
+                            {{ log.details|slice(0,40) ~ (log.details|length > 40 ? '…' : '') }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ path('app_security_access_log_show', {'id': log.id}) }}"
+                           class="btn btn-outline-info btn-sm" title="Details">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="{{ path('app_security_access_log_edit', {'id': log.id}) }}"
+                           class="btn btn-outline-warning btn-sm" title="Bearbeiten">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+ <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/select/2.0.2/js/dataTables.select.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const dt = new DataTable('#securityAccessLogTable', {
+        responsive: true,
+        order: [[2, 'desc']],
+        select: { style: 'multi', selector: 'td:first-child input[type="checkbox"]' },
+        dom: 'Bfrtip',
+        buttons: [
+            { extend: 'csvHtml5', text: '<i class="bi bi-filetype-csv"></i> CSV Export', className: 'btn btn-outline-primary' },
+            { extend: 'excelHtml5', text: '<i class="bi bi-file-earmark-excel"></i> Excel Export', className: 'btn btn-outline-success' },
+        ],
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/de-DE.json"
+        },
+        pagingType: "simple_numbers",
+        pageLength: 25
+    });
+
+    // Funktion, die die Pagination nach oben VOR die Tabelle schiebt
+    function forcePaginationUp() {
+        const wrapper = document.getElementById('securityAccessLogTable_wrapper');
+        const pagination = wrapper.querySelector('.dataTables_paginate');
+        const info = wrapper.querySelector('.dataTables_info');
+        const paginationArea = document.getElementById('paginationArea');
+        if (pagination && paginationArea && !paginationArea.contains(pagination)) {
+            paginationArea.innerHTML = '';
+            paginationArea.appendChild(pagination);
+        }
+        // Optional: Info-Box (z. B. "1 bis 25 von 300 Einträgen") ebenfalls oben anzeigen
+        // Wenn nicht gewünscht, Zeile auskommentieren:
+        // if (info && paginationArea && !paginationArea.contains(info)) {
+        //     paginationArea.appendChild(info);
+        // }
+        // Pagination im Footer ausblenden (falls doppelt)
+        const allPaginations = wrapper.querySelectorAll('.dataTables_paginate');
+        allPaginations.forEach(function(pag) {
+            if (pag !== pagination) pag.style.display = 'none';
+        });
+    }
+
+    // Beim Initialisieren und bei jedem Draw verschieben
+    dt.on('draw', forcePaginationUp);
+    setTimeout(forcePaginationUp, 250);
+
+    // Die nächsten Blöcke: Unverändert wie bei dir!
+    // Searchbox verschieben
+    const filter = document.querySelector('.dataTables_filter');
+    const searchArea = document.getElementById('datatableSearchBox');
+    if (filter && searchArea) {
+        searchArea.innerHTML = "";
+        if (filter.querySelector('input')) {
+            searchArea.appendChild(filter.querySelector('input'));
+        }
+    }
+    // Buttons verschieben
+    const buttons = document.querySelector('.dt-buttons');
+    const buttonsArea = document.getElementById('datatableButtonsArea');
+    if (buttons && buttonsArea) {
+        buttonsArea.innerHTML = "";
+        buttonsArea.appendChild(buttons);
+        buttons.classList.add('btn-group');
+        buttons.classList.remove('dt-buttons');
+        buttons.style.display = "flex";
+        buttons.style.gap = "0.5rem";
+    }
+
+    // Bootstrap 5 Tooltip für Details
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+        new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+
+    // User Filter
+    document.getElementById('userFilter').addEventListener('keyup', function() {
+        dt.column(3).search(this.value).draw();
+    });
+
+    // Status Filter
+    document.getElementById('statusFilter').addEventListener('change', function() {
+        let val = this.value;
+        if(val === "EXIT") { dt.column(6).search('EXIT').draw(); }
+        else { dt.column(6).search(val).draw(); }
+    });
+
+    // Date Range Filter
+    function filterByDateRange(settings, data, dataIndex) {
+        let from = document.getElementById('dateFrom').value;
+        let to = document.getElementById('dateTo').value;
+        let date = data[2].split(" ")[0]; // Datum im Format YYYY-MM-DD
+        if (!from && !to) return true;
+        if (from && date < from) return false;
+        if (to && date > to) return false;
+        return true;
+    }
+    DataTable.ext.search.push(filterByDateRange);
+    document.getElementById('dateFrom').addEventListener('change', function() { dt.draw(); });
+    document.getElementById('dateTo').addEventListener('change', function() { dt.draw(); });
+
+    // Reset Filter
+    document.getElementById('resetFilterBtn').addEventListener('click', function() {
+        document.getElementById('userFilter').value = '';
+        document.getElementById('statusFilter').selectedIndex = 0;
+        document.getElementById('dateFrom').value = '';
+        document.getElementById('dateTo').value = '';
+        dt.search('').columns().search('').draw();
+    });
+
+    // SelectAll Checkbox und BulkDelete
+    document.getElementById('selectAll').addEventListener('change', function() {
+        let checked = this.checked;
+        document.querySelectorAll('.row-select').forEach(cb => { cb.checked = checked; });
+        dt.rows().select(checked);
+        updateBulkDeleteBtn();
+    });
+    document.querySelectorAll('.row-select').forEach(cb => {
+        cb.addEventListener('change', updateBulkDeleteBtn);
+    });
+
+    function updateBulkDeleteBtn() {
+        let anyChecked = Array.from(document.querySelectorAll('.row-select')).some(cb => cb.checked);
+        document.getElementById('bulkDeleteBtn').disabled = !anyChecked;
+    }
+
+    // BulkDelete AJAX
+    document.getElementById('bulkDeleteBtn').addEventListener('click', function() {
+        let selected = Array.from(document.querySelectorAll('.row-select:checked')).map(cb => cb.value);
+        if(selected.length === 0) return;
+        if(!confirm('Willst du die ausgewählten Einträge wirklich löschen?')) return;
+
+        fetch('{{ path("security_access_log_bulk_delete") }}', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '{{ csrf_token("bulk_delete_security_access_log") }}'
+            },
+            body: JSON.stringify({ ids: selected.map(Number) })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "ok") {
+                selected.forEach(id => {
+                    let row = document.querySelector('input.row-select[value="'+id+'"]')?.closest('tr');
+                    if(row) {
+                        row.style.transition = "background 0.4s, opacity 0.4s";
+                        row.style.background = "#f44336";
+                        row.style.opacity = 0;
+                        setTimeout(() => {
+                            row.remove();
+                            dt.rows().invalidate().draw(false);
+                        }, 350);
+                    }
+                });
+                document.getElementById('bulkDeleteBtn').disabled = true;
+            } else {
+                alert("Fehler beim Löschen: " + (data.message || "Unbekannter Fehler"));
+            }
+        })
+        .catch(err => {
+            alert("Fehler beim Löschen: " + err);
+        });
+    });
+});
+</script>
+
+{% endblock %}

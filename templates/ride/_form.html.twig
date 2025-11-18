@@ -1,0 +1,104 @@
+{# templates/ride/_form.html.twig #}
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        {{ form_start(form) }}
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                {{ form_label(form.rideId, 'Ride ID') }}
+                {{ form_widget(form.rideId, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.startName, 'Start Name') }}
+                {{ form_widget(form.startName, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.rideVariation, 'Ride Variation') }}
+                {{ form_widget(form.rideVariation, {'attr': {'class': 'form-select'}}) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.client, 'Client') }}
+                {{ form_widget(form.client, {'attr': {'class': 'form-select'}}) }}
+            </div>
+
+            <hr class="my-3">
+
+            <div class="col-12">
+                <strong>Start Address</strong>
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.startStreet, 'Street') }}
+                {{ form_widget(form.startStreet, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_label(form.startStreetNo, 'No.') }}
+                {{ form_widget(form.startStreetNo, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.startZip, 'ZIP') }}
+                {{ form_widget(form.startZip, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-8">
+                {{ form_label(form.startCity, 'City') }}
+                {{ form_widget(form.startCity, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.startCountry, 'Country') }}
+                {{ form_widget(form.startCountry, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+            <div class="col-12">
+                <strong>Destination Address</strong>
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.destStreet, 'Street') }}
+                {{ form_widget(form.destStreet, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_label(form.destStreetNo, 'No.') }}
+                {{ form_widget(form.destStreetNo, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.destZip, 'ZIP') }}
+                {{ form_widget(form.destZip, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-8">
+                {{ form_label(form.destCity, 'City') }}
+                {{ form_widget(form.destCity, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.destCountry, 'Country') }}
+                {{ form_widget(form.destCountry, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+            <div class="col-md-12">
+                {{ form_label(form.rideDescription, 'Description') }}
+                {{ form_widget(form.rideDescription, {'attr': {'class': 'form-control', 'rows': 2}}) }}
+            </div>
+
+            <div class="col-md-4">
+                {{ form_label(form.rideDateStart, 'Start Date/Time') }}
+                {{ form_widget(form.rideDateStart, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.rideDateEnd, 'End Date/Time') }}
+                {{ form_widget(form.rideDateEnd, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_label(form.rideTime, 'Time') }}
+                {{ form_widget(form.rideTime, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_label(form.rideLength, 'Length') }}
+                {{ form_widget(form.rideLength, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+        </div>
+
+        <div class="text-end mt-4">
+            <button class="btn btn-primary">💾 Save</button>
+            <a href="{{ path('app_ride_index') }}" class="btn btn-outline-secondary ms-2">⬅️ Back</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>

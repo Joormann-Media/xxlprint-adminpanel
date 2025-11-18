@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1>Create new UserHistory</h1>
+
+    {{ include('user_history/_form.html.twig') }}
+
+    <a href="{{ path('app_user_history_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}API-Clients{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">
+                <i class="bi bi-plug"></i> API-Clients
+            </h4>
+            <a href="{{ path('app_api_client_new') }}" class="btn btn-light btn-sm">
+                <i class="bi bi-plus-circle"></i> Neuer Client
+            </a>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Benutzername</th>
+                        <th>Passkey</th>
+                        <th>IP-Whitelist</th>
+                        <th>Auth-Key</th>
+                        <th>Gültig?</th>
+                        <th>Ablaufdatum</th>
+                        <th>Reg-Token</th>
+                        <th>Erstellt am</th>
+                        <th class="text-center">Aktionen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for api_client in api_clients %}
+                        <tr>
+                            <td>{{ api_client.id }}</td>
+                            <td>{{ api_client.username }}</td>
+                            <td><code>{{ api_client.passkey }}</code></td>
+                            <td>
+                                {% if api_client.ipWhitelist %}
+                                    <small>{{ api_client.ipWhitelist|json_encode(constant('JSON_PRETTY_PRINT')) }}</small>
+                                {% endif %}
+                            </td>
+                            <td><code>{{ api_client.authKey }}</code></td>
+                            <td>
+                                {% if api_client.isValid %}
+                                    <span class="badge bg-success"><i class="bi bi-check-circle"></i> Ja</span>
+                                {% else %}
+                                    <span class="badge bg-danger"><i class="bi bi-x-circle"></i> Nein</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ api_client.expires ? api_client.expires|date('d.m.Y H:i') : '-' }}</td>
+                            <td>{{ api_client.registerToken }}</td>
+                            <td>{{ api_client.createdAt ? api_client.createdAt|date('d.m.Y H:i') : '-' }}</td>
+                            <td class="text-center">
+                                <a href="{{ path('app_api_client_show', {'id': api_client.id}) }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{{ path('app_api_client_edit', {'id': api_client.id}) }}" class="btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="10" class="text-center text-muted">
+                                <em>Keine Clients gefunden.</em>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

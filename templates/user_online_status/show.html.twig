@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserOnlineStatus{% endblock %}
+
+{% block body %}
+    <h1>UserOnlineStatus</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user_online_status.id }}</td>
+            </tr>
+            <tr>
+                <th>IsOnline</th>
+                <td>{{ user_online_status.isOnline ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>LastSeenAt</th>
+                <td>{{ user_online_status.lastSeenAt ? user_online_status.lastSeenAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_online_status_index') }}">back to list</a>
+
+    <a href="{{ path('app_user_online_status_edit', {'id': user_online_status.id}) }}">edit</a>
+
+    {{ include('user_online_status/_delete_form.html.twig') }}
+{% endblock %}

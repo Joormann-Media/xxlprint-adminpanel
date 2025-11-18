@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1>UserProfile index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                
+                
+                <th>Birthdate</th>
+                <th>PhonePrivate</th>
+                <th>PhoneMobile</th>
+                <th>Street</th>
+                <th>PostalCode</th>
+                <th>City</th>
+                <th>Country</th>
+                <th>Language</th>
+                
+ 
+            
+                <th>ProfileVisibility</th>
+           
+                <th>Linkedin</th>
+                <th>Twitter</th>
+                <th>Facebook</th>
+                <th>Instagram</th>
+                <th>Xing</th>
+                <th>Website</th>
+                <th>Motto</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_profile in user_profiles %}
+            <tr>
+                <td>{{ user_profile.id }}</td>
+                
+               
+                <td>{{ user_profile.birthdate ? user_profile.birthdate|date('Y-m-d') : '' }}</td>
+                <td>{{ user_profile.phonePrivate }}</td>
+                <td>{{ user_profile.phoneMobile }}</td>
+                <td>{{ user_profile.street }}</td>
+                <td>{{ user_profile.postalCode }}</td>
+                <td>{{ user_profile.city }}</td>
+                <td>{{ user_profile.country }}</td>
+                <td>{{ user_profile.language }}</td>
+                
+               
+
+      
+                <td>{{ user_profile.profileVisibility }}</td>
+               
+                <td>{{ user_profile.linkedin }}</td>
+                <td>{{ user_profile.twitter }}</td>
+                <td>{{ user_profile.facebook }}</td>
+                <td>{{ user_profile.instagram }}</td>
+                <td>{{ user_profile.xing }}</td>
+                <td>{{ user_profile.website }}</td>
+                <td>{{ user_profile.motto }}</td>
+                <td>
+                    <a href="{{ path('app_admin_user_profile_show', {'id': user_profile.id}) }}">show</a>
+                    <a href="{{ path('app_admin_user_profile_edit', {'id': user_profile.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="26">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_user_profile_new') }}">Create new</a>
+{% endblock %}

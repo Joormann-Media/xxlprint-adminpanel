@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SymfonySession{% endblock %}
+
+{% block body %}
+    <h1>SymfonySession</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>SessId</th>
+                <td>{{ symfony_session.sessId }}</td>
+            </tr>
+            <tr>
+                <th>SessData</th>
+                <td>{{ symfony_session.sessData }}</td>
+            </tr>
+            <tr>
+                <th>SessLifetime</th>
+                <td>{{ symfony_session.sessLifetime }}</td>
+            </tr>
+            <tr>
+                <th>SessTime</th>
+                <td>{{ symfony_session.sessTime }}</td>
+            </tr>
+            <tr>
+                <th>UserId</th>
+                <td>{{ symfony_session.userId }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_symfony_session_index') }}">back to list</a>
+
+    <a href="{{ path('app_symfony_session_edit', {'sessId': symfony_session.sessId}) }}">edit</a>
+
+    {{ include('symfony_session/_delete_form.html.twig') }}
+{% endblock %}

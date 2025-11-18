@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    
+
+    <!-- Buttons oben -->
+    <div class="d-flex justify-content-between mb-3">
+        <a href="{{ path('app_permission_new') }}" class="btn btn-success">Create New</a>
+        <button id="deleteSelected" class="btn btn-danger">Ausgewählte löschen</button>
+    </div>
+
+    <style>
+        .sort-arrows {
+            display: inline-flex;
+            flex-direction: row;
+        }
+    </style>
+
+    <form id="permissionForm" action="{{ path('app_permission_bulk_delete') }}" method="POST">
+        <table class="table table-striped" id="permissionTable">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="selectAll"></th>
+                    {% set columns = [
+                        {'name': 'Id', 'field': 'id'},
+                        {'name': 'Name', 'field': 'name'},
+                        {'name': 'Description', 'field': 'description'},
+                        {'name': 'Createdate', 'field': 'createdate'},
+                        {'name': 'CreateBy', 'field': 'createBy'},
+                        {'name': 'PermissionRoute', 'field': 'permissionRoute'},
+                        {'name': 'IsActive', 'field': 'isActive'},
+                        {'name': 'MinRole', 'field': 'minRole'},
+                        {'name': 'PinRequired', 'field': 'pinRequired'}
+                    ] %}
+                    
+                    {% for column in columns %}
+                        <th>
+                            <div class="d-flex flex-column align-items-center">
+                                <span>{{ column.name }}</span>
+                                <div class="sort-arrows">
+                                    <button class="btn btn-sm btn-light sort-btn" data-column="{{ column.field }}" data-order="asc">&#9650;</button>
+                                    <button class="btn btn-sm btn-light sort-btn" data-column="{{ column.field }}" data-order="desc">&#9660;</button>
+                                </div>
+                            </div>
+                        </th>
+                    {% endfor %}
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for permission in permissions %}
+                <tr>
+                    <td>
+                        <input type="checkbox" class="permissionCheckbox" name="permissions[]" value="{{ permission.id }}">
+                    </td>
+                    <td>{{ permission.id }}</td>
+                    <td>{{ permission.name }}</td>
+                    <td>{{ permission.description | raw}}</td>
+                    <td>{{ permission.createdate ? permission.createdate|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ permission.createBy }}</td>
+                    <td>{{ permission.permissionRoute }}</td>
+                    <td>{{ permission.isActive ? 'Yes' : 'No' }}</td>
+                    <td>{{ permission.minRole }}</td>
+                    <td>{{ permission.pinRequired ? 'Yes' : 'No' }}</td>
+                    <td>
+                        <a href="{{ path('app_permission_show', {'id': permission.id}) }}" class="custom-button-icon"><img src="/gfx/systemgfx/show.png" alt="Show" ></a>
+                        <a href="{{ path('app_permission_edit', {'id': permission.id}) }}" class="custom-button-icon"><img src="/gfx/systemgfx/edit.png" alt="Edit" ></a>
+
+                    
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="11">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const selectAllCheckbox = document.getElementById("selectAll");
+            const checkboxes = document.querySelectorAll(".permissionCheckbox");
+            const deleteButton = document.getElementById("deleteSelected");
+            const form = document.getElementById("permissionForm");
+
+            // Alle Checkboxen aktivieren/deaktivieren
+            selectAllCheckbox.addEventListener("change", function() {
+                checkboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
+            });
+
+            // Löschen-Button klicken → Form absenden
+            deleteButton.addEventListener("click", function() {
+                if (confirm("Möchtest du die ausgewählten Berechtigungen wirklich löschen?")) {
+                    form.submit();
+                }
+            });
+
+            // Sortierfunktion
+            document.querySelectorAll(".sort-btn").forEach(button => {
+                button.addEventListener("click", function() {
+                    let column = this.getAttribute("data-column");
+                    let order = this.getAttribute("data-order");
+                    let table = document.querySelector("#permissionTable tbody");
+                    let rows = Array.from(table.querySelectorAll("tr"));
+                    
+                    rows.sort((a, b) => {
+                        let cellA = a.querySelector(`td:nth-child(${button.parentNode.parentNode.parentNode.cellIndex + 1})`).innerText.trim();
+                        let cellB = b.querySelector(`td:nth-child(${button.parentNode.parentNode.parentNode.cellIndex + 1})`).innerText.trim();
+                        
+                        if (!isNaN(cellA) && !isNaN(cellB)) {
+                            return order === "asc" ? cellA - cellB : cellB - cellA;
+                        } else {
+                            return order === "asc" ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+                        }
+                    });
+                    
+                    rows.forEach(row => table.appendChild(row));
+                });
+            });
+
+        });
+    </script>
+
+{% endblock %}

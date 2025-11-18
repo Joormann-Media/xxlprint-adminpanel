@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+    <div class="bg-light border rounded p-4 mb-4 shadow-sm">
+        <h2 class="mb-0">🌴 Urlaub bearbeiten</h2>
+        <p class="text-muted">{{ page_title ?? 'Formular bearbeiten' }}</p>
+        <div class="text-end">
+            <a href="{{ back_link ?? path('app_vacation_manager_index') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Zurück
+            </a>
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-check-circle"></i> Speichern
+            </button>
+        </div>
+    
+    
+    </div>
+    {{ form_start(form) }}
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            ✏️ Allgemeine Urlaubsdetails
+        </div>
+        <div class="card-body row g-3">
+
+            <div class="col-md-6">
+                <label class="form-label">{{ form_label(form.vacationStatus) }}</label>
+                {{ form_widget(form.vacationStatus, {'attr': {'class': 'form-select'}}) }}
+                <div class="text-danger small">{{ form_errors(form.vacationStatus) }}</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">{{ form_label(form.vacationStart) }}</label>
+                {{ form_widget(form.vacationStart, {'attr': {'class': 'form-control'}}) }}
+                <div class="text-danger small">{{ form_errors(form.vacationStart) }}</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">{{ form_label(form.vacationExpires) }}</label>
+                {{ form_widget(form.vacationExpires, {'attr': {'class': 'form-control'}}) }}
+                <div class="text-danger small">{{ form_errors(form.vacationExpires) }}</div>
+            </div>
+
+            <div class="col-md-6 d-none">
+                <label class="form-label">{{ form_label(form.vacationUser) }}</label>
+                {{ form_widget(form.vacationUser, {'attr': {'class': 'form-control'}}) }}
+                <div class="text-danger small">{{ form_errors(form.vacationUser) }}</div>
+            </div>
+
+            <div class="col-md-6 d-none">
+                <label class="form-label">{{ form_label(form.vacationCreate) }}</label>
+                {{ form_widget(form.vacationCreate, {'attr': {'class': 'form-control'}}) }}
+                <div class="text-danger small">{{ form_errors(form.vacationCreate) }}</div>
+            </div>
+
+            <div class="col-12">
+                <label class="form-label">{{ form_label(form.vacationDescription) }}</label>
+                {{ form_widget(form.vacationDescription, {'attr': {'class': 'form-control'}}) }}
+                <div class="text-danger small">{{ form_errors(form.vacationDescription) }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white">
+            📄 Urlaubs-Content
+        </div>
+        <div class="card-body">
+            {{ form_widget(form.vacationContent) }}
+            <div class="text-danger small">{{ form_errors(form.vacationContent) }}</div>
+        </div>
+    </div>
+
+
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}

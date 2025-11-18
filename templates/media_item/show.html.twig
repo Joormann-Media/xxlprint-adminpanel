@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Media Item Details{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">
+            <i class="bi bi-file-earmark-play"></i> Media Item Details
+        </h1>
+        <a href="{{ path('app_media_item_index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to list
+        </a>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card shadow-lg mb-4">
+                {% if media_item.coverUrl %}
+                    <img src="{{ media_item.coverUrl }}" alt="{{ media_item.title }}" class="card-img-top img-fluid" style="max-height: 340px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-secondary d-flex align-items-center justify-content-center card-img-top" style="height: 220px;">
+                        <i class="bi bi-image text-white fs-1"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <h2 class="card-title me-2 mb-0">{{ media_item.title|default('Untitled') }}</h2>
+                        {% if media_item.isFavorite %}
+                            <i class="bi bi-star-fill text-warning ms-1" title="Favorite"></i>
+                        {% endif %}
+                        {% if not media_item.isVisible %}
+                            <span class="badge bg-warning text-dark ms-2">Hidden</span>
+                        {% endif %}
+                    </div>
+                    <p class="mb-2">
+                        <span class="badge bg-info me-1">{{ media_item.type }}</span>
+                        <span class="badge bg-secondary">{{ media_item.sourceSystem }}</span>
+                    </p>
+                    <p class="card-text mb-3">
+                        <strong>Description:</strong><br>
+                        {{ media_item.description|default('No description') }}
+                    </p>
+                    <ul class="list-group list-group-flush mb-3 small">
+                        <li class="list-group-item px-0"><strong>ID:</strong> {{ media_item.id }}</li>
+                        <li class="list-group-item px-0"><strong>Local Path:</strong> <span class="text-break">{{ media_item.localPath }}</span></li>
+                        <li class="list-group-item px-0"><strong>External ID:</strong> {{ media_item.externalId|default('-') }}</li>
+                        <li class="list-group-item px-0"><strong>Visible:</strong> {{ media_item.isVisible ? 'Yes' : 'No' }}</li>
+                        <li class="list-group-item px-0"><strong>Favorite:</strong> {{ media_item.isFavorite ? 'Yes' : 'No' }}</li>
+                    </ul>
+                </div>
+                <div class="card-footer d-flex justify-content-end gap-2 bg-light">
+                    <a href="{{ path('app_media_item_edit', {'id': media_item.id}) }}" class="btn btn-outline-primary">
+                        <i class="bi bi-pencil"></i> Edit
+                    </a>
+                    {{ include('media_item/_delete_form.html.twig', { 'button_class': 'btn btn-outline-danger', 'icon': true }) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

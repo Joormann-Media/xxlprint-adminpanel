@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{# {% block title %} #}Edit PopUpManager{% endblock %}
+
+{% block body %}
+
+
+    {{ include('pop_up_manager/_form.html.twig', {'button_label': 'Update'}) }}
+
+    
+    
+
+    {{ include('pop_up_manager/_delete_form.html.twig') }}
+{% endblock %}

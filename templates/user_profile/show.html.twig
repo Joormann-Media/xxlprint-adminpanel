@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container py-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            {% if user_profile.user.avatar %}
+                <img src="{{ asset('user_data/' ~ user_profile.user.userDir ~ '/avatar/' ~ user_profile.user.avatar) }}" 
+                     alt="Avatar" class="rounded-circle me-3" 
+                     style="width: 70px; height: 70px; object-fit: cover;">
+            {% else %}
+                <img src="{{ asset('gfx/systemgfx/profilpic_placeholder_ger.jpeg') }}" 
+                     alt="Avatar" class="rounded-circle me-3" 
+                     style="width: 70px; height: 70px; object-fit: cover;">
+            {% endif %}
+            <div>
+                <h4 class="mb-0">{{ user_profile.user.prename }} {{ user_profile.user.name }}</h4>
+                <small>@{{ user_profile.user.username }} • {{ user_profile.user.email }}</small>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <h5 class="mb-3 border-bottom pb-2">🧍 Persönliche Infos</h5>
+            <dl class="row">
+                <dt class="col-sm-4">Geburtstag</dt>
+                <dd class="col-sm-8">{{ user_profile.birthdate ? user_profile.birthdate|date('d.m.Y') : '–' }}</dd>
+
+                <dt class="col-sm-4">Motto</dt>
+                <dd class="col-sm-8">{{ user_profile.motto ?: '–' }}</dd>
+
+                <dt class="col-sm-4">Sprachen</dt>
+                <dd class="col-sm-8">
+                    {% if user_profile.language %}
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for lang in user_profile.language %}
+                                {% set flagMap = {
+                                    'de': 'germany.png',
+                                    'en': 'united-kingdom.png',
+                                    'fr': 'france.png',
+                                    'gr': 'greece.png',
+                                    'nl': 'netherland.png',
+                                    'tr': 'turkey.png'
+                                } %}
+                                {% if flagMap[lang] is defined %}
+                                    <img src="{{ asset('Flags/' ~ flagMap[lang]) }}" alt="{{ lang }}" style="width: 32px; height: 20px;" title="{{ lang }}">
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <span class="text-muted">–</span>
+                    {% endif %}
+                </dd>
+                
+
+                
+
+                <dt class="col-sm-4">Telefon</dt>
+                <dd class="col-sm-8">{{ user_profile.phonePrivate ?: '–' }}</dd>
+
+                <dt class="col-sm-4">Mobil</dt>
+                <dd class="col-sm-8">{{ user_profile.phoneMobile ?: '–' }}</dd>
+
+                <dt class="col-sm-4">Straße</dt>
+                <dd class="col-sm-8">{{ user_profile.street ?: '–' }}</dd>
+
+                <dt class="col-sm-4">PLZ / Stadt</dt>
+                <dd class="col-sm-8">{{ user_profile.postalCode ~ ' ' ~ user_profile.city }}</dd>
+
+                <dt class="col-sm-4">Land</dt>
+                <dd class="col-sm-8">{{ user_profile.country ?: '–' }}</dd>
+            </dl>
+
+            <h5 class="mt-4 mb-3 border-bottom pb-2">🌐 Online-Profile</h5>
+            <ul class="list-unstyled">
+                {% set socials = {
+                    'linkedin': 'LinkedIn',
+                    'twitter': 'Twitter',
+                    'facebook': 'Facebook',
+                    'instagram': 'Instagram',
+                    'xing': 'Xing',
+                    'tiktok': 'TikTok',
+                    'website': 'Website'
+                } %}
+                {% for field, label in socials %}
+                    {% set value = attribute(user_profile, field) %}
+                    <li class="mb-2">
+                        {% if value %}
+                            <a href="{{ value }}" target="_blank">
+                                <i class="bi bi-link-45deg"></i> {{ label }}
+                            </a>
+                        {% else %}
+                            <span class="text-muted">{{ label }} (kein Link)</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="card-footer bg-light text-end">
+            <a href="{{ path('app_user_profile_edit', { id: user_profile.id }) }}" class="btn btn-outline-primary">
+                ✏️ Bearbeiten
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

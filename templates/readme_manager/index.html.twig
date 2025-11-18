@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ReadmeManager index{% endblock %}
+
+{% block body %}
+    <h1>ReadmeManager index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Target</th>
+                <th>TargetId</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Status</th>
+                <th>CreatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for readme_manager in readme_managers %}
+            <tr>
+                <td>{{ readme_manager.id }}</td>
+                <td>{{ readme_manager.target }}</td>
+                <td>{{ readme_manager.targetId }}</td>
+                <td>{{ readme_manager.title }}</td>
+                <td>{{ readme_manager.content }}</td>
+                <td>{{ readme_manager.status }}</td>
+                <td>{{ readme_manager.createdAt ? readme_manager.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_readme_manager_show', {'id': readme_manager.id}) }}">show</a>
+                    <a href="{{ path('app_readme_manager_edit', {'id': readme_manager.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_readme_manager_new') }}">Create new</a>
+{% endblock %}

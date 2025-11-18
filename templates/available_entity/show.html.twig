@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Entität anzeigen{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 col-xxl-7">
+            <div class="card shadow rounded-4">
+                <div class="card-header bg-dark text-light d-flex align-items-center">
+                    {% if available_entity.icon %}
+                        <i class="{{ available_entity.icon }} me-2"></i>
+                    {% else %}
+                        <i class="bi bi-box me-2"></i>
+                    {% endif %}
+                    <span class="fw-bold">{{ available_entity.displayName }}</span>
+                    {% if available_entity.active %}
+                        <span class="badge bg-success ms-auto">Aktiv</span>
+                    {% else %}
+                        <span class="badge bg-secondary ms-auto">Inaktiv</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <dl class="row mb-0">
+                                <dt class="col-5">ID</dt>
+                                <dd class="col-7">{{ available_entity.id }}</dd>
+
+                                <dt class="col-5">ClassName</dt>
+                                <dd class="col-7">{{ available_entity.className }}</dd>
+
+                                <dt class="col-5">Tag</dt>
+                                <dd class="col-7">
+                                    {% if available_entity.tag %}
+                                        <span class="badge bg-primary">{{ available_entity.tag }}</span>
+                                    {% else %}
+                                        <span class="text-muted">–</span>
+                                    {% endif %}
+                                </dd>
+
+                                <dt class="col-5">Sortierung</dt>
+                                <dd class="col-7">{{ available_entity.sortOrder ?? '-' }}</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row mb-0">
+                                <dt class="col-5">Beschreibung</dt>
+                                <dd class="col-7">
+                                    {% if available_entity.description %}
+                                        <span style="white-space:pre-wrap;">{{ available_entity.description }}</span>
+                                    {% else %}
+                                        <span class="text-muted">–</span>
+                                    {% endif %}
+                                </dd>
+                                <dt class="col-5">Dependencies</dt>
+                                <dd class="col-7">
+                                    {% if available_entity.dependencies %}
+                                        <ul class="list-unstyled mb-0">
+                                            {% for dep in available_entity.dependencies %}
+                                                <li><i class="bi bi-link-45deg"></i> {{ dep }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <span class="text-muted">–</span>
+                                    {% endif %}
+                                </dd>
+                                <dt class="col-5">ExtraMeta</dt>
+                                <dd class="col-7">
+                                    {% if available_entity.extraMeta %}
+                                        <ul class="list-unstyled mb-0">
+                                            {% for key, val in available_entity.extraMeta %}
+                                                <li>
+                                                    <span class="fw-bold">{{ key }}:</span>
+                                                    {{ val is iterable ? val|json_encode : val }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <span class="text-muted">–</span>
+                                    {% endif %}
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center bg-light">
+                    <a href="{{ path('app_available_entity_index') }}" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left"></i> Zurück
+                    </a>
+                    <div>
+                        <a href="{{ path('app_available_entity_edit', {'id': available_entity.id}) }}" class="btn btn-warning me-2">
+                            <i class="bi bi-pencil"></i> Bearbeiten
+                        </a>
+                        <form method="post"
+      action="{{ path('app_available_entity_delete', {'id': available_entity.id}) }}"
+      class="d-inline"
+      onsubmit="return confirm('Bist du dir sicher, dass du diese Entität löschen willst?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ available_entity.id) }}">
+    <button class="btn btn-danger btn-sm px-3">
+        <i class="bi bi-trash3-fill"></i>
+        Löschen
+    </button>
+</form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

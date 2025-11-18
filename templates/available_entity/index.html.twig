@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Verfügbare Entitäten{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">Verfügbare Entitäten</h1>
+        <a href="{{ path('app_available_entity_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Neu anlegen
+        </a>
+    </div>
+    <div class="row g-3">
+        {% for available_entity in available_entities %}
+            <div class="col-12 col-md-6 col-xl-4">
+                <div class="card shadow rounded-4 h-100">
+                    <div class="card-header d-flex align-items-center">
+                        {% if available_entity.icon %}
+                            <i class="{{ available_entity.icon }} me-2"></i>
+                        {% else %}
+                            <i class="bi bi-box me-2"></i>
+                        {% endif %}
+                        <span class="fw-bold">{{ available_entity.displayName }}</span>
+                        {% if available_entity.active %}
+                            <span class="badge bg-success ms-auto">Aktiv</span>
+                        {% else %}
+                            <span class="badge bg-secondary ms-auto">Inaktiv</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1">
+                            <span class="badge bg-primary">{{ available_entity.tag ?: 'Allgemein' }}</span>
+                            <span class="badge bg-light text-dark ms-1">{{ available_entity.className }}</span>
+                        </p>
+                        {% if available_entity.description %}
+                            <p class="text-muted" style="font-size: 0.95em;">{{ available_entity.description|raw }}</p>
+                        {% endif %}
+                        <dl class="row small mb-0">
+                            <dt class="col-5">Sortierung</dt>
+                            <dd class="col-7">{{ available_entity.sortOrder ?? '-' }}</dd>
+                            <dt class="col-5">Dependencies</dt>
+                            <dd class="col-7">
+                                {% if available_entity.dependencies %}
+                                    <ul class="list-unstyled mb-0">
+                                        {% for dep in available_entity.dependencies %}
+                                            <li><i class="bi bi-link-45deg"></i> {{ dep }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <span class="text-muted">–</span>
+                                {% endif %}
+                            </dd>
+                            <dt class="col-5">ExtraMeta</dt>
+                            <dd class="col-7">
+                                {% if available_entity.extraMeta %}
+                                    <ul class="list-unstyled mb-0">
+                                        {% for key, val in available_entity.extraMeta %}
+                                            <li><span class="fw-bold">{{ key }}:</span> {{ val is iterable ? val|json_encode : val }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <span class="text-muted">–</span>
+                                {% endif %}
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between align-items-center bg-light">
+                        <div>
+                            <a href="{{ path('app_available_entity_show', {'id': available_entity.id}) }}" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{{ path('app_available_entity_edit', {'id': available_entity.id}) }}" class="btn btn-warning btn-sm">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </div>
+                        <div>
+                            {{ include('available_entity/_delete_form.html.twig', { 'available_entity': available_entity }) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-exclamation-triangle"></i> Keine Einträge vorhanden.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

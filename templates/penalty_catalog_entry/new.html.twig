@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New PenaltyCatalogEntry{% endblock %}
+
+{% block body %}
+    <h1>Create new PenaltyCatalogEntry</h1>
+
+    {{ include('penalty_catalog_entry/_form.html.twig') }}
+
+    <a href="{{ path('app_penalty_catalog_entry_index') }}">back to list</a>
+{% endblock %}

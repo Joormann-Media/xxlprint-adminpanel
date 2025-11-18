@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Massenkorrektur Schüleradressen{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2>✏️ Adressvorschläge für Schüler</h2>
+
+    {% if entries is empty %}
+        <div class="alert alert-info">Keine Vorschläge gefunden. Alles scheint korrekt zu sein 👍</div>
+    {% else %}
+        <form method="post" action="{{ path('app_schoolkids_apply_mass_correction') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token('mass_correction') }}">
+
+            <table class="table table-bordered table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Schüler</th>
+                        <th>Aktuelle Adresse</th>
+                        <th>Vorgeschlagene Adresse</th>
+                        <th>✔</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in entries %}
+                        {% set kid = entry.kid %}
+                        {% set s = entry.suggestion %}
+                        <tr>
+                            <td>
+                                {{ kid.firstName }} {{ kid.lastName }}
+                            </td>
+                            <td>
+                                {{ kid.street }} {{ kid.streetNumber }},<br>
+                                {{ kid.zip }} {{ kid.city }}<br>
+                                <small class="text-muted">{{ kid.district ?: '–' }}</small>
+                            </td>
+                            <td>
+                                <span class="{{ kid.street != s.street ? 'text-success fw-bold' : '' }}">{{ s.street }}</span>
+                                <span class="{{ kid.streetNumber != s.houseNumber ? 'text-success fw-bold' : '' }}">{{ s.houseNumber }}</span>,<br>
+                                <span class="{{ kid.zip != s.postcode ? 'text-success fw-bold' : '' }}">{{ s.postcode }}</span>
+                                <span class="{{ kid.city != s.city ? 'text-success fw-bold' : '' }}">{{ s.city }}</span><br>
+                                <small class="{{ kid.district != s.district ? 'text-success fw-bold' : 'text-muted' }}">{{ s.district ?: '–' }}</small>
+
+                                {% if s.source %}
+                                    <div><small class="text-muted">Quelle: {{ s.source }}</small></div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <input type="checkbox" name="apply[{{ kid.id }}]" value="1" checked>
+                                <input type="hidden" name="data[{{ kid.id }}][street]" value="{{ s.street }}">
+                                <input type="hidden" name="data[{{ kid.id }}][streetNumber]" value="{{ s.houseNumber }}">
+                                <input type="hidden" name="data[{{ kid.id }}][zip]" value="{{ s.postcode }}">
+                                <input type="hidden" name="data[{{ kid.id }}][city]" value="{{ s.city }}">
+                                <input type="hidden" name="data[{{ kid.id }}][district]" value="{{ s.district }}">
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <button type="submit" class="btn btn-primary">💾 Korrekturen übernehmen</button>
+            <a href="{{ path('app_schoolkids_index') }}" class="btn btn-secondary">Zurück</a>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title mb-0">
+                        <i class="bi bi-pencil-square me-2"></i>
+                        {{ form.vars.value.id is defined and form.vars.value.id ? 'Edit Media Item' : 'Create Media Item' }}
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        {{ form_label(form.title) }}
+                        {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.title) }}
+                        {{ form_errors(form.title) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.type) }}
+                        {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.type) }}
+                        {{ form_errors(form.type) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.sourceSystem) }}
+                        {{ form_widget(form.sourceSystem, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.sourceSystem) }}
+                        {{ form_errors(form.sourceSystem) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.localPath) }}
+                        {{ form_widget(form.localPath, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.localPath) }}
+                        {{ form_errors(form.localPath) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.coverUrl) }}
+                        {{ form_widget(form.coverUrl, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.coverUrl) }}
+                        {{ form_errors(form.coverUrl) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.description) }}
+                        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 4}}) }}
+                        {{ form_help(form.description) }}
+                        {{ form_errors(form.description) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.externalId) }}
+                        {{ form_widget(form.externalId, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.externalId) }}
+                        {{ form_errors(form.externalId) }}
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <div class="form-check">
+                                {{ form_widget(form.isFavorite, {'attr': {'class': 'form-check-input'}}) }}
+                                {{ form_label(form.isFavorite, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                                {{ form_errors(form.isFavorite) }}
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-check">
+                                {{ form_widget(form.isVisible, {'attr': {'class': 'form-check-input'}}) }}
+                                {{ form_label(form.isVisible, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                                {{ form_errors(form.isVisible) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between bg-light">
+                    <a href="{{ path('app_media_item_index') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to list
+                    </a>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-save"></i> Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ form_end(form) }}

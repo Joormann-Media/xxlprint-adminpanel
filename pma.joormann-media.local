@@ -1,0 +1,18 @@
+<VirtualHost *:80>
+    ServerName pma.joormann-media.local
+
+    DocumentRoot /usr/share/phpmyadmin
+
+    <Directory /usr/share/phpmyadmin>
+        Options FollowSymLinks
+        DirectoryIndex index.php
+        AllowOverride All
+        Require local
+        # Oder für Tailscale:
+        # Require ip 100.x.x.x/10
+        # Oder alles von deinem Subnetz
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/pma_local_error.log
+    CustomLog ${APACHE_LOG_DIR}/pma_local_access.log combined
+</VirtualHost>

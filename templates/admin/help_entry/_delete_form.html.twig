@@ -1,0 +1,9 @@
+<form method="post"
+      action="{{ path('admin_app_help_entry_delete', {'id': help_entry.id}) }}"
+      onsubmit="return confirm('❗️ Möchtest du diesen Hilfeeintrag wirklich löschen?');"
+      class="d-inline">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ help_entry.id) }}">
+    <button class="btn btn-danger">
+        <i class="bi bi-trash me-1"></i> Löschen
+    </button>
+</form>

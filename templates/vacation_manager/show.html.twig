@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="mb-0">🌴 Urlaubseintrag anzeigen</h2>
+            <small class="text-muted">ID: #{{ vacation_manager.id }}</small>
+        </div>
+        <div>
+            <a href="{{ path('app_vacation_manager_index') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Zurück
+            </a>
+            <a href="{{ path('app_vacation_manager_edit', {'id': vacation_manager.id}) }}" class="btn btn-outline-primary">
+                <i class="bi bi-pencil-square"></i> Bearbeiten
+            </a>
+            {{ include('vacation_manager/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            📝 Urlaubsdetails
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4">📌 Status</dt>
+                <dd class="col-sm-8">{{ vacation_manager.vacationStatus }}</dd>
+
+                <dt class="col-sm-4">📅 Beginn</dt>
+                <dd class="col-sm-8">
+                    {{ vacation_manager.vacationStart ? vacation_manager.vacationStart|date('d.m.Y H:i') : '—' }}
+                </dd>
+
+                <dt class="col-sm-4">⏳ Ende</dt>
+                <dd class="col-sm-8">
+                    {{ vacation_manager.vacationExpires ? vacation_manager.vacationExpires|date('d.m.Y H:i') : '—' }}
+                </dd>
+
+                <dt class="col-sm-4">📥 Erstellt am</dt>
+                <dd class="col-sm-8">
+                    {{ vacation_manager.vacationCreate ? vacation_manager.vacationCreate|date('d.m.Y H:i') : '—' }}
+                </dd>
+
+                <dt class="col-sm-4">👤 Benutzer</dt>
+                <dd class="col-sm-8">{{ vacation_manager.vacationUser }}</dd>
+
+                <dt class="col-sm-4">📝 Kurzbeschreibung</dt>
+                <dd class="col-sm-8">{{ vacation_manager.vacationDescription }}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+            📄 Urlaubstext
+        </div>
+        <div class="card-body">
+            <div class="vacation-content">
+                {{ vacation_manager.vacationContent|raw }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,291 @@
+{% if app.user and is_granted('ROLE_DEVELOPER') %}
+<style>
+    #devOverlayWrapper {
+        position: fixed;
+        top: 75px;
+        right: 10px;
+        z-index: 9999;
+        font-family: monospace;
+        max-width: 360px;
+    }
+
+    #devOverlayToggle {
+        background: #1e1e1e;
+        color: #fff;
+        border: none;
+        padding: 4px 8px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        border-radius: 6px 6px 0 0;
+        width: 100%;
+    }
+
+    #devOverlayPanel {
+        background: rgba(30, 30, 30, 0.97);
+        color: #f1f1f1;
+        font-size: 0.75rem;
+        padding: 12px 16px;
+        border-radius: 0 0 10px 10px;
+        overflow-y: auto;
+        max-height: 85vh;
+        display: none;
+    }
+
+    #devOverlayPanel button {
+        margin: 2px;
+        font-size: 0.7rem;
+        padding: 3px 6px;
+    }
+
+    #devOverlayPanel hr {
+        margin: 6px 0;
+        border-color: #666;
+    }
+
+    #devOverlayPanel code {
+        display: block;
+        white-space: normal;
+        word-break: break-word;
+        background: #222;
+        padding: 2px 4px;
+        margin-bottom: 2px;
+    }
+
+    .dev-overlay-section {
+        margin-bottom: 8px;
+    }
+
+    .dev-overlay-section-title {
+        cursor: pointer;
+        color: #ccc;
+        font-weight: bold;
+    }
+
+    .dev-overlay-section-content {
+        display: none;
+        margin-top: 4px;
+    }
+
+    .dev-overlay-section.open .dev-overlay-section-content {
+        display: block;
+    }
+
+    #devOverlayPanel .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-bottom: 6px;
+        justify-content: space-between;
+    }
+
+    #devOverlayPanel .btn-sm {
+        flex: 1 1 48%;
+        white-space: nowrap;
+        text-align: left;
+    }
+</style>
+
+<div id="devOverlayWrapper">
+    <button id="devOverlayToggle" onclick="toggleDevOverlay()">🧰 DEV Tools anzeigen</button>
+    <div id="devOverlayPanel">
+        <div class="btn-group">
+            <button onclick="location.reload()" class="btn btn-sm btn-warning">🔁 Reload</button>
+            <button onclick="devOverlayConsole()" class="btn btn-sm btn-secondary">🧠 Console</button>
+            <button onclick="devOverlayReloadAssets()" class="btn btn-sm btn-success">📦 Assets</button>
+            <button onclick="devOverlaySoftReload()" class="btn btn-sm btn-primary">♻️ Soft Reload</button>
+        </div>
+        <div class="btn-group">
+            <button onclick="toggleDevLiveReload()" id="devLiveReloadToggle" class="btn btn-sm btn-outline-light">🔄 Live Reload: AN</button>
+            <button onclick="devOverlayExportInfo()" class="btn btn-sm btn-info">📤 Export</button>
+            <button onclick="devOverlayScreenshot()" class="btn btn-sm btn-dark">📷 Screenshot</button>
+        </div>
+
+        <hr>
+        <div><strong>Route:</strong> {{ app.request.attributes.get('_route') }}</div>
+        <div><strong>Controller:</strong> {{ app.request.attributes.get('_controller') }}</div>
+        <div><strong>Session:</strong> {{ app.session.id }}</div>
+        <div><strong>User:</strong> {{ app.user.username }}</div>
+        <div><strong>Vermutetes Template:</strong>
+            {% set ctrl = app.request.attributes.get('_controller') %}
+            {% set parts = ctrl|split('::') %}
+            {% if parts|length > 1 %}
+                <code>{{ parts[0]|replace({'App\\Controller\\': ''})|lower|replace({'controller': ''}) ~ '/' ~ parts[1]|lower }}.html.twig</code>
+            {% else %}
+                <em>N/A</em>
+            {% endif %}
+        </div>
+
+        <hr>
+        <div class="dev-overlay-section" id="devOverlayCssSection">
+            <div class="dev-overlay-section-title" onclick="toggleDevSection('Css')">📄 CSS-Dateien <span id="devOverlayCssCount">(0)</span></div>
+            <div class="dev-overlay-section-content" id="devOverlayCssList"><em>Wird geladen…</em></div>
+        </div>
+
+        <div class="dev-overlay-section" id="devOverlayJsSection">
+            <div class="dev-overlay-section-title" onclick="toggleDevSection('Js')">🧠 JS-Dateien <span id="devOverlayJsCount">(0)</span></div>
+            <div class="dev-overlay-section-content" id="devOverlayJsList"><em>Wird geladen…</em></div>
+        </div>
+
+        <div class="dev-overlay-section" id="devOverlayCookieSection">
+            <div class="dev-overlay-section-title" onclick="toggleDevSection('Cookie')">🍪 Cookies</div>
+            <div class="dev-overlay-section-content" id="devOverlayCookieList"><em>Wird geladen…</em></div>
+        </div>
+
+        <div class="dev-overlay-section" id="devOverlayUserSection">
+            <div class="dev-overlay-section-title" onclick="toggleDevSection('User')">
+                👥 Online-Users <span id="devOverlayUserCount">({{ usersOnline|length }})</span>
+            </div>
+            <div class="dev-overlay-section-content" id="devOverlayUserList">
+                {% for user in usersOnline %}
+                    <code>{{ user.username }}</code>
+                {% else %}
+                    <em>Niemand online</em>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+let devLiveReloadEnabled = false;
+let devLiveReloadInterval = null;
+
+function toggleDevOverlay() {
+    const panel = document.getElementById('devOverlayPanel');
+    const btn = document.getElementById('devOverlayToggle');
+    const isVisible = panel.style.display === 'block';
+    panel.style.display = isVisible ? 'none' : 'block';
+    btn.textContent = isVisible ? '🧰 DEV Tools anzeigen' : '❌ DEV Tools ausblenden';
+}
+
+function toggleDevSection(sectionName) {
+    const section = document.getElementById(`devOverlay${sectionName}Section`);
+    section.classList.toggle('open');
+}
+
+function devOverlayConsole() {
+    alert('Konsole öffnen: F12 oder Rechtsklick → Untersuchen');
+}
+
+function devOverlayReloadAssets() {
+    document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+        link.href = link.href.split('?')[0] + '?reload=' + new Date().getTime();
+    });
+    document.querySelectorAll('script[src]').forEach(script => {
+        const newScript = document.createElement('script');
+        newScript.src = script.src.split('?')[0] + '?reload=' + new Date().getTime();
+        newScript.defer = true;
+        script.parentNode.replaceChild(newScript, script);
+    });
+    alert('Assets wurden neu geladen.');
+}
+
+function devOverlaySoftReload() {
+    loadDevOverlayData();
+}
+
+function toggleDevLiveReload() {
+    devLiveReloadEnabled = !devLiveReloadEnabled;
+    const btn = document.getElementById('devLiveReloadToggle');
+    btn.textContent = devLiveReloadEnabled ? '🔄 Live Reload: AN' : '⛔ Live Reload: AUS';
+    if (devLiveReloadEnabled) {
+        startDevLiveReload();
+    } else {
+        clearInterval(devLiveReloadInterval);
+    }
+}
+
+function startDevLiveReload() {
+    devLiveReloadInterval = setInterval(() => {
+        if (!devLiveReloadEnabled) return;
+        const now = new Date().getTime();
+        document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+            if (!link.dataset.originalHref) link.dataset.originalHref = link.href;
+            link.href = link.dataset.originalHref.split('?')[0] + '?watch=' + now;
+        });
+    }, 5000);
+}
+
+function devOverlayExportInfo() {
+    const css = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).map(l => l.href).join('\n');
+    const js = Array.from(document.querySelectorAll('script[src]')).map(s => s.src).join('\n');
+    const cookies = document.cookie.split(';').map(c => c.trim()).join('\n');
+
+    const info = `
+Route: {{ app.request.attributes.get('_route') }}
+Controller: {{ app.request.attributes.get('_controller') }}
+Session: {{ app.session.id }}
+User: {{ app.user.username }}
+CSS-Dateien:
+${css}
+JS-Dateien:
+${js}
+Cookies:
+${cookies}
+`.trim();
+
+    const blob = new Blob([info], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'dev-debug.txt';
+    link.click();
+}
+
+function devOverlayScreenshot() {
+    html2canvas(document.body).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'screenshot.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    });
+}
+
+function loadDevOverlayData() {
+    const cssList = document.getElementById('devOverlayCssList');
+    const jsList = document.getElementById('devOverlayJsList');
+    const cookieList = document.getElementById('devOverlayCookieList');
+    const cssCount = document.getElementById('devOverlayCssCount');
+    const jsCount = document.getElementById('devOverlayJsCount');
+
+    cssList.innerHTML = '';
+    jsList.innerHTML = '';
+    cookieList.innerHTML = '';
+
+    const cssFiles = document.querySelectorAll('link[rel="stylesheet"]');
+    cssFiles.forEach(link => {
+        cssList.innerHTML += `<code>${link.href}</code>`;
+    });
+    cssCount.textContent = `(${cssFiles.length})`;
+
+    const jsFiles = document.querySelectorAll('script[src]');
+    jsFiles.forEach(script => {
+        jsList.innerHTML += `<code>${script.src}</code>`;
+    });
+    jsCount.textContent = `(${jsFiles.length})`;
+
+    const cookies = document.cookie.split(';');
+    cookies.forEach(cookie => {
+        if (cookie.trim().length > 0) {
+            cookieList.innerHTML += `<code>${cookie.trim()}</code>`;
+        }
+    });
+
+    {% if usersOnline is defined %}
+        const userList = document.getElementById('devOverlayUserList');
+        const userCount = document.getElementById('devOverlayUserCount');
+        userList.innerHTML = '';
+        const userArray = {{ usersOnline|map(u => u.username)|json_encode|raw }};
+        userArray.forEach(username => {
+            userList.innerHTML += `<code>${username}</code>`;
+        });
+        userCount.textContent = `(${userArray.length})`;
+    {% endif %}
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    loadDevOverlayData();
+    startDevLiveReload();
+});
+</script>
+{% endif %}

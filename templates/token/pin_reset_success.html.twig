@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container py-5">
+    <div class="alert alert-success">
+        ✅ Dein PIN wurde erfolgreich zurückgesetzt.
+    </div>
+    <a href="{{ path('app_login') }}" class="btn btn-primary">🔑 Zum Login</a>
+</div>
+{% endblock %}

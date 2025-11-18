@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PointOfInterest index{% endblock %}
+
+{% block body %}
+    <h1>PointOfInterest index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Address</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Type</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for point_of_interest in point_of_interests %}
+            <tr>
+                <td>{{ point_of_interest.id }}</td>
+                <td>{{ point_of_interest.name }}</td>
+                <td>{{ point_of_interest.description }}</td>
+                <td>{{ point_of_interest.address }}</td>
+                <td>{{ point_of_interest.latitude }}</td>
+                <td>{{ point_of_interest.longitude }}</td>
+                <td>{{ point_of_interest.type }}</td>
+                <td>
+                    <a href="{{ path('app_point_of_interest_show', {'id': point_of_interest.id}) }}">show</a>
+                    <a href="{{ path('app_point_of_interest_edit', {'id': point_of_interest.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_point_of_interest_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container my-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Benutzer-Dashboard-Konfiguration</h5>
+            <a href="{{ path('app_user_dashboard_config_new') }}" class="btn btn-light btn-sm">➕ Neu anlegen</a>
+        </div><a href="{{ path('app_user_dashboard_config_me') }}" class="list-group-item list-group-item-action">
+    <i class="bi bi-grid"></i> Mein Dashboard
+</a>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Sortierung</th>
+                            <th>Sichtbar</th>
+                            <th>Erstellt</th>
+                            <th>Geändert</th>
+                            <th>Position</th>
+                            <th>Einstellungen</th>
+                            <th>Benutzer</th>
+                            <th>Modul</th>
+                            <th class="text-end">Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for config in user_dashboard_configs %}
+                        <tr>
+                            <td>{{ config.id }}</td>
+                            <td>{{ config.sortOrder }}</td>
+                            <td>
+                                {% if config.isVisible %}
+                                    <span class="badge bg-success">Ja</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Nein</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ config.createdAt ? config.createdAt|date('d.m.Y H:i') : '—' }}</td>
+                            <td>{{ config.updatedAt ? config.updatedAt|date('d.m.Y H:i') : '—' }}</td>
+                            <td>{{ config.position }}</td>
+
+                            <td>
+                                {% if config.settings %}
+                                    <code style="font-size: 0.85em;">{{ config.settings|json_encode(constant('JSON_PRETTY_PRINT')) }}</code>
+                                {% else %}
+                                    <span class="text-muted">Keine</span>
+                                {% endif %}
+                            </td>                            <td>{{ config.user.id }}</td>
+                            <td>{{ config.module.id }}</td>
+                            <td class="text-end">
+                                <a href="{{ path('app_user_dashboard_config_show', {'id': config.id}) }}" class="btn btn-sm btn-outline-secondary">Anzeigen</a>
+                                <a href="{{ path('app_user_dashboard_config_edit', {'id': config.id}) }}" class="btn btn-sm btn-outline-primary">Bearbeiten</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-3">Keine Einträge gefunden.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GeoCoordinate{% endblock %}
+
+{% block body %}
+    <h1>GeoCoordinate</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ geo_coordinate.id }}</td>
+            </tr>
+            <tr>
+                <th>Latitude</th>
+                <td>{{ geo_coordinate.latitude }}</td>
+            </tr>
+            <tr>
+                <th>Longitude</th>
+                <td>{{ geo_coordinate.longitude }}</td>
+            </tr>
+            <tr>
+                <th>Altitude</th>
+                <td>{{ geo_coordinate.altitude }}</td>
+            </tr>
+            <tr>
+                <th>Accuracy</th>
+                <td>{{ geo_coordinate.accuracy }}</td>
+            </tr>
+            <tr>
+                <th>Source</th>
+                <td>{{ geo_coordinate.source }}</td>
+            </tr>
+            <tr>
+                <th>CapturedAt</th>
+                <td>{{ geo_coordinate.capturedAt ? geo_coordinate.capturedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>IsActive</th>
+                <td>{{ geo_coordinate.isActive ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_geo_coordinate_index') }}">back to list</a>
+
+    <a href="{{ path('app_geo_coordinate_edit', {'id': geo_coordinate.id}) }}">edit</a>
+
+    {{ include('geo_coordinate/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<h1 class="mb-4">🖼️ ShortcodeImage anzeigen</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <table class="table table-bordered align-middle">
+            <tr><th>ID</th><td>{{ shortcode_image.id }}</td></tr>
+            <tr><th>🔑 Tag</th><td><code>{{ shortcode_image.tag }}</code></td></tr>
+            <tr><th>📁 Filename</th><td>{{ shortcode_image.filename }}</td></tr>
+            <tr><th>📂 Pfad</th><td>{{ shortcode_image.path }}</td></tr>
+            <tr><th>🏷️ Titel</th><td>{{ shortcode_image.title }}</td></tr>
+            <tr><th>📝 Beschreibung</th><td>{{ shortcode_image.description }}</td></tr>
+            <tr><th>📡 Aktiv</th><td>{{ shortcode_image.isActive ? '✅ Ja' : '❌ Nein' }}</td></tr>
+            <tr><th>🔢 Sortierung</th><td>{{ shortcode_image.sortOrder }}</td></tr>
+            <tr><th>👤 Erstellt von</th><td>{{ shortcode_image.createdBy }}</td></tr>
+            <tr><th>📅 Erstellt am</th><td>{{ shortcode_image.createdAt ? shortcode_image.createdAt|date('d.m.Y H:i:s') : '' }}</td></tr>
+            <tr><th>🛠️ Geändert am</th><td>{{ shortcode_image.updatedAt ? shortcode_image.updatedAt|date('d.m.Y H:i:s') : '' }}</td></tr>
+        </table>
+    </div>
+</div>
+
+<h4 class="mt-4">📋 Dein Shortcode</h4>
+<div class="input-group mb-3">
+    <input type="text"
+           class="form-control"
+           id="shortcodeCopy{{ shortcode_image.id }}"
+           value='[[shortcode_image tag="{{ shortcode_image.tag }}"]]'
+           readonly>
+    <button class="btn btn-outline-secondary"
+            type="button"
+            onclick="navigator.clipboard.writeText(document.getElementById('shortcodeCopy{{ shortcode_image.id }}').value)">
+        📎 Kopieren
+    </button>
+</div>
+
+<h5 class="mb-2">🔧 Template-Einbindung</h5>
+<pre class="bg-light p-3 rounded border"><code>{{ '{{ ' }}'[[shortcode_image tag="{{ shortcode_image.tag }}"]]' | shortcode | raw }}{{ ' }}' }}</code></pre>
+
+<a href="{{ path('app_shortcode_image_index') }}" class="btn btn-secondary mt-3">⬅️ Zurück zur Übersicht</a>
+<a href="{{ path('app_shortcode_image_edit', {'id': shortcode_image.id}) }}" class="btn btn-warning mt-3">✏️ Bearbeiten</a>
+
+{{ include('shortcode_image/_delete_form.html.twig') }}
+{% endblock %}

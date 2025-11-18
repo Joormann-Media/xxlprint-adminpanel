@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserOnlineStatus index{% endblock %}
+
+{% block body %}
+    <h1>UserOnlineStatus index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>IsOnline</th>
+                <th>LastSeenAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_online_status in user_online_statuses %}
+            <tr>
+                <td>{{ user_online_status.id }}</td>
+                <td>{{ user_online_status.isOnline ? 'Yes' : 'No' }}</td>
+                <td>{{ user_online_status.lastSeenAt ? user_online_status.lastSeenAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_user_online_status_show', {'id': user_online_status.id}) }}">show</a>
+                    <a href="{{ path('app_user_online_status_edit', {'id': user_online_status.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_online_status_new') }}">Create new</a>
+{% endblock %}

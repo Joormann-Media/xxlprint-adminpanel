@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SystemOwner index{% endblock %}
+
+{% block body %}
+    <h1>SystemOwner index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for system_owner in system_owners %}
+            <tr>
+                <td>{{ system_owner.id }}</td>
+                <td>{{ system_owner.firstname }}</td>
+                <td>{{ system_owner.lastname }}</td>
+                <td>{{ system_owner.email }}</td>
+                <td>{{ system_owner.phone }}</td>
+                <td>
+                    <a href="{{ path('app_system_owner_show', {'id': system_owner.id}) }}">show</a>
+                    <a href="{{ path('app_system_owner_edit', {'id': system_owner.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_system_owner_new') }}">Create new</a>
+{% endblock %}

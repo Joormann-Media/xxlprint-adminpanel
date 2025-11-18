@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New GameStats{% endblock %}
+
+{% block body %}
+    <h1>Create new GameStats</h1>
+
+    {{ include('game_stats/_form.html.twig') }}
+
+    <a href="{{ path('app_game_stats_index') }}">back to list</a>
+{% endblock %}

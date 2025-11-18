@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit RideVariation{% endblock %}
+
+{% block body %}
+    <h1>Edit RideVariation</h1>
+
+    {{ include('ride_variation/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_ride_variation_index') }}">back to list</a>
+
+    {{ include('ride_variation/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,459 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fahrzeug bearbeiten{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-truck"></i> Fahrzeug bearbeiten</h4>
+        </div>
+        <div class="card-body">
+
+            {% if form.vars.errors|length > 0 %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+
+            {{ form_start(form, {'attr': {'autocomplete': 'off', 'enctype': 'multipart/form-data'}}) }}
+
+            <ul class="nav nav-tabs mb-3" id="vehicleTabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="tab-basis" data-bs-toggle="tab" data-bs-target="#basis" type="button" role="tab">
+                        <i class="bi bi-card-list"></i> Basisdaten
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="tab-details" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab">
+                        <i class="bi bi-arrows-angle-expand"></i> Technik & Ausstattung
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="tab-meta" data-bs-toggle="tab" data-bs-target="#meta" type="button" role="tab">
+                        <i class="bi bi-info-circle"></i> Fahrzeugdaten & Zulassung
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="tab-documents" data-bs-toggle="tab" data-bs-target="#documents" type="button" role="tab">
+                        <i class="bi bi-folder-symlink"></i> Dokumente
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="tab-inspection" data-bs-toggle="tab" data-bs-target="#inspection" type="button" role="tab">
+                        <i class="bi bi-wrench-adjustable-circle"></i> Wartung/Intervalle
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- Basisdaten -->
+                <div class="tab-pane fade show active" id="basis" role="tabpanel">
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            {{ form_label(form.bezeichnung) }}
+                            {{ form_widget(form.bezeichnung, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.bezeichnung) }}
+                        </div>
+                    </div>
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-4">
+                            {{ form_label(form.type) }}
+                            {{ form_widget(form.type, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.type) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.licensePlate) }}
+                            {{ form_widget(form.licensePlate, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.licensePlate) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.vehicleNumber) }}
+                            {{ form_widget(form.vehicleNumber, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.vehicleNumber) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.seatCount) }}
+                            {{ form_widget(form.seatCount, {'attr': {'class': 'form-control', 'min': 1}}) }}
+                            {{ form_errors(form.seatCount) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.wheelchair) }}
+                            <div class="form-switch">
+                                {{ form_widget(form.wheelchair, {'attr': {'class': 'form-check-input'}}) }}
+                            </div>
+                            {{ form_errors(form.wheelchair) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.toiletStatus) }}
+                            {{ form_widget(form.toiletStatus, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.toiletStatus) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.speed100) }}
+                            {{ form_widget(form.speed100, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.speed100) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.ahk) }}
+                            <div class="form-switch">
+                                {{ form_widget(form.ahk, {'attr': {'class': 'form-check-input'}}) }}
+                            </div>
+                            {{ form_errors(form.ahk) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.wheelchairRamp) }}
+                            <div class="form-switch">
+                                {{ form_widget(form.wheelchairRamp, {'attr': {'class': 'form-check-input'}}) }}
+                            </div>
+                            {{ form_errors(form.wheelchairRamp) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.lifter) }}
+                            <div class="form-switch">
+                                {{ form_widget(form.lifter, {'attr': {'class': 'form-check-input'}}) }}
+                            </div>
+                            {{ form_errors(form.lifter) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.minLicenceClass) }}
+                            {{ form_widget(form.minLicenceClass, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.minLicenceClass) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.status) }}
+                            {{ form_widget(form.status, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.status) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.vehicleQr) }}
+                            {{ form_widget(form.vehicleQr, {'attr': {'class': 'form-control'}}) }}
+                            {% if vehicle and vehicle.vehicleQr %}
+                                <img src="{{ asset(vehicle.vehicleQr) }}" alt="QR" class="mt-2" style="width:48px;">
+                            {% endif %}
+                            {{ form_errors(form.vehicleQr) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.concession) }}
+                            {{ form_widget(form.concession, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.concession) }}
+                        </div>
+                        <div class="col-md-12">
+                            {{ form_label(form.vehicleInfos) }}
+                            {{ form_widget(form.vehicleInfos, {'attr': {'class': 'form-control', 'rows': 3}}) }}
+                            {{ form_errors(form.vehicleInfos) }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technik & Ausstattung -->
+                <div class="tab-pane fade" id="details" role="tabpanel">
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-3">
+                            {{ form_label(form.axleCount) }}
+                            {{ form_widget(form.axleCount, {'attr': {'class': 'form-control', 'min': 1}}) }}
+                            {{ form_errors(form.axleCount) }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form_label(form.axleLoad) }}
+                            {{ form_widget(form.axleLoad, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.axleLoad) }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form_label(form.width) }}
+                            {{ form_widget(form.width, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.width) }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form_label(form.height) }}
+                            {{ form_widget(form.height, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.height) }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form_label(form.length) }}
+                            {{ form_widget(form.length, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.length) }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form_label(form.emptyWeight) }}
+                            {{ form_widget(form.emptyWeight, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.emptyWeight) }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form_label(form.maxWeight) }}
+                            {{ form_widget(form.maxWeight, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.maxWeight) }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form_label(form.maxLoad) }}
+                            {{ form_widget(form.maxLoad, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.maxLoad) }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form_label(form.trailerLoad) }}
+                            {{ form_widget(form.trailerLoad, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.trailerLoad) }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fahrzeugdaten & Zulassung -->
+<div class="tab-pane fade" id="meta" role="tabpanel">
+    <div class="row g-3 mt-2">
+        <div class="col-md-6">
+            {{ form_label(form.vin) }}
+            {{ form_widget(form.vin, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.vin) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.buildYear) }}
+            {{ form_widget(form.buildYear, {'attr': {'class': 'form-control', 'min': 1900}}) }}
+            {{ form_errors(form.buildYear) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.firstRegister) }}
+            {{ form_widget(form.firstRegister, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.firstRegister) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.driver) }}
+            {{ form_widget(form.driver, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.driver) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.currentRegisterDate) }}
+            {{ form_widget(form.currentRegisterDate, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.currentRegisterDate) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.registrationStatus) }}
+            {{ form_widget(form.registrationStatus, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.registrationStatus) }}
+        </div>
+    </div>
+</div>
+
+
+                <!-- Dokumente -->
+                <div class="tab-pane fade" id="documents" role="tabpanel">
+                    <div class="mt-3">
+                        <h5><i class="bi bi-folder"></i> Fahrzeugdokumente</h5>
+                        {{ form_errors(form.vehicleDocuments) }}
+                        <div id="vehicleDocuments-collection"
+                             data-collection-holder
+                             data-prototype="{{ form_widget(form.vehicleDocuments.vars.prototype)|e('html_attr') }}">
+                            {% for docForm in form.vehicleDocuments %}
+                                <div class="card mb-3 border">
+                                    <div class="card-body">
+                                        <div class="row g-3 align-items-end">
+                                            <div class="col-md-4">
+                                                {{ form_label(docForm.vehicleDoctype) }}
+                                                {{ form_widget(docForm.vehicleDoctype, {'attr': {'class': 'form-select'}}) }}
+                                                {{ form_errors(docForm.vehicleDoctype) }}
+                                            </div>
+                                            <div class="col-md-3">
+                                                {{ form_label(docForm.vehicle) }}
+                                                {{ form_widget(docForm.vehicle, {'attr': {'class': 'form-select'}}) }}
+                                                {{ form_errors(docForm.vehicle) }}
+                                            </div>
+                                            <div class="col-md-3">
+                                                {{ form_label(docForm.vehicleDocuser) }}
+                                                {{ form_widget(docForm.vehicleDocuser, {'attr': {'class': 'form-select'}}) }}
+                                                {{ form_errors(docForm.vehicleDocuser) }}
+                                            </div>
+                                            <div class="col-md-5">
+                                                {{ form_label(docForm.vehicleDocimage) }}
+                                                {{ form_widget(docForm.vehicleDocimage, {'attr': {'class': 'form-control'}}) }}
+                                                {{ form_errors(docForm.vehicleDocimage) }}
+                                            </div>
+                                            <div class="col-md-4">
+                                                {{ form_label(docForm.vehicleDocadd) }}
+                                                {{ form_widget(docForm.vehicleDocadd, {'attr': {'class': 'form-control', 'readonly': true, 'style': 'background:#f6f6fa;'}}) }}
+                                                {{ form_errors(docForm.vehicleDocadd) }}
+                                            </div>
+                                            <div class="col-md-2 d-flex align-items-center">
+                                                <button type="button" class="btn btn-danger btn-sm remove-item w-100 mt-4">
+                                                    <i class="bi bi-trash"></i> Entfernen
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button type="button" class="btn btn-outline-success btn-sm mt-2" id="add-vehicle-document">
+                            <i class="bi bi-plus-circle"></i> Dokument hinzufügen
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Inspektionsintervalle -->
+                <div class="tab-pane fade" id="inspection" role="tabpanel">
+                    <div class="mt-3">
+                        <h5><i class="bi bi-clock-history"></i> Inspektions-/Wartungsintervalle</h5>
+                        {{ form_errors(form.vehicleInspectionIntervals) }}
+                        <div id="vehicleInspectionIntervals-collection" data-collection-holder data-prototype="{{ form_widget(form.vehicleInspectionIntervals.vars.prototype)|e('html_attr') }}">
+                            {% for intervalForm in form.vehicleInspectionIntervals %}
+                                <div class="card mb-3 border shadow-sm">
+                                    <div class="card-body">
+                                        <div class="row g-3 align-items-end">
+                                            <div class="col-md-3">
+                                                {{ form_label(intervalForm.inspectionType) }}
+                                                {{ form_widget(intervalForm.inspectionType, {'attr': {'class': 'form-control'}}) }}
+                                                {{ form_errors(intervalForm.inspectionType) }}
+                                            </div>
+                                            <div class="col-md-2">
+                                                {{ form_label(intervalForm.intervalMonths) }}
+                                                {{ form_widget(intervalForm.intervalMonths, {'attr': {'class': 'form-control', 'min': 1}}) }}
+                                                {{ form_errors(intervalForm.intervalMonths) }}
+                                            </div>
+                                            <div class="col-md-3">
+                                                {{ form_label(intervalForm.legalBasis) }}
+                                                {{ form_widget(intervalForm.legalBasis, {'attr': {'class': 'form-control'}}) }}
+                                                {{ form_errors(intervalForm.legalBasis) }}
+                                            </div>
+                                            <div class="col-md-2">
+                                                {{ form_label(intervalForm.mandatory) }}
+                                                {{ form_widget(intervalForm.mandatory, {'attr': {'class': 'form-select'}}) }}
+                                                {{ form_errors(intervalForm.mandatory) }}
+                                            </div>
+                                            <div class="col-md-2">
+                                                {{ form_label(intervalForm.dateLast) }}
+                                                {{ form_widget(intervalForm.dateLast, {'attr': {'class': 'form-control'}}) }}
+                                                {{ form_errors(intervalForm.dateLast) }}
+                                            </div>
+                                            <div class="col-md-2">
+                                                {{ form_label(intervalForm.dateNext) }}
+                                                {{ form_widget(intervalForm.dateNext, {'attr': {'class': 'form-control'}}) }}
+                                                {{ form_errors(intervalForm.dateNext) }}
+                                            </div>
+                                            <div class="col-md-1 d-flex align-items-center justify-content-end">
+                                                <button type="button" class="btn btn-danger btn-sm remove-item mt-2 w-100">
+                                                    <i class="bi bi-trash"></i> Entfernen
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button type="button" class="btn btn-outline-success btn-sm mt-2" id="add-vehicle-interval">
+                            <i class="bi bi-plus-circle"></i> Intervall hinzufügen
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-end mt-4">
+                <button class="btn btn-primary">
+                    <i class="bi bi-save"></i> Speichern
+                </button>
+                <a href="{{ path('app_vehicle_index') }}" class="btn btn-outline-secondary ms-2">
+                    <i class="bi bi-arrow-left"></i> Zurück
+                </a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
+<script>
+// Bootstrap Tabs
+document.querySelectorAll('#vehicleTabs button').forEach(function(triggerEl) {
+    triggerEl.addEventListener('click', function(event) {
+        event.preventDefault();
+        bootstrap.Tab.getOrCreateInstance(triggerEl).show();
+    });
+});
+
+// --- VehicleDocuments Collection ---
+const docHolder = document.getElementById('vehicleDocuments-collection');
+const docAddBtn = document.getElementById('add-vehicle-document');
+if (docHolder && docAddBtn) {
+    docAddBtn.addEventListener('click', function() {
+        let prototype = docHolder.getAttribute('data-prototype');
+        let index = docHolder.querySelectorAll('.card').length;
+        let newForm = prototype.replace(/__name__/g, index);
+        let div = document.createElement('div');
+        div.classList.add('card', 'mb-2', 'border');
+        div.innerHTML = `<div class="card-body">${newForm}<button type="button" class="btn btn-danger btn-sm remove-item mt-2"><i class="bi bi-trash"></i> Entfernen</button></div>`;
+        docHolder.appendChild(div);
+        div.querySelector('.remove-item').addEventListener('click', function() {
+            div.remove();
+        });
+    });
+    docHolder.querySelectorAll('.remove-item').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            btn.closest('.card').remove();
+        });
+    });
+}
+
+// --- VehicleInspectionIntervals Collection ---
+const intervalHolder = document.getElementById('vehicleInspectionIntervals-collection');
+const intervalAddBtn = document.getElementById('add-vehicle-interval');
+if (intervalHolder && intervalAddBtn) {
+    intervalAddBtn.addEventListener('click', function() {
+        let prototype = intervalHolder.getAttribute('data-prototype');
+        let index = intervalHolder.querySelectorAll('.card').length;
+        let newForm = prototype.replace(/__name__/g, index);
+        let div = document.createElement('div');
+        div.classList.add('card', 'mb-2', 'border');
+        div.innerHTML = `<div class="card-body">${newForm}<button type="button" class="btn btn-danger btn-sm remove-item mt-2"><i class="bi bi-trash"></i> Entfernen</button></div>`;
+        intervalHolder.appendChild(div);
+        div.querySelector('.remove-item').addEventListener('click', function() {
+            div.remove();
+        });
+    });
+    intervalHolder.querySelectorAll('.remove-item').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            btn.closest('.card').remove();
+        });
+    });
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const input = document.querySelector('input[name="vehicle[licensePlate]"]');
+
+    if (!input) return;
+
+    input.addEventListener('input', (e) => {
+        let value = input.value.toUpperCase();
+
+        // Nur Buchstaben, Zahlen und " - " zulassen, alles andere entfernen
+        value = value.replace(/[^A-Z0-9\- ]/g, '');
+
+        // Formatierungsversuch:
+        // 1. Entferne vorhandene Leerzeichen und Bindestriche zum "Reparieren"
+        let clean = value.replace(/[\- ]/g, '');
+
+        // 2. Erster Teil: 1-3 Buchstaben (Kreis)
+        let part1 = clean.match(/^[A-Z]{1,3}/);
+        part1 = part1 ? part1[0] : '';
+
+        // 3. Zweiter Teil: 1-2 Buchstaben (TT)
+        let remainder = clean.slice(part1.length);
+        let part2 = remainder.match(/^[A-Z]{1,2}/);
+        part2 = part2 ? part2[0] : '';
+
+        // 4. Dritter Teil: Zahlen (1-4 Stellen)
+        let part3 = remainder.slice(part2.length).match(/^\d{1,4}/);
+        part3 = part3 ? part3[0] : '';
+
+        let formatted = part1;
+        if(part1.length > 0 && part2.length > 0) {
+            formatted += ' - ' + part2;
+        } else if (part1.length > 0 && remainder.length > 0) {
+            // Wenn schon ein zweiter Teil im Rohstring, aber nicht Buchstaben, setz Bindestrich
+            formatted += ' - ';
+        }
+        if(part3.length > 0) {
+            formatted += ' ' + part3;
+        }
+
+        input.value = formatted;
+    });
+});
+</script>
+{% endblock %}

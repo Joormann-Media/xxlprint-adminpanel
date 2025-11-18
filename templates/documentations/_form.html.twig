@@ -1,0 +1,75 @@
+{# templates/documentations/_form.html.twig #}
+{{ form_start(form) }}
+    <div class="card shadow rounded-4 mb-4">
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <h2 class="fs-5 mb-0">
+                {{ form.vars.value.id ? 'Dokumentation bearbeiten' : 'Neue Dokumentation anlegen' }}
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                {{ form_label(form.docuName) }}
+                {{ form_widget(form.docuName, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.docuName) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.docuShortdescr) }}
+                {{ form_widget(form.docuShortdescr, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.docuShortdescr) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.docuDescription) }}
+                {{ form_widget(form.docuDescription, {'attr': {'rows': 5}}) }}
+                {{ form_errors(form.docuDescription) }}
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.docuCreate) }}
+                    {{ form_widget(form.docuCreate, {
+                        'attr': {
+                            'class': 'form-control',
+                            'readonly': true
+                        },
+                        'value': (form.docuCreate.vars.value ? form.docuCreate.vars.value|date('Y-m-d H:i:s') : "now"|date('Y-m-d H:i:s'))
+                    }) }}
+                    {{ form_errors(form.docuCreate) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.docuUpdate) }}
+                    {{ form_widget(form.docuUpdate, {
+                        'attr': {
+                            'class': 'form-control',
+                            'readonly': true
+                        },
+                        'value': (form.docuUpdate.vars.value ? form.docuUpdate.vars.value|date('Y-m-d H:i:s') : "now"|date('Y-m-d H:i:s'))
+                    }) }}
+                    {{ form_errors(form.docuUpdate) }}
+                </div>
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.docuVersion) }}
+                {{ form_widget(form.docuVersion, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.docuVersion) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.docuMaintainer) }}
+                {{ form_widget(form.docuMaintainer, {
+                    'attr': {
+                        'class': 'form-select',
+                        'readonly': true
+                    },
+                    'value': app.user.id
+                }) }}
+                {{ form_errors(form.docuMaintainer) }}
+            </div>
+        </div>
+        <div class="card-footer bg-light rounded-bottom-4 d-flex justify-content-end gap-2">
+            <a href="{{ path('app_documentations_index') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Zurück
+            </a>
+            <button class="btn btn-primary">
+                <i class="bi bi-save"></i> Speichern
+            </button>
+        </div>
+    </div>
+{{ form_end(form) }}

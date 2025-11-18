@@ -1,0 +1,41 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+
+    session:
+        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\AbstractSessionHandler
+        cookie_secure: auto
+        cookie_lifetime: 86400       # 0 = bis Browser geschlossen
+        cookie_samesite: lax
+        cookie_httponly: true
+        gc_maxlifetime: 86400
+        gc_probability: 1
+
+    trusted_hosts:
+        - '^admin\.joormann-media\.local$'
+        - '^admin\.joormann-media\.de$'
+        - '^gaming\.joormann-media\.local$'
+        - '^gaming\.joormann-media\.de$'
+        - '^tekath\.joormann-media\.local$'
+        - '^tekath\.joormann-media\.de$'
+        - '^pma\.joormann-media\.local$'
+        - '^pma\.joormann-media\.de$'
+
+        # NEU: deine XXLPRINT lokale Domains
+        - '^admin\.xxlprint-wesel\.local$'
+        - '^xxlprint-wesel\.local$'
+
+        # falls du später www nutzt:
+        - '^www\.xxlprint-wesel\.local$'
+
+        # optional: direkte IP-Zugriffe erlauben
+        - '^192\.168\.178\.36$'
+
+
+    http_client:
+        scoped_clients:
+            ortungslogistik.client:
+                base_uri: 'https://www.ortungslogistik.de/api/'
+                headers:
+                    Accept: 'application/json'
+                    X-Requested-With: 'XMLHttpRequest'
+                    Referer: 'https://www.ortungslogistik.de/Live'

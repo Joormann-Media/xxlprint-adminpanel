@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OfficialAddresses index{% endblock %}
+
+{% block body %}
+    <h1>OfficialAddresses index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>IsValid</th>
+                <th>ConfidenceScore</th>
+                <th>Source</th>
+                <th>CorrectedAt</th>
+                <th>Notes</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for official_address in official_addresses %}
+            <tr>
+                <td>{{ official_address.id }}</td>
+                <td>{{ official_address.isValid ? 'Yes' : 'No' }}</td>
+                <td>{{ official_address.confidenceScore }}</td>
+                <td>{{ official_address.source }}</td>
+                <td>{{ official_address.correctedAt ? official_address.correctedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ official_address.notes }}</td>
+                <td>
+                    <a href="{{ path('app_official_addresses_show', {'id': official_address.id}) }}">show</a>
+                    <a href="{{ path('app_official_addresses_edit', {'id': official_address.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_official_addresses_new') }}">Create new</a>
+{% endblock %}

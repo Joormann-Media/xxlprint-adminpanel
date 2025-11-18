@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit DevLogEntry{% endblock %}
+
+{% block body %}
+    <h1>Edit DevLogEntry</h1>
+
+    {{ include('dev_log_entry/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_dev_log_entry_index') }}">back to list</a>
+
+    {{ include('dev_log_entry/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1>{{ page_title }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.module) }}
+        {{ form_row(form.isVisible) }}
+        {{ form_row(form.sortOrder) }}
+        {{ form_row(form.position) }}
+        {{ form_row(form.settings) }}
+
+        <button class="btn btn-primary mt-3">
+            <i class="bi bi-save"></i> Speichern
+        </button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

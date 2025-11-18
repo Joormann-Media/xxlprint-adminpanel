@@ -1,0 +1,355 @@
+{# templates/stop_point/_form.html.twig #}
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">
+            <i class="bi bi-geo-alt"></i> Stop Point Data
+        </h5>
+    </div>
+    <div class="card-body">
+        {{ form_start(form, {'attr': {'autocomplete': 'off'}}) }}
+        <div class="row g-3">
+
+            <!-- Straße (mit Autocomplete) -->
+            <div class="col-md-6 position-relative">
+                {{ form_label(form.street) }}
+                {{ form_widget(form.street, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                <div id="street-suggestions" class="address-suggestion-box"></div>
+                {{ form_errors(form.street) }}
+            </div>
+            <div class="col-md-2 position-relative">
+                {{ form_label(form.streetNumber) }}
+                {{ form_widget(form.streetNumber, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.streetNumber) }}
+            </div>
+            <div class="col-md-4 position-relative">
+                {{ form_label(form.crossingStreet) }}
+                {{ form_widget(form.crossingStreet, {'attr': {'class': 'form-control', 'autocomplete': 'off', 'placeholder': 'only for crossings'}}) }}
+                <div id="crossingstreet-suggestions" class="address-suggestion-box"></div>
+                {{ form_errors(form.crossingStreet) }}
+            </div>
+            <div class="col-md-3 position-relative">
+                {{ form_label(form.zip) }}
+                {{ form_widget(form.zip, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                <div id="zip-suggestions" class="address-suggestion-box"></div>
+                {{ form_errors(form.zip) }}
+            </div>
+            <div class="col-md-5 position-relative">
+                {{ form_label(form.city) }}
+                {{ form_widget(form.city, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                <div id="city-suggestions" class="address-suggestion-box"></div>
+                {{ form_errors(form.city) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_label(form.latitude) }}
+                {{ form_widget(form.latitude, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.latitude) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_label(form.longitude) }}
+                {{ form_widget(form.longitude, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.longitude) }}
+            </div>
+<div class="col-12 mb-4">
+    <div id="map-container" style="position:relative; min-height: 320px;">
+        <div id="map-placeholder" class="d-flex justify-content-center align-items-center bg-light border" 
+            style="height: 320px; border-radius: 14px; min-height: 100px; color: #6c757d; font-size: 1.2rem; position:absolute; top:0; left:0; width:100%;">
+            <i class="bi bi-geo-alt fs-3 me-2"></i> Please enter an address to show the map.
+        </div>
+        <div id="osm-map" style="height: 320px; width: 100%; border-radius: 14px; display: none; box-shadow: 0 4px 24px #1e90ff22; position:absolute; top:0; left:0;"></div>
+                <button id="save-map-btn" type="button"
+            class="btn btn-primary btn-sm shadow"
+            style="position:absolute; top:12px; right:18px; z-index:1100;">
+            <i class="bi bi-save"></i> Karte speichern
+        </button>
+    </div>
+</div>
+
+
+
+            <div class="col-md-6">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.name) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_label(form.type) }}
+                {{ form_widget(form.type, {'attr': {'class': 'form-control', 'placeholder': 'address, crossing ...'}}) }}
+                {{ form_errors(form.type) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_label(form.stopPointIcon) }}
+                {{ form_widget(form.stopPointIcon, {'attr': {'class': 'form-control', 'placeholder': '🚌, 🚏, svg...'}}) }}
+                {{ form_errors(form.stopPointIcon) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_label(form.maxPersons) }}
+                {{ form_widget(form.maxPersons, {'attr': {'class': 'form-control', 'min': 1}}) }}
+                {{ form_errors(form.maxPersons) }}
+            </div>
+            <div class="col-md-10">
+                {{ form_label(form.notes) }}
+                {{ form_widget(form.notes, {'attr': {'class': 'form-control', 'rows': 2}}) }}
+                {{ form_errors(form.notes) }}
+            </div>
+        </div>
+
+        <div class="text-end mt-4">
+            <button class="btn btn-primary">
+                <i class="bi bi-save"></i> Save
+            </button>
+            <a href="{{ path('app_stop_point_index') }}" class="btn btn-outline-secondary ms-2">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+<style>
+.address-suggestion-box {
+    display: none;
+    position: absolute;
+    width: 100%;
+    max-height: 260px;
+    overflow-y: auto;
+    background: #fff;
+    border: 2px solid #1e90ff;
+    border-radius: 0.4rem;
+    box-shadow: 0 6px 32px 0 rgba(30,144,255,0.15), 0 1.5px 4px 0 rgba(60,60,80,0.04);
+    z-index: 1100;
+    margin-top: 1px;
+    padding: 0;
+}
+.address-suggestion-box button.list-group-item {
+    border: none;
+    background: transparent;
+    text-align: left;
+    font-size: 1rem;
+    padding: 8px 14px;
+    transition: background 0.12s, font-weight 0.12s;
+    width: 100%;
+    color: #222;
+    border-bottom: 1px solid #eaeaea;
+}
+.address-suggestion-box button.list-group-item:last-child {
+    border-bottom: none;
+}
+.address-suggestion-box button.list-group-item:hover,
+.address-suggestion-box button.list-group-item:focus {
+    background: #e7f1ff;
+    font-weight: bold;
+    color: #1e90ff;
+    outline: none;
+    cursor: pointer;
+}
+.list-group-item {
+    border-radius: 0;
+    font-size: 1rem;
+    cursor: pointer;
+    background: #f9f9f9;
+    transition: background 0.18s;
+    border: 1px solid #f1f1f1;
+}
+.list-group-item:hover, .list-group-item:focus {
+    background: #bee3ff !important;
+    color: #015;
+}
+#osm-map { transition: box-shadow .2s; }
+#osm-map.leaflet-container { border-radius: 14px; }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // IDs für Inputs
+    const streetInput     = document.getElementById("{{ form.street.vars.id }}");
+    const zipInput        = document.getElementById("{{ form.zip.vars.id }}");
+    const cityInput       = document.getElementById("{{ form.city.vars.id }}");
+    const latInput        = document.getElementById("{{ form.latitude.vars.id }}");
+    const lonInput        = document.getElementById("{{ form.longitude.vars.id }}");
+    const crossingInput   = document.getElementById("{{ form.crossingStreet.vars.id }}");
+
+    // Suggestion Boxen
+    const streetBox   = document.getElementById("street-suggestions");
+    const zipBox      = document.getElementById("zip-suggestions");
+    const cityBox     = document.getElementById("city-suggestions");
+    const crossingBox = document.getElementById("crossingstreet-suggestions");
+
+    // --- MAP / PLACEHOLDER
+    const mapPlaceholder = document.getElementById('map-placeholder');
+    const mapDiv        = document.getElementById('osm-map');
+    let map, marker, mapInitialized = false;
+
+    // --- MAP INIT ---
+    function showMap(lat, lon) {
+        mapPlaceholder.style.display = 'none';
+        mapDiv.style.display = 'block';
+        if (!mapInitialized) {
+            map = L.map('osm-map').setView([lat, lon], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+            marker = L.marker([lat, lon], { draggable: true }).addTo(map);
+
+            // Drag Marker → Inputs + Adresse
+            marker.on('dragend', function(e) {
+                let pos = marker.getLatLng();
+                latInput.value = pos.lat.toFixed(7);
+                lonInput.value = pos.lng.toFixed(7);
+                reverseGeocode(pos.lat, pos.lng);
+            });
+
+            // Klick in Karte → Pin setzen, Inputs aktualisieren
+            map.on('click', function(e) {
+                marker.setLatLng(e.latlng);
+                latInput.value = e.latlng.lat.toFixed(7);
+                lonInput.value = e.latlng.lng.toFixed(7);
+                reverseGeocode(e.latlng.lat, e.latlng.lng);
+            });
+            mapInitialized = true;
+        } else {
+            map.setView([lat, lon], 16);
+            marker.setLatLng([lat, lon]);
+        }
+    }
+
+    function hideMap() {
+        mapDiv.style.display = 'none';
+        mapPlaceholder.style.display = 'flex';
+    }
+
+    // --- AUTOCOMPLETE + FILL FIELDS (dein bestehendes Code, gekürzt) ---
+    function showSuggestions(q, box, isCrossing) {
+        if (q.length < 3) {
+            box.innerHTML = '';
+            box.style.display = 'none';
+            return;
+        }
+        fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&q=' + encodeURIComponent(q))
+            .then(res => res.json())
+            .then(data => {
+                box.innerHTML = '';
+                if (data.length > 0) {
+                    data.slice(0, 8).forEach(item => {
+                        const el = document.createElement("button");
+                        el.type = "button";
+                        el.className = "list-group-item";
+                        el.textContent = item.display_name;
+                        el.addEventListener("click", () => {
+                            const addr = item.address;
+                            if (isCrossing) {
+                                crossingInput.value = addr.road || addr.pedestrian || addr.cycleway || addr.footway || addr.path || '';
+                            } else {
+                                streetInput.value = addr.road || '';
+                                document.getElementById("{{ form.streetNumber.vars.id }}").value = addr.house_number || '';
+                                zipInput.value = addr.postcode || '';
+                                cityInput.value = addr.city || addr.town || addr.village || '';
+                                latInput.value = item.lat;
+                                lonInput.value = item.lon;
+                                // MAP SPRINGT!
+                                showMap(parseFloat(item.lat), parseFloat(item.lon));
+                            }
+                            box.innerHTML = '';
+                            box.style.display = 'none';
+                        });
+                        box.appendChild(el);
+                    });
+                    box.style.display = 'block';
+                } else {
+                    box.style.display = 'none';
+                }
+            });
+    }
+
+    // Straße
+    streetInput.addEventListener("input", function () {
+        let fullQ = streetInput.value.trim();
+        const zip = zipInput.value;
+        const city = cityInput.value;
+        if (zip) fullQ += ', ' + zip;
+        if (city) fullQ += ', ' + city;
+        showSuggestions(fullQ, streetBox, false);
+    });
+    // PLZ
+    zipInput.addEventListener("input", function () {
+        let q = zipInput.value.trim();
+        if (cityInput.value) q += ', ' + cityInput.value;
+        showSuggestions(q, zipBox, false);
+    });
+    // Stadt
+    cityInput.addEventListener("input", function () {
+        let q = cityInput.value.trim();
+        if (zipInput.value) q += ', ' + zipInput.value;
+        showSuggestions(q, cityBox, false);
+    });
+    // CrossingStreet
+    crossingInput.addEventListener("input", function () {
+        let q = crossingInput.value.trim();
+        const city = cityInput.value;
+        if (city) q += ', ' + city;
+        showSuggestions(q, crossingBox, true);
+    });
+
+    // Klick außerhalb
+    document.addEventListener("click", (e) => {
+        [streetBox, zipBox, cityBox, crossingBox].forEach(box => {
+            if (!box.contains(e.target) && !streetInput.contains(e.target) && !zipInput.contains(e.target) && !cityInput.contains(e.target) && !crossingInput.contains(e.target)) {
+                box.innerHTML = '';
+                box.style.display = 'none';
+            }
+        });
+    });
+
+    // --- REVERSE LOOKUP ---
+    function reverseGeocode(lat, lon) {
+        fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + encodeURIComponent(lat) + '&lon=' + encodeURIComponent(lon) + '&addressdetails=1')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.address) {
+                    const addr = data.address;
+                    streetInput.value = addr.road || '';
+                    document.getElementById("{{ form.streetNumber.vars.id }}").value = addr.house_number || '';
+                    zipInput.value = addr.postcode || '';
+                    cityInput.value = addr.city || addr.town || addr.village || '';
+                }
+            });
+    }
+
+    // Inputs Koordinaten manuell? → Karte zeigen/springen!
+    function checkAndShowMap() {
+        const lat = parseFloat(latInput.value);
+        const lon = parseFloat(lonInput.value);
+        if (!isNaN(lat) && !isNaN(lon)) {
+            showMap(lat, lon);
+            return;
+        }
+        // Wenn Straße + Stadt gesetzt, Adresse suchen und Karte zeigen
+        const street = streetInput.value.trim();
+        const city   = cityInput.value.trim();
+        if (street && city) {
+            fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=' + encodeURIComponent(street + ', ' + city))
+                .then(res => res.json())
+                .then(data => {
+                    if (data.length > 0 && data[0].lat && data[0].lon) {
+                        latInput.value = data[0].lat;
+                        lonInput.value = data[0].lon;
+                        showMap(parseFloat(data[0].lat), parseFloat(data[0].lon));
+                    } else {
+                        hideMap();
+                    }
+                });
+        } else {
+            hideMap();
+        }
+    }
+
+    // EventListener für Adresseingabe → checkAndShowMap
+    [streetInput, cityInput, zipInput, latInput, lonInput].forEach(input => {
+        input.addEventListener('change', checkAndShowMap);
+        input.addEventListener('blur', checkAndShowMap);
+    });
+
+    // Initiale Sichtbarkeit setzen
+    checkAndShowMap();
+});
+</script>
+

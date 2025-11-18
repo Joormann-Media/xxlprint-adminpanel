@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Taxi-Tarif anzeigen{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h2 class="mb-0">Taxi-Tarif #{{ taxi_calculator.id }}</h2>
+        <div>
+            <a href="{{ path('app_taxi_calculator_edit', {'id': taxi_calculator.id}) }}" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Bearbeiten
+            </a>
+            <a href="{{ path('app_taxi_calculator_index') }}" class="btn btn-outline-secondary ms-2">
+                <i class="bi bi-arrow-left"></i> Zurück zur Übersicht
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Tag Grundgebühr</dt>
+                <dd class="col-sm-9">{{ taxi_calculator.baseFeeDay|number_format(2, ',', '.') }} €</dd>
+
+                <dt class="col-sm-3">Nacht/So Grundgebühr</dt>
+                <dd class="col-sm-9">{{ taxi_calculator.baseFeeNight|number_format(2, ',', '.') }} €</dd>
+
+                <dt class="col-sm-3">Preis pro km (Tag)</dt>
+                <dd class="col-sm-9">{{ taxi_calculator.pricePerKmDay|number_format(2, ',', '.') }} €</dd>
+
+                <dt class="col-sm-3">Preis pro km (Nacht)</dt>
+                <dd class="col-sm-9">{{ taxi_calculator.pricePerKmNight|number_format(2, ',', '.') }} €</dd>
+
+                <dt class="col-sm-3">Meter/0,10 € (Tag)</dt>
+                <dd class="col-sm-9">{{ taxi_calculator.sectionMetersDay|number_format(2, ',', '.') }}</dd>
+
+                <dt class="col-sm-3">Meter/0,10 € (Nacht)</dt>
+                <dd class="col-sm-9">{{ taxi_calculator.sectionMetersNight|number_format(2, ',', '.') }}</dd>
+
+                <dt class="col-sm-3">Wartezeit bis 5 Min (€/h)</dt>
+                <dd class="col-sm-9">{{ taxi_calculator.waitPriceFirst5MinHour|number_format(2, ',', '.') }} €</dd>
+
+                <dt class="col-sm-3">Wartezeit bis 5 Min (Sek/0,10€)</dt>
+                <dd class="col-sm-9">{{ taxi_calculator.waitSectionSecondsFirst5Min|number_format(2, ',', '.') }}</dd>
+
+                <dt class="col-sm-3">Wartezeit ab 6 Min (€/h)</dt>
+                <dd class="col-sm-9">{{ taxi_calculator.waitPriceFrom6MinHour|number_format(2, ',', '.') }} €</dd>
+
+                <dt class="col-sm-3">Wartezeit ab 6 Min (Sek/0,10€)</dt>
+                <dd class="col-sm-9">{{ taxi_calculator.waitSectionSecondsFrom6Min|number_format(2, ',', '.') }}</dd>
+
+                <dt class="col-sm-3">Großraum-Zuschlag</dt>
+                <dd class="col-sm-9">{{ taxi_calculator.largeCabSurcharge|number_format(2, ',', '.') }} €</dd>
+
+                <dt class="col-sm-3">Rücktritts-Gebühr</dt>
+                <dd class="col-sm-9">{{ taxi_calculator.withdrawalFee|number_format(2, ',', '.') }} €</dd>
+
+                <dt class="col-sm-3">Gültig ab</dt>
+                <dd class="col-sm-9">{{ taxi_calculator.validFrom ? taxi_calculator.validFrom|date('Y-m-d') : '' }}</dd>
+
+                <dt class="col-sm-3">Hinweise</dt>
+                <dd class="col-sm-9">
+                    {% if taxi_calculator.notes %}
+                        <span class="d-inline-block text-truncate" style="max-width: 400px;" title="{{ taxi_calculator.notes }}">{{ taxi_calculator.notes }}</span>
+                    {% else %}
+                        <span>—</span>
+                    {% endif %}
+                </dd>
+
+                <dt class="col-sm-3">Verordnung (PDF)</dt>
+                <dd class="col-sm-9">
+                    {% if taxi_calculator.regulationPdf %}
+                        <a href="{{ asset('uploads/taxi_calculator_regulations/' ~ taxi_calculator.regulationPdf) }}"
+                           class="btn btn-outline-secondary btn-sm"
+                           target="_blank" title="Verordnung (PDF)">
+                            <i class="bi bi-file-earmark-pdf"></i> Download
+                        </a>
+                    {% else %}
+                        <span>—</span>
+                    {% endif %}
+                </dd>
+
+                <dt class="col-sm-3">Letzte Änderung</dt>
+                <dd class="col-sm-9">{{ taxi_calculator.updatedAt ? taxi_calculator.updatedAt|date('Y-m-d H:i') : '' }}</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+{% endblock %}

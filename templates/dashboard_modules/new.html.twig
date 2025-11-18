@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+    <div class="container my-4">
+
+
+        {{ form_start(form) }}
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label for="{{ form.name.vars.id }}" class="form-label">Name</label>
+                        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.name) }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="{{ form.minRole.vars.id }}" class="form-label">Minimale Rolle</label>
+                        {{ form_widget(form.minRole, {'attr': {'class': 'form-select'}}) }}
+                        {{ form_errors(form.minRole) }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="{{ form.description.vars.id }}" class="form-label">Beschreibung</label>
+                        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.description) }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="{{ form.content.vars.id }}" class="form-label">Inhalt</label>
+                        {{ form_widget(form.content, {'attr': {'class': 'form-control tinymce'}}) }}
+                        {{ form_errors(form.content) }}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="{{ form.isActive.vars.id }}" class="form-label">Aktiv?</label>
+                        {{ form_widget(form.isActive, {'attr': {'class': 'form-check-input'}}) }}
+                        {{ form_errors(form.isActive) }}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="{{ form.createdAt.vars.id }}" class="form-label">Erstellt am</label>
+                        {{ form_widget(form.createdAt, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.createdAt) }}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="{{ form.createdBy.vars.id }}" class="form-label">Erstellt von</label>
+                        {{ form_widget(form.createdBy, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.createdBy) }}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="{{ form.updatedAt.vars.id }}" class="form-label">Geändert am</label>
+                        {{ form_widget(form.updatedAt, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.updatedAt) }}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="{{ form.updatedBy.vars.id }}" class="form-label">Geändert von</label>
+                        {{ form_widget(form.updatedBy, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.updatedBy) }}
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-save"></i> Speichern
+                </button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

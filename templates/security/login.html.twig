@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="login_background">
+    {% for label, messages in app.flashes %}
+    {% for message in messages %}
+    <div class="alert alert-{{ label == 'success' ? 'success' : (label == 'danger' ? 'danger' : 'info') }} alert-dismissible fade show" role="alert">
+    {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+{% endfor %}
+<div class="container_center">
+        <form method="post">
+        {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        
+        {% endif %}
+
+<div class="container_center">
+    <img src="/gfx/xxl_logo_clean.png" alt="XXL Print - Wir Machen Ihre Werbung!" class="logo-formular"><br>
+        <label for="username">🔤 Benutzername, ✉️ E-Mail oder <br>📱 Handy- oder Personalnummer</label>
+        <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control Custom-css-input" autocomplete="username" required autofocus>
+        <label for="password">Ihr Passwort: / PIN</label>
+        <input type="password" name="_password" id="password" class="form-control Custom-css-input" autocomplete="current-password" required><br />
+
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+
+        <button type="submit" class="btn btn-primary"
+        >
+            Login
+        </button>
+<br>
+        
+    </div>
+    </form>
+
+</div>
+</div>
+{% endblock %}

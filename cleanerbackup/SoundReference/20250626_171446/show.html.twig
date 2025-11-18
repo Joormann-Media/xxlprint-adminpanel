@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SoundReference{% endblock %}
+
+{% block body %}
+    <h1>SoundReference</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ sound_reference.id }}</td>
+            </tr>
+            <tr>
+                <th>RoomName</th>
+                <td>{{ sound_reference.roomName }}</td>
+            </tr>
+            <tr>
+                <th>SoundFileID</th>
+                <td>{{ sound_reference.soundFileID }}</td>
+            </tr>
+            <tr>
+                <th>SoundFilepath</th>
+                <td>{{ sound_reference.soundFilepath }}</td>
+            </tr>
+            <tr>
+                <th>SoundFilewave</th>
+                <td>{{ sound_reference.soundFilewave }}</td>
+            </tr>
+            <tr>
+                <th>NewSoundFilepath</th>
+                <td>{{ sound_reference.newSoundFilepath }}</td>
+            </tr>
+            <tr>
+                <th>NewSoundFilewave</th>
+                <td>{{ sound_reference.newSoundFilewave }}</td>
+            </tr>
+            <tr>
+                <th>SoundFilemeta</th>
+                <td>{{ sound_reference.soundFilemeta }}</td>
+            </tr>
+            <tr>
+                <th>NewSoundFilemeta</th>
+                <td>{{ sound_reference.newSoundFilemeta }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_sound_reference_index') }}">back to list</a>
+
+    <a href="{{ path('app_sound_reference_edit', {'id': sound_reference.id}) }}">edit</a>
+
+    {{ include('sound_reference/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New GeoCoordinate{% endblock %}
+
+{% block body %}
+    <h1>Create new GeoCoordinate</h1>
+
+    {{ include('geo_coordinate/_form.html.twig') }}
+
+    <a href="{{ path('app_geo_coordinate_index') }}">back to list</a>
+{% endblock %}

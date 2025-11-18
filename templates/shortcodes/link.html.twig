@@ -1,0 +1,8 @@
+<a href="{{ path(params.route, { id: params.id|default(1) }) }}"
+   class="btn btn-{{ params.style|default('primary') }}">
+    {% if params.icon is defined %}
+        <img src="/icons/{{ params.icon }}.svg" alt="{{ params.label|default('Link') }}" style="height: 1em; vertical-align: middle; margin-right: 0.25em;">
+    {% endif %}
+    
+    {{ params.label|default('Link') }}
+</a>

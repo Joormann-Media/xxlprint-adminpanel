@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New VoiceReference{% endblock %}
+
+{% block body %}
+    <h1>Create new VoiceReference</h1>
+
+    {{ include('voice_reference/_form.html.twig') }}
+
+    <a href="{{ path('app_voice_reference_index') }}">back to list</a>
+{% endblock %}

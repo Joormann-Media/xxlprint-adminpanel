@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .sortable-card {
+            cursor: grab;
+            transition: box-shadow 0.2s;
+        }
+        .sortable-card:active {
+            cursor: grabbing;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="bg-light border rounded p-4 mb-4 shadow-sm">
+    <h1 class="mb-3">🎭 Benutzerrollen</h1>
+    <p class="text-muted">Verwalte hier alle verfügbaren Benutzerrollen und ihre Rechte.</p>
+</div>
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <a href="{{ path('app_user_roles_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle me-1"></i> Neue Rolle
+        </a>
+        <a href="/help/view/2" class="btn btn-primary open-popup" data-title="📌 Hilfe">
+            📖 Hilfe anzeigen
+        </a>
+    </div>
+</div>
+
+
+    <div class="row g-4 sortable-container" id="sortableRoles">
+        {% for role in user_roles|sort((a, b) => a.hierarchy <=> b.hierarchy) %}
+            <div class="col-md-6 col-lg-4" data-id="{{ role.id }}">
+                <div class="card h-100 shadow-sm sortable-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ role.roleName }}</h5>
+                        <p class="card-text mb-1">
+                            <strong>Rolle:</strong> <code>{{ role.roleTag }}</code><br>
+                            <strong>Level:</strong> {{ role.hierarchy }}<br>
+                            <strong>Erstellt von:</strong> {{ role.roleCreateBy ?: '–' }}<br>
+                            <strong>Erstellt am:</strong> {{ role.roleCreate ? role.roleCreate|date('d.m.Y H:i') : '–' }}
+                        </p>
+                        {% if role.roleDescription %}
+                            <div class="mt-2 text-muted small">{{ role.roleDescription|raw }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0 d-flex justify-content-end gap-2">
+                        <a href="{{ path('app_user_roles_show', {'id': role.id}) }}" class="custom-button-icon" title="Anzeigen">
+                            <img src="/gfx/systemgfx/show.png" alt="Show">
+                        </a>
+                        <a href="{{ path('app_user_roles_edit', {'id': role.id}) }}" class="custom-button-icon" title="Bearbeiten">
+                            <img src="/gfx/systemgfx/edit.png" alt="Edit">
+                        </a>
+                        <form method="post" action="{{ path('app_user_roles_delete', {'id': role.id}) }}" onsubmit="return confirm('Sind Sie sicher, dass Sie diese Rolle löschen möchten?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ role.id) }}">
+                            <button class="custom-button-icon" title="Löschen">
+                                <img src="/gfx/systemgfx/delete.png" alt="Delete">
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-warning text-center">
+                    🚫 Keine Rollen gefunden.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modalElement = document.getElementById('globalModalViewer');
+    let globalModal = null;
+    if (modalElement) {
+        globalModal = new bootstrap.Modal(modalElement);
+    }
+
+    document.querySelectorAll('.open-message-modal').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const statusId = this.getAttribute('data-status-id');
+            const messageId = this.getAttribute('data-message-id');
+
+            // Tracker auf "gesehen"
+            fetch(`/message-status/${statusId}/read`, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': '{{ csrf_token("mark_message_read") }}'
+                }
+            })
+            .then(r => r.json())
+            .then(() => {
+                // Nachrichteninhalt für Modal laden
+                fetch(`/message/modal/${messageId}`)
+                    .then(resp => resp.text())
+                    .then(html => {
+                        // ⚠️ INERT hier kurz raus
+                        modalElement.removeAttribute('inert');
+
+                        document.getElementById('globalModalBody').innerHTML = html;
+
+                        if (globalModal) {
+                            globalModal.show();
+                        }
+
+                        // Beim Schließen inert wieder setzen
+                        modalElement.addEventListener('hidden.bs.modal', () => {
+                            modalElement.setAttribute('inert', '');
+                        }, { once: true });
+
+                        // Visuelles Feedback
+                        btn.parentElement.querySelector('.badge').className = 'badge bg-success';
+                        btn.parentElement.querySelector('.badge').textContent = 'Gelesen';
+                    });
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

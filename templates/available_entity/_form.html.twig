@@ -1,0 +1,78 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xxl-8">
+            <div class="card shadow rounded-4">
+                <div class="card-header bg-dark text-light d-flex align-items-center">
+                    <i class="bi bi-box me-2"></i>
+                    {{ available_entity is defined and available_entity.id ? 'Entität bearbeiten' : 'Neue Entität anlegen' }}
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {{ form_label(form.displayName, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.displayName, {'attr': {'class': 'form-control', 'placeholder': 'Name der Entität'}}) }}
+                                {{ form_errors(form.displayName) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.className, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.className, {'attr': {'class': 'form-control', 'placeholder': 'App\\Entity\\DeinEntity'}}) }}
+                                {{ form_errors(form.className) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.tag, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.tag, {'attr': {'class': 'form-control', 'placeholder': 'Kategorie/Tag'}}) }}
+                                {{ form_errors(form.tag) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.active, null, {'label_attr': {'class': 'form-label'}}) }}
+                                <div>
+                                    {{ form_widget(form.active, {'attr': {'class': 'form-check-input'}}) }}
+                                    <span class="ms-2">{{ form.active.vars.label|default('Aktiv') }}</span>
+                                </div>
+                                {{ form_errors(form.active) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {{ form_label(form.description, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Beschreibung', 'rows': 3}}) }}
+                                {{ form_errors(form.description) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.icon, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.icon, {'attr': {'class': 'form-control', 'placeholder': 'Bootstrap Icon (optional)'}}) }}
+                                {{ form_errors(form.icon) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.sortOrder, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.sortOrder, {'attr': {'class': 'form-control', 'placeholder': 'Sortierreihenfolge (optional)'}}) }}
+                                {{ form_errors(form.sortOrder) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.dependencies, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.dependencies, {'attr': {'class': 'form-control', 'placeholder': 'Abhängigkeiten als JSON oder Liste'}}) }}
+                                {{ form_errors(form.dependencies) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.extraMeta, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.extraMeta, {'attr': {'class': 'form-control', 'placeholder': 'Extra-Metadaten als JSON'}}) }}
+                                {{ form_errors(form.extraMeta) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center bg-light">
+                    <a href="{{ path('app_available_entity_index') }}" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left"></i> Zurück
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save"></i> Speichern
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}

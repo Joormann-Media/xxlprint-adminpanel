@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{# {% block title %} #}📊 Dashboard Module Übersicht{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    
+    <div class="bg-light border rounded p-4 mb-4 shadow-sm">
+        <h2 class="mb-0">📊 Dashboard Module</h2>
+        <p class="text-muted">Alle aktuell verfügbaren Dashboard-Module im System.</p>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <a href="{{ path('app_dashboard_modules_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle me-1"></i> Neues Modul
+        </a>
+    </div>
+    </div>
+
+    {% if dashboard_modules is not empty %}
+        <div class="row g-4">
+            {% for module in dashboard_modules %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ module.name }}</h5>
+                            <div class="card-footer bg-transparent d-flex justify-content-end gap-2 border-0 pt-0">
+                                <a href="{{ path('app_dashboard_modules_show', {'id': module.id}) }}"
+                                   class="custom-button-icon" title="Anzeigen">
+                                    <img src="/gfx/systemgfx/show.png" alt="Show">
+                                </a>
+                                <a href="{{ path('app_dashboard_modules_edit', {'id': module.id}) }}"
+                                   class="custom-button-icon" title="Bearbeiten">
+                                    <img src="/gfx/systemgfx/edit.png" alt="Edit">
+                                </a>
+                            </div>
+
+                            {% if module.description %}
+                                <p class="mb-2">
+                                    <strong>Beschreibung:</strong><br>
+                                    <span class="text-muted">{{ module.description }}</span>
+                                </p>
+                            {% endif %}
+
+                            <p class="mb-2">
+                                <strong>Status:</strong>
+                                <span class="badge {{ module.isActive ? 'bg-success' : 'bg-danger' }}">
+                                    {{ module.isActive ? 'Aktiv' : 'Inaktiv' }}
+                                </span>
+                            </p>
+
+                            <p class="mb-2">
+                                <strong>Minimale Rolle:</strong>
+                                <span class="text-muted">{{ module.minRole ?: '–' }}</span>
+                            </p>
+
+                            <p class="mb-2">
+                                <strong>Erstellt am:</strong>
+                                <span class="text-muted">{{ module.createdAt ? module.createdAt|date('d.m.Y H:i') : '–' }}</span>
+                            </p>
+
+                            <p class="mb-2">
+                                <strong>Erstellt von:</strong>
+                                <span class="text-muted">{{ module.createdBy ?: '–' }}</span>
+                            </p>
+
+                            <p class="mb-2">
+                                <strong>Aktualisiert am:</strong>
+                                <span class="text-muted">{{ module.updatedAt ? module.updatedAt|date('d.m.Y H:i') : '–' }}</span>
+                            </p>
+
+                            <p class="mb-3">
+                                <strong>Aktualisiert von:</strong>
+                                <span class="text-muted">{{ module.updatedBy ?: '–' }}</span>
+                            </p>
+
+                            {% if module.content %}
+                                <div class="mb-2">
+                                    <strong>Inhalt:</strong>
+                                    <div class="border bg-light p-2 rounded small readonly">
+                                        {{ rendered_contents[module.id]|raw }}
+
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning text-center">
+            🚫 Keine Dashboard-Module gefunden.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

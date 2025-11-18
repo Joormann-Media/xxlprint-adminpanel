@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\PenaltyCatalogEntry;
+use App\Form\PenaltyCatalogEntryType;
+use App\Repository\PenaltyCatalogEntryRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+#[Route('/penalty/catalog/entry')]
+final class PenaltyCatalogEntryController extends AbstractController
+{
+    #[Route(name: 'app_penalty_catalog_entry_index', methods: ['GET'])]
+    public function index(PenaltyCatalogEntryRepository $penaltyCatalogEntryRepository): Response
+    {
+        return $this->render('penalty_catalog_entry/index.html.twig', [
+            'penalty_catalog_entries' => $penaltyCatalogEntryRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/new', name: 'app_penalty_catalog_entry_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $penaltyCatalogEntry = new PenaltyCatalogEntry();
+        $form = $this->createForm(PenaltyCatalogEntryType::class, $penaltyCatalogEntry);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($penaltyCatalogEntry);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_penalty_catalog_entry_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('penalty_catalog_entry/new.html.twig', [
+            'penalty_catalog_entry' => $penaltyCatalogEntry,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}', name: 'app_penalty_catalog_entry_show', methods: ['GET'])]
+    public function show(PenaltyCatalogEntry $penaltyCatalogEntry): Response
+    {
+        return $this->render('penalty_catalog_entry/show.html.twig', [
+            'penalty_catalog_entry' => $penaltyCatalogEntry,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}/edit', name: 'app_penalty_catalog_entry_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, PenaltyCatalogEntry $penaltyCatalogEntry, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(PenaltyCatalogEntryType::class, $penaltyCatalogEntry);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_penalty_catalog_entry_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('penalty_catalog_entry/edit.html.twig', [
+            'penalty_catalog_entry' => $penaltyCatalogEntry,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}', name: 'app_penalty_catalog_entry_delete', methods: ['POST'])]
+    public function delete(Request $request, PenaltyCatalogEntry $penaltyCatalogEntry, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$penaltyCatalogEntry->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($penaltyCatalogEntry);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_penalty_catalog_entry_index', [], Response::HTTP_SEE_OTHER);
+    }
+}

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}School Departure Details{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>School Departure Details</h2>
+        <div>
+            <a href="{{ path('app_schooldeparture_edit', {'id': schoolDeparture.id}) }}" class="btn btn-warning">Edit</a>
+            <a href="{{ path('app_schooldeparture_index') }}" class="btn btn-secondary">Back to list</a>
+        </div>
+    </div>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <table class="table table-borderless mb-0">
+                <tr>
+                    <th style="width: 200px;">School</th>
+                    <td>{{ schoolDeparture.school.name }}</td>
+                </tr>
+                <tr>
+                    <th>Weekday</th>
+                    <td>{{ schoolDeparture.weekday }}</td>
+                </tr>
+                <tr>
+                    <th>Departure Time</th>
+                    <td>{{ schoolDeparture.departureTime ? schoolDeparture.departureTime|date('H:i') : '-' }}</td>
+                </tr>
+                <tr>
+                    <th>Ready Time</th>
+                    <td>{{ schoolDeparture.readyTime ? schoolDeparture.readyTime|date('H:i') : '-' }}</td>
+                </tr>
+                <tr>
+                    <th>Bus Line</th>
+                    <td>{{ schoolDeparture.busLine ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <th>Notes</th>
+                    <td style="white-space: pre-line;">{{ schoolDeparture.notes ?? '-' }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

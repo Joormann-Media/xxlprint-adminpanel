@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1>ShellCommands index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>CommandShort</th>
+                <th>CommandFull</th>
+                <th>CommandDescription</th>
+                <th>CommandCategory</th>
+                <th>CommandCreateDate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for shell_command in shell_commands %}
+            <tr>
+                <td>{{ shell_command.id }}</td>
+                <td>{{ shell_command.commandShort }}</td>
+                <td>{{ shell_command.commandFull }}</td>
+                <td>{{ shell_command.commandDescription }}</td>
+                <td>{{ shell_command.commandCategory }}</td>
+                <td>{{ shell_command.commandCreateDate ? shell_command.commandCreateDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_shell_commands_show', {'id': shell_command.id}) }}">show</a>
+                    <a href="{{ path('app_shell_commands_edit', {'id': shell_command.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_shell_commands_new') }}">Create new</a>
+{% endblock %}

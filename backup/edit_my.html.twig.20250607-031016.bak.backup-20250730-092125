@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}✏️ Gerät bearbeiten{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="mb-3">✏️ Gerät bearbeiten</h1>
+    <p class="text-muted">Ändere die Details deines registrierten Geräts.</p>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            {{ form_start(form) }}
+
+            {# Alle Felder wie in add_my.html.twig #}
+            {{ form_widget(form.deviceName, {'attr': {'class': 'form-control mb-3'}}) }}
+            {{ form_widget(form.deviceFingerprint, {'attr': {'class': 'form-control mb-3'}}) }}
+            {{ form_widget(form.ipAddress, {'attr': {'class': 'form-control mb-3'}}) }}
+            {{ form_widget(form.userAgent, {'attr': {'class': 'form-control mb-3'}}) }}
+            {{ form_widget(form.registeredAt, {'attr': {'class': 'form-control mb-3'}}) }}
+
+            <div class="form-check mb-3">
+                {{ form_widget(form.isTrusted, {'attr': {'class': 'form-check-input'}}) }}
+                {{ form_label(form.isTrusted, null, {'label_attr': {'class': 'form-check-label'}}) }}
+            </div>
+
+            <div class="form-check mb-3">
+                {{ form_widget(form.isActive, {'attr': {'class': 'form-check-input'}}) }}
+                {{ form_label(form.isActive, null, {'label_attr': {'class': 'form-check-label'}}) }}
+            </div>
+
+            {{ form_widget(form.user, {'attr': {'class': 'd-none'}}) }}
+
+            <div class="text-end mt-4 d-flex justify-content-end gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <img src="{{ asset('gfx/systemgfx/ok_arrow.png') }}" alt="Speichern" style="height: 18px; margin-right: 4px;">
+                    Speichern
+                </button>
+                <a href="{{ path('app_user_device_me') }}" class="btn btn-secondary">
+                    <img src="{{ asset('gfx/systemgfx/cancel.png') }}" alt="Abbrechen" style="height: 18px; margin-right: 4px;">
+                    Abbrechen
+                </a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

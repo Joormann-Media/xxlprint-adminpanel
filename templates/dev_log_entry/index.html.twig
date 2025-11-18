@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}📝 DevLog{% endblock %}
+
+{% block body %}
+<div class="container my-5 px-2 px-md-0">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h1 class="mb-0">DevLog – Letzte Änderungen</h1>
+        <a href="{{ path('app_dev_log_entry_new') }}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Neuer Eintrag
+        </a>
+    </div>
+
+    {% if dev_log_entries|length == 0 %}
+        <div class="alert alert-info text-center">Noch keine Einträge vorhanden.</div>
+    {% endif %}
+
+    <div class="row gy-4">
+        {% for entry in dev_log_entries %}
+            <div class="col-12 col-md-8 offset-md-2">
+                <div class="card shadow-sm border-0 rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <h3 class="card-title mb-0">{{ entry.title }}</h3>
+                            {% if entry.user %}
+                                <span class="badge bg-secondary ms-2">
+                                    <i class="bi bi-person-circle"></i> {{ entry.user.username|default(entry.user.email|default('User')) }}
+                                </span>
+                            {% endif %}
+                        </div>
+                        <p class="card-text fs-5 mb-2">{{ entry.content|raw }}</p>
+                        <div class="text-muted small mt-3">
+                            <i class="bi bi-clock-history"></i>
+                            Erstellt: {{ entry.createdAt ? entry.createdAt|date('d.m.Y H:i') : '–' }}
+                            {% if entry.updatedAt and entry.updatedAt != entry.createdAt %}
+                                • Letzte Änderung: {{ entry.updatedAt|date('d.m.Y H:i') }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex justify-content-end gap-2">
+                        <a href="{{ path('app_dev_log_entry_show', {'id': entry.id}) }}" class="btn btn-outline-info btn-sm">
+                            <i class="bi bi-eye"></i> Details
+                        </a>
+                        <a href="{{ path('app_dev_log_entry_edit', {'id': entry.id}) }}" class="btn btn-outline-warning btn-sm">
+                            <i class="bi bi-pencil"></i> Bearbeiten
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .card { transition: box-shadow 0.1s; }
+        .card:hover { box-shadow: 0 0.5rem 2rem 0 #0063b13a; }
+    </style>
+{% endblock %}

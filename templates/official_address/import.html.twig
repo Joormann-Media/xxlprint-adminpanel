@@ -1,0 +1,465 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Adresse importieren{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-3">📦 Adressimport</h1>
+
+    <div class="bg-light p-4 rounded border mb-4">
+        {{ form_start(form) }}
+
+<div class="row mb-4 g-3">
+    <!-- Spalte 1: PLZ Start / Ende + StadtQuery -->
+    <div class="col-12 col-md-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <h6 class="card-title mb-3 text-secondary">PLZ-Bereich &amp; Stadt</h6>
+            <div class="mb-3">
+                {{ form_label(form.postalcode_start, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.postalcode_start, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.postalcode_start) }}
+            </div>
+            
+            <div class="mb-3">
+                {{ form_label(form.postalcode_end, null, {'label_attr': {'class': 'form-label invisible-content'}}) }}
+                {{ form_widget(form.postalcode_end, {'attr': {'class': 'form-control invisible-content'}}) }}
+                {{ form_errors(form.postalcode_end) }}
+            </div>
+            
+            <div class="mb-3">
+                {{ form_label(form.cityQuery, null, {'label_attr': {'class': 'form-label invisible-content'}}) }}
+                {{ form_widget(form.cityQuery, {'attr': {'class': 'form-control invisible-content'}}) }}
+                {{ form_errors(form.cityQuery) }}
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spalte 2: Stadt-Autocomplete -->
+    <div class="col-12 col-md-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <h6 class="card-title mb-3 text-secondary">Stadt suchen</h6>
+                <label for="cityAutocomplete" class="form-label visually-hidden">Stadt suchen</label>
+                <input type="text" id="cityAutocomplete" class="form-control mb-2" placeholder="z. B. Wesel, Köln…" autocomplete="off">
+                <div id="cityAutocompleteSuggestions" class="text-muted small mt-1"></div>
+                            <div class="card-body">
+                <h6 class="card-title mb-3 text-secondary">PLZ zur gewählten Stadt</h6>
+                <div id="cityAutocompletePlzResults" class="text-primary small border rounded p-2 bg-white" style="min-height: 50px;">
+                    Noch keine Stadt gewählt.
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+        <!-- Spalte : PLZ zur gewählten Stadt -->
+    <div class="col-12 col-md-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <h6 class="card-title mb-3 text-secondary">Steuerung:</h6>
+                <button class="btn btn-primary ">🔍 Vorschau anzeigen</button>
+                <button id="start-import" class="btn btn-success">Import starten</button>
+                                            <a href="{{ path('app_official_address_index') }}"
+                               class="btn btn-outline-secondary flex-grow-1 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-arrow-left me-2"></i> Zurück zur Übersicht
+                            </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <div id="map" style="height: 300px; display: none;" class="rounded border mt-3"></div>
+
+        
+
+        {{ form_end(form) }}
+    </div>
+<div id="importStatusBox" class="alert alert-info d-none align-items-center mb-4" style="min-height: 48px;">
+    <div class="w-100">
+        <div id="importStatusText">Import läuft …</div>
+        <div class="progress mt-2" style="height: 18px;">
+            <div id="importStatusBar" class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" 
+                 style="width: 0%">0%</div>
+        </div>
+    </div>
+</div>
+
+    {% if postcodes is defined and postcodes|length > 0 %}
+        <div class="bg-white p-4 rounded border">
+            <h2 class="mb-3">Import-Vorschau</h2>
+
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>PLZ</th>
+                        <th>Buchstabe</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="import-table">
+                {% for plz in postcodes %}
+                    {% for letter in streetLetters[plz]|default([]) %}
+                        <tr data-plz="{{ plz }}" data-letter="{{ letter }}">
+                            <td>{{ plz }}</td>
+                            <td>{{ letter|upper }}</td>
+                            <td class="status">Wartet</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
+
+            
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const startBtn = document.getElementById('start-import');
+    if (!startBtn) return;
+
+    startBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const statusBox = document.getElementById('importStatusBox');
+        const statusText = document.getElementById('importStatusText');
+        const statusBar = document.getElementById('importStatusBar');
+        const rows = Array.from(document.querySelectorAll('#import-table tr'));
+        let idx = 0;
+        let done = 0, errors = 0;
+
+        if (!rows.length) return;
+
+        statusBox.classList.remove('d-none', 'alert-success', 'alert-danger', 'alert-info');
+        statusBox.classList.add('alert-info');
+        statusText.textContent = `Import läuft …`;
+        statusBar.style.width = '0%';
+        statusBar.textContent = '0%';
+
+        function updateStatus() {
+            const percent = Math.round((idx / rows.length) * 100);
+            statusBar.style.width = percent + '%';
+            statusBar.textContent = percent + '%';
+            statusText.textContent = `${idx} von ${rows.length} Importvorgängen abgeschlossen – Erfolgreich: ${done}, Fehler: ${errors}`;
+        }
+
+        function importNext() {
+            updateStatus();
+
+            if (idx >= rows.length) {
+                // Fertig!
+                statusBox.classList.remove('alert-info');
+                if (errors === 0) {
+                    statusBox.classList.add('alert-success');
+                    statusText.textContent = `🎉 Alle ${done} Importvorgänge erfolgreich abgeschlossen!`;
+                    statusBar.style.width = '100%';
+                    statusBar.classList.remove('bg-info', 'bg-danger');
+                    statusBar.classList.add('bg-success');
+                    statusBar.textContent = '100%';
+                } else {
+                    statusBox.classList.add('alert-danger');
+                    statusText.textContent = `⚠️ Fertig: ${done} erfolgreich, ${errors} mit Fehlern.`;
+                    statusBar.style.width = '100%';
+                    statusBar.classList.remove('bg-info', 'bg-success');
+                    statusBar.classList.add('bg-danger');
+                    statusBar.textContent = '100%';
+                }
+                return;
+            }
+
+            const row = rows[idx];
+            const plz = row.dataset.plz;
+            const letter = row.dataset.letter;
+            row.querySelector('.status').textContent = 'Import läuft...';
+
+            fetch("{{ path('app_official_address_import_ajax') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({plz, letter})
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                row.querySelector('.status').textContent =
+                    `Fertig: ${data.inserted} importiert, ${data.skipped} übersprungen`;
+                done++;
+            })
+            .catch(() => {
+                row.querySelector('.status').textContent = 'Fehler!';
+                errors++;
+            })
+            .finally(() => {
+                idx++;
+                importNext();
+            });
+        }
+
+        importNext();
+    });
+});
+
+
+    // Fix: Only add event listener if cityInput exists
+    const cityInput = document.querySelector("#official_address_import_cityQuery");
+    if (cityInput) {
+        const suggestionsBox = document.getElementById("citySuggestions");
+        const plzBox = document.getElementById("plzResults");
+        const districtBox = document.getElementById("districtResults");
+        let timeout = null;
+        cityInput.addEventListener("input", () => {
+            clearTimeout(timeout);
+            const query = cityInput.value.trim();
+            if (query.length < 2) {
+                suggestionsBox.innerHTML = "";
+                plzBox.innerHTML = "";
+                districtBox.innerHTML = "";
+                // Only hide map if it exists
+                const map = document.getElementById("map");
+                if (map) map.style.display = "none";
+                return;
+            }
+
+            timeout = setTimeout(() => {
+                fetch(`/api/geocode/city?q=${encodeURIComponent(query)}`)
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.length) {
+                            const suggestion = data[0];
+                            suggestionsBox.innerHTML = `?? Du meintest vermutlich: <strong>${suggestion.display_name}</strong>`;
+                            fetch(`/api/geodata/postcodes?city=${encodeURIComponent(suggestion.name)}`)
+                                .then(r => r.json())
+                                .then(plz => {
+                                    plzBox.innerHTML = `?? PLZ-Bereiche: <strong>${plz.join(", ")}</strong>`;
+                                });
+
+                            fetch(`/api/geodata/districts?city=${encodeURIComponent(suggestion.name)}`)
+                                .then(r => r.json())
+                                .then(districts => {
+                                    districtBox.innerHTML = `?? Stadtteile: <strong>${districts.join(", ")}</strong>`;
+                                });
+
+                            // Outline/Mapbox-Kram ignorieren wir jetzt!
+                        } else {
+                            suggestionsBox.innerHTML = "? Keine Stadt gefunden.";
+                            plzBox.innerHTML = "";
+                            districtBox.innerHTML = "";
+                            const map = document.getElementById("map");
+                            if (map) map.style.display = "none";
+                        }
+                    });
+            }, 350);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const cityInput = document.getElementById("cityAutocomplete");
+        const suggestionsBox = document.getElementById("cityAutocompleteSuggestions");
+        const plzBox = document.getElementById("cityAutocompletePlzResults");
+
+        let debounceTimeout = null;
+
+        cityInput.addEventListener("input", () => {
+            clearTimeout(debounceTimeout);
+            const query = cityInput.value.trim();
+
+            if (query.length < 2) {
+                suggestionsBox.innerHTML = "";
+                plzBox.innerHTML = "Noch keine Stadt gewählt.";
+                return;
+            }
+
+            debounceTimeout = setTimeout(() => {
+                fetch("/official-address/api/local-city-suggest?q=" + encodeURIComponent(query))
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!data.length) {
+                            suggestionsBox.innerHTML = "❌ Keine Stadt gefunden.";
+                            plzBox.innerHTML = "–";
+                            return;
+                        }
+
+                        const cityName = data[0];
+                        suggestionsBox.innerHTML = `🪄 Du meintest vermutlich: <strong id="selectSuggestedCity" style="cursor:pointer;">${cityName}</strong>`;
+
+                        document.getElementById("selectSuggestedCity").addEventListener("click", () => {
+                            cityInput.value = cityName;
+                            suggestionsBox.innerHTML = "⏳ Lade PLZ…";
+
+                            fetch("/official-address/api/local-city-postcodes?q=" + encodeURIComponent(cityName))
+                                .then(res => res.json())
+                                .then(plzList => {
+                                    if (plzList.length > 0) {
+                                        plzBox.innerHTML = plzList.map(plz => `<span class="badge bg-info me-1">${plz}</span>`).join('');
+                                        suggestionsBox.innerHTML = "✅ Stadt übernommen.";
+                                    } else {
+                                        plzBox.innerHTML = "⚠️ Keine PLZ gefunden.";
+                                    }
+                                })
+                                .catch(() => {
+                                    plzBox.innerHTML = "❌ Fehler beim Abruf der PLZ.";
+                            });
+                        });
+                    });
+        }, 300);
+    });
+});
+
+</script>
+<script>
+    function filterTable() {
+        const filter = document.getElementById("searchInput").value.toLowerCase();
+        const rows = document.querySelectorAll("#addressTable tbody tr");
+        rows.forEach(row => {
+            const match = row.innerText.toLowerCase().includes(filter);
+            row.style.display = match ? "" : "none";
+        });
+        document.getElementById("pagination").style.display = filter ? "none" : "flex";
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+        if (document.getElementById("addressTable")) paginateTable();
+
+        const cityInput = document.querySelector("#official_address_import_cityQuery");
+        const plzStartInput = document.querySelector("#official_address_import_postalcode_start");
+        const plzEndInput = document.querySelector("#official_address_import_postalcode_end");
+        const suggestionsBox = document.getElementById("citySuggestions");
+        const plzBox = document.getElementById("plzResults");
+        const districtBox = document.getElementById("districtResults");
+        const plzCityResults = document.getElementById("plzCityResults");
+        const map = document.getElementById("map");
+
+        // 🧠 Auto-Vervollständigung für PLZ-Ende
+        plzStartInput.addEventListener("blur", () => {
+            const val = plzStartInput.value.trim();
+            if (!/^\d{2,5}$/.test(val)) return;
+
+            if (plzEndInput.value.trim() === "") {
+                let endVal = "";
+                if (val.length === 2) endVal = val + "999";
+                if (val.length === 3) endVal = val + "99";
+                if (val.length === 4) endVal = val + "9";
+                if (val.length === 5) endVal = val;
+                plzEndInput.value = endVal;
+            }
+
+            // 🧙 Vorschlags-Abfrage aller Städte zur PLZ-Region
+            if (val.length >= 2) {
+                fetch(`/api/geodata/cities-by-plz-prefix/${val}`)
+                    .then(r => {
+                        if (!r.ok) throw new Error("Not found");
+                        return r.json();
+                    })
+                    .then(cities => {
+                        if (cities.length) {
+                            plzCityResults.innerHTML = `🚚 Mögliche Städte: <strong>${cities.join(", ")}</strong>`;
+                        } else {
+                            plzCityResults.innerHTML = "";
+                        }
+                    })
+                    .catch(() => {
+                        plzCityResults.innerHTML = "❌ Keine Städte gefunden.";
+                    });
+            }
+        });
+
+        // 🧭 Stadt-Korrektur-Vorschläge + Mapbox
+        let timeout = null;
+        cityInput.addEventListener("input", () => {
+            clearTimeout(timeout);
+            const query = cityInput.value.trim();
+            if (query.length < 2) {
+                suggestionsBox.innerHTML = "";
+                plzBox.innerHTML = "";
+                districtBox.innerHTML = "";
+                map.style.display = "none";
+                return;
+            }
+
+            timeout = setTimeout(() => {
+                fetch(`/api/geocode/city?q=${encodeURIComponent(query)}`)
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.length) {
+                            const suggestion = data[0];
+                            suggestionsBox.innerHTML = `🪄 Du meintest vermutlich: <strong>${suggestion.display_name}</strong>`;
+                            fetch(`/api/geodata/postcodes?city=${encodeURIComponent(suggestion.name)}`)
+                                .then(r => r.json())
+                                .then(plz => {
+                                    plzBox.innerHTML = `📮 PLZ-Bereiche: <strong>${plz.join(", ")}</strong>`;
+                                });
+
+                            fetch(`/api/geodata/districts?city=${encodeURIComponent(suggestion.name)}`)
+                                .then(r => r.json())
+                                .then(districts => {
+                                    districtBox.innerHTML = `🏘 Stadtteile: <strong>${districts.join(", ")}</strong>`;
+                                });
+
+                            fetch(`/api/geodata/outline?city=${encodeURIComponent(suggestion.name)}`)
+                                .then(r => r.json())
+                                .then(geojson => {
+                                    map.style.display = "block";
+                                    mapboxgl.accessToken = 'dein_mapbox_token';
+                                    const mapbox = new mapboxgl.Map({
+                                        container: 'map',
+                                        style: 'mapbox://styles/mapbox/streets-v11',
+                                        center: suggestion.center || [6.96, 51.45],
+                                        zoom: 11
+                                    });
+
+                                    mapbox.on('load', () => {
+                                        mapbox.addSource('city-outline', {
+                                            type: 'geojson',
+                                            data: geojson
+                                        });
+
+                                        mapbox.addLayer({
+                                            id: 'city-outline-layer',
+                                            type: 'fill',
+                                            source: 'city-outline',
+                                            paint: {
+                                                'fill-color': '#088',
+                                                'fill-opacity': 0.3
+                                            }
+                                        });
+
+                                        mapbox.addLayer({
+                                            id: 'city-outline-border',
+                                            type: 'line',
+                                            source: 'city-outline',
+                                            paint: {
+                                                'line-color': '#000',
+                                                'line-width': 2
+                                            }
+                                        });
+                                    });
+                                });
+                        } else {
+                            suggestionsBox.innerHTML = "❌ Keine Stadt gefunden.";
+                            plzBox.innerHTML = "";
+                            districtBox.innerHTML = "";
+                            map.style.display = "none";
+                        }
+                    });
+            }, 350);
+        });
+    });
+</script>
+{% endblock %}

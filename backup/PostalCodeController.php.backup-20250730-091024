@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\PostalCode;
+use App\Form\PostalCodeType;
+use App\Repository\PostalCodeRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+#[Route('/postal/code')]
+final class PostalCodeController extends AbstractController
+{
+    #[Route(name: 'app_postal_code_index', methods: ['GET'])]
+    public function index(PostalCodeRepository $postalCodeRepository): Response
+    {
+        return $this->render('postal_code/index.html.twig', [
+            'postal_codes' => $postalCodeRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/new', name: 'app_postal_code_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $postalCode = new PostalCode();
+        $form = $this->createForm(PostalCodeType::class, $postalCode);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($postalCode);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_postal_code_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('postal_code/new.html.twig', [
+            'postal_code' => $postalCode,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}', name: 'app_postal_code_show', methods: ['GET'])]
+    public function show(PostalCode $postalCode): Response
+    {
+        return $this->render('postal_code/show.html.twig', [
+            'postal_code' => $postalCode,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}/edit', name: 'app_postal_code_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, PostalCode $postalCode, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(PostalCodeType::class, $postalCode);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_postal_code_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('postal_code/edit.html.twig', [
+            'postal_code' => $postalCode,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}', name: 'app_postal_code_delete', methods: ['POST'])]
+    public function delete(Request $request, PostalCode $postalCode, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$postalCode->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($postalCode);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_postal_code_index', [], Response::HTTP_SEE_OTHER);
+    }
+}

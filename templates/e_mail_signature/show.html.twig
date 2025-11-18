@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container my-3">
+        <h1 class="mb-4"><i class="bi bi-envelope-at-fill"></i> E-Mail-Signatur Vorschau</h1>
+
+        <div class="row">
+            <!-- Vorschau der Signatur -->
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Signatur Vorschau</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="signature-preview" class="p-3 border rounded" style="background-color: #f8f9fa;">
+                            <!-- Hier kommt die gerenderte Vorschau der Signatur -->
+                            {{ e_mail_signature.htmlOutput | raw }}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                            <a href="{{ path('app_email_signature_index') }}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left-circle"></i> Zurück zur Liste
+                            </a>
+                            <a href="{{ path('app_email_signature_edit', {'id': e_mail_signature.id}) }}" class="btn btn-warning ml-3">
+                                <i class="bi bi-pencil-square"></i> Bearbeiten
+                            </a>
+                            <button id="download-html-btn" class="btn btn-success">
+    <i class="bi bi-download"></i> HTML Herunterladen
+</button>
+
+                            <form id="delete-form-{{ e_mail_signature.id }}" method="post" action="{{ path('app_email_signature_delete', {'id': e_mail_signature.id}) }}" style="display:inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ e_mail_signature.id) }}">
+                                    <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Sind Sie sicher, dass Sie diese Signatur löschen möchten?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                            </form>
+                    </div>
+                    
+
+
+                </div>
+                        
+            </div>
+
+            <!-- HTML-Code der Signatur -->
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">HTML Code (Ready to Copy)</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre class="bg-light p-3 border rounded" style="white-space: pre-wrap; word-wrap: break-word;">
+                            {{ e_mail_signature.htmlOutput }}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
+
+    </div>
+
+    <!-- Direkt im Template – am besten ganz unten im body-Block -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const downloadBtn = document.getElementById('download-html-btn');
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', function () {
+                const htmlContent = `{{ e_mail_signature.htmlOutput | e('js') }}`;
+                const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'e-mail-signatur.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        }
+    });
+</script>
+
+{% endblock %}

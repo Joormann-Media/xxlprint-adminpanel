@@ -1,0 +1,225 @@
+{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+<div class="container py-3">
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-primary text-white">
+            📝 Profil bearbeiten
+        </div>
+
+        <div class="card-body">
+            <ul class="nav nav-tabs mb-4" id="profileTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab">
+                        🧍 Persönliches
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab">
+                        📍 Kontakt
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="online-tab" data-bs-toggle="tab" data-bs-target="#online" type="button" role="tab">
+                        🌐 Online & Sicherheit
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="profileTabContent">
+                {# 🧍 Persönliches #}
+                <div class="tab-pane fade show active" id="personal" role="tabpanel">
+                    <div class="row g-4">
+                        <div class="col-md-6 d-flex flex-column align-items-center">
+                            {% if user_profile and user_profile.user and user_profile.user.avatar %}
+                                <img src="{{ asset('user_data/' ~ user_profile.user.userDir ~ '/avatar/' ~ user_profile.user.avatar) }}" 
+                                     alt="Avatar" class="rounded-circle shadow mb-3" 
+                                     style="width: 120px; height: 120px; object-fit: cover;">
+                            {% endif %}
+                
+                            <div class="w-100">
+                                <div class="mb-3">
+                                    {{ form_label(form.motto, null, {'label_attr': {'class': 'form-label'}}) }}
+                                    {{ form_widget(form.motto, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.motto) }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form_label(form.birthdate, null, {'label_attr': {'class': 'form-label'}}) }}
+                                
+                                    {% set isReadOnly = form.birthdate.vars.data is not null and not is_granted('ROLE_USERADMIN') %}
+                                    {{ form_widget(form.birthdate, {
+                                        'attr': {
+                                            'class': 'form-control',
+                                            (isReadOnly ? 'readonly' : null): isReadOnly ? 'readonly' : null
+                                        }
+                                    }) }}
+                                
+                                    {{ form_errors(form.birthdate) }}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    {{ form_label(form.profileVisibility, null, {'label_attr': {'class': 'form-label'}}) }}
+                                    {{ form_widget(form.profileVisibility, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.profileVisibility) }}
+                                </div>
+
+                            </div>
+                        </div>
+                
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {{ form_label(form.avatar, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.avatar, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.avatar) }}
+                            </div>
+                
+                            {% if form.removeAvatar is defined %}
+                                <div class="form-check mb-3">
+                                    {{ form_widget(form.removeAvatar, {'attr': {'class': 'form-check-input'}}) }}
+                                    {{ form_label(form.removeAvatar, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                                    {{ form_errors(form.removeAvatar) }}
+                                </div>
+                            {% endif %}
+                
+                            <div>
+                                <h5>Sprachen</h5>
+                                <div class="row g-3">
+                                    {% for choice in form.language %}
+                                        <div class="col-md-6">
+                                            <div class="form-check d-flex align-items-center">
+                                                {{ form_widget(choice, {'attr': {'class': 'form-check-input me-2'}}) }}
+                                                <label class="form-check-label d-flex align-items-center" for="{{ choice.vars.id }}">
+                                                    {% set flagMap = {
+                                                        'de': 'germany.png',
+                                                        'en': 'united-kingdom.png',
+                                                        'fr': 'france.png',
+                                                        'gr': 'greece.png',
+                                                        'nl': 'netherland.png',
+                                                        'tr': 'turkey.png'
+                                                    } %}
+                                                    {% if flagMap[choice.vars.value] is defined %}
+                                                        <img src="{{ asset('Flags/' ~ flagMap[choice.vars.value]) }}" alt="" style="width: 24px; height: 16px;" class="me-2">
+                                                    {% endif %}
+                                                    {{ choice.vars.label }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+                {# 📍 Kontakt #}
+                <div class="tab-pane fade" id="contact" role="tabpanel">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label" data-bs-toggle="tooltip" title="Straße & Hausnummer">
+                                    🏠 {{ form_label(form.street, null, {'label_attr': {'class': 'd-inline'}}) }}
+                                </label>
+                                {{ form_widget(form.street, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.street) }}
+                            </div>
+                
+                            <div class="mb-3">
+                                <label class="form-label" data-bs-toggle="tooltip" title="Postleitzahl">
+                                    🔢 {{ form_label(form.postalCode, null, {'label_attr': {'class': 'd-inline'}}) }}
+                                </label>
+                                {{ form_widget(form.postalCode, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.postalCode) }}
+                            </div>
+                
+                            <div class="mb-3">
+                                <label class="form-label" data-bs-toggle="tooltip" title="Stadt / Ort">
+                                    🏙️ {{ form_label(form.city, null, {'label_attr': {'class': 'd-inline'}}) }}
+                                </label>
+                                {{ form_widget(form.city, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.city) }}
+                            </div>
+                        </div>
+                
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label" data-bs-toggle="tooltip" title="Land auswählen">
+                                    🌍 {{ form_label(form.country, null, {'label_attr': {'class': 'd-inline'}}) }}
+                                </label>
+                                {{ form_widget(form.country, {'attr': {'class': 'form-select'}}) }}
+                                {{ form_errors(form.country) }}
+                            </div>
+                
+                            <div class="mb-3">
+                                <label class="form-label" data-bs-toggle="tooltip" title="Festnetznummer (optional)">
+                                    ☎️ {{ form_label(form.phonePrivate, null, {'label_attr': {'class': 'd-inline'}}) }}
+                                </label>
+                                {{ form_widget(form.phonePrivate, {'attr': {'class': 'form-control phone-input'}}) }}
+                                {{ form_errors(form.phonePrivate) }}
+                            </div>
+                
+                            <div class="mb-3">
+                                <label class="form-label" data-bs-toggle="tooltip" title="Handynummer">
+                                    📱 {{ form_label(form.phoneMobile, null, {'label_attr': {'class': 'd-inline'}}) }}
+                                </label>
+                                {{ form_widget(form.phoneMobile, {'attr': {'class': 'form-control phone-input'}}) }}
+                                {{ form_errors(form.phoneMobile) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+
+                {# 🌐 Online & Sicherheit #}
+                <div class="tab-pane fade" id="online" role="tabpanel">
+                    <div class="row g-4">
+                        {% set socials = ['linkedin', 'twitter', 'facebook', 'instagram', 'xing', 'tiktok', 'website'] %}
+                        {% for field in socials %}
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" data-bs-toggle="tooltip" title="{{ field|capitalize }}-Profil oder URL">
+                                        <img src="{{ asset('gfx/systemgfx/SocialmediaIcons/' ~ field ~ '.png') }}"
+                                             alt="{{ field|capitalize }}" style="width: 20px; margin-right: 5px;">
+                                        {{ form_label(attribute(form, field), null, {'label_attr': {'class': 'd-inline'}}) }}
+                                    </label>
+                                    {{ form_widget(attribute(form, field), {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(attribute(form, field)) }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+
+        <div class="card-footer text-end bg-light">
+            <button class="btn btn-success">
+                💾 Speichern
+            </button>
+            <a href="{{ path('app_user_profile_index_or_show') }}" class="btn btn-secondary">
+                ↩️ Abbrechen
+            </a>
+        </div>
+    </div>
+</div>
+
+{{ form_end(form) }}
+<script src="https://cdn.jsdelivr.net/npm/imask"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // Inputmask für Telefonnummern
+    document.querySelectorAll('.phone-input').forEach(function (el) {
+        IMask(el, {
+            mask: '+{49} 0000 0000000'
+        });
+    });
+});
+
+</script>

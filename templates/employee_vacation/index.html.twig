@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EmployeeVacation index{% endblock %}
+
+{% block body %}
+    <h1>EmployeeVacation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Year</th>
+                <th>Total</th>
+                <th>Used</th>
+                <th>Remaining</th>
+                <th>Remark</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for employee_vacation in employee_vacations %}
+            <tr>
+                <td>{{ employee_vacation.id }}</td>
+                <td>{{ employee_vacation.year }}</td>
+                <td>{{ employee_vacation.total }}</td>
+                <td>{{ employee_vacation.used }}</td>
+                <td>{{ employee_vacation.remaining }}</td>
+                <td>{{ employee_vacation.remark }}</td>
+                <td>
+                    <a href="{{ path('app_employee_vacation_show', {'id': employee_vacation.id}) }}">show</a>
+                    <a href="{{ path('app_employee_vacation_edit', {'id': employee_vacation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_employee_vacation_new') }}">Create new</a>
+{% endblock %}

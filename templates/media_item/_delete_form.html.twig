@@ -1,0 +1,9 @@
+<form method="post" action="{{ path('app_media_item_delete', {'id': media_item.id}) }}" onsubmit="return confirm('Are you sure?');" style="display: inline;">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ media_item.id) }}">
+    <button class="{{ button_class|default('btn btn-danger') }}" title="Delete">
+        {% if icon is defined and icon %}
+            <i class="bi bi-trash"></i>
+        {% endif %}
+        Delete
+    </button>
+</form>

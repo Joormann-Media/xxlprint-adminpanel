@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CityPostalcode index{% endblock %}
+
+{% block body %}
+    <h1>CityPostalcode index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Postcode</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Lat</th>
+                <th>Lon</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for city_postalcode in city_postalcodes %}
+            <tr>
+                <td>{{ city_postalcode.id }}</td>
+                <td>{{ city_postalcode.postcode }}</td>
+                <td>{{ city_postalcode.city }}</td>
+                <td>{{ city_postalcode.state }}</td>
+                <td>{{ city_postalcode.lat }}</td>
+                <td>{{ city_postalcode.lon }}</td>
+                <td>
+                    <a href="{{ path('app_city_postalcode_show', {'id': city_postalcode.id}) }}">show</a>
+                    <a href="{{ path('app_city_postalcode_edit', {'id': city_postalcode.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_city_postalcode_new') }}">Create new</a>
+{% endblock %}

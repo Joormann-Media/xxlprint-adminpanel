@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container my-4">
+    <h1 class="mb-4">Gerätendetails</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-bordered align-middle mb-0">
+                <tbody>
+                    <tr>
+                        <th style="width: 200px;">ID</th>
+                        <td>{{ user_device.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Gerätename</th>
+                        <td>{{ user_device.deviceName }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fingerprint</th>
+                        <td><code>{{ user_device.deviceFingerprint }}</code></td>
+                    </tr>
+                    <tr>
+                        <th>IP-Adresse</th>
+                        <td>{{ user_device.ipAddress }}</td>
+                    </tr>
+                    <tr>
+                        <th>User Agent</th>
+                        <td class="text-muted small">{{ user_device.userAgent }}</td>
+                    </tr>
+                    <tr>
+                        <th>Registriert am</th>
+                        <td>{{ user_device.registeredAt ? user_device.registeredAt|date('d.m.Y H:i') : '—' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Vertraut</th>
+                        <td>
+                            {% if user_device.isTrusted %}
+                                <span class="badge bg-success">Ja</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Nein</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Aktiv</th>
+                        <td>
+                            {% if user_device.isActive %}
+                                <span class="badge bg-success">Aktiv</span>
+                            {% else %}
+                                <span class="badge bg-danger">Deaktiviert</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex justify-content-between">
+        <a href="{{ path('app_user_device_index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Zurück zur Übersicht
+        </a>
+
+        <div class="d-flex gap-2">
+            <a href="{{ path('app_user_device_edit', {'id': user_device.id}) }}" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Bearbeiten
+            </a>
+            {{ include('user_device/_delete_form.html.twig') }}
+        </div>
+    </div>
+</div>
+{% endblock %}

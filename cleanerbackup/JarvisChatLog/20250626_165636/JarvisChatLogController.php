@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\JarvisChatLog;
+use App\Form\JarvisChatLogForm;
+use App\Repository\JarvisChatLogRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+#[Route('/jarvis/chat/log')]
+final class JarvisChatLogController extends AbstractController
+{
+    #[Route(name: 'app_jarvis_chat_log_index', methods: ['GET'])]
+    public function index(JarvisChatLogRepository $jarvisChatLogRepository): Response
+    {
+        return $this->render('jarvis_chat_log/index.html.twig', [
+            'jarvis_chat_logs' => $jarvisChatLogRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/new', name: 'app_jarvis_chat_log_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $jarvisChatLog = new JarvisChatLog();
+        $form = $this->createForm(JarvisChatLogForm::class, $jarvisChatLog);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($jarvisChatLog);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_jarvis_chat_log_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('jarvis_chat_log/new.html.twig', [
+            'jarvis_chat_log' => $jarvisChatLog,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}', name: 'app_jarvis_chat_log_show', methods: ['GET'])]
+    public function show(JarvisChatLog $jarvisChatLog): Response
+    {
+        return $this->render('jarvis_chat_log/show.html.twig', [
+            'jarvis_chat_log' => $jarvisChatLog,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}/edit', name: 'app_jarvis_chat_log_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, JarvisChatLog $jarvisChatLog, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(JarvisChatLogForm::class, $jarvisChatLog);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_jarvis_chat_log_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('jarvis_chat_log/edit.html.twig', [
+            'jarvis_chat_log' => $jarvisChatLog,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}', name: 'app_jarvis_chat_log_delete', methods: ['POST'])]
+    public function delete(Request $request, JarvisChatLog $jarvisChatLog, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$jarvisChatLog->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($jarvisChatLog);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_jarvis_chat_log_index', [], Response::HTTP_SEE_OTHER);
+    }
+}

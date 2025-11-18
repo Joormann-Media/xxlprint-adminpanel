@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Untermenü-Übersicht{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">
+            <i class="bi bi-diagram-3"></i> Untermenüs
+        </h2>
+        <div class="d-flex gap-2">
+            <a href="{{ path('app_menu_sub_menu_new') }}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Neues Untermenü
+            </a>
+            <button id="deleteSelected" class="btn btn-danger">
+                <i class="bi bi-trash"></i> Ausgewählte löschen
+            </button>
+        </div>
+    </div>
+
+    <form id="menuSubMenuForm" action="{{ path('app_menu_sub_menu_bulk_delete') }}" method="POST">
+        <input type="hidden" name="_token" value="{{ csrf_token('bulk_delete') }}">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0" id="menuSubMenuTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width:40px;"><input type="checkbox" id="selectAll"></th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Parent Menu</th>
+                                <th>Min. Rolle</th>
+                                <th>Erstellt am</th>
+                                <th>Geändert am</th>
+                                <th class="text-center">Aktionen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for menu_sub_menu in menu_sub_menus %}
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="menuSubMenuCheckbox" name="menu_sub_menus[]" value="{{ menu_sub_menu.id }}">
+                                </td>
+                                <td>{{ menu_sub_menu.id }}</td>
+                                <td>{{ menu_sub_menu.name }}</td>
+                                <td>
+                                    {% if menu_sub_menu.status == 'active' %}
+                                        <span class="badge bg-success">Aktiv</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ menu_sub_menu.status|capitalize }}</span>
+                                    {% endif %}
+                                </td>
+<td>
+    {% if menu_sub_menu.parentId %}
+        <span class="badge bg-info">{{ menu_sub_menu.parentId }}</span>
+    {% else %}
+        <span class="text-muted">–</span>
+    {% endif %}
+</td>
+
+
+                                <td>{{ menu_sub_menu.minRole|default('-') }}</td>
+                                <td>{{ menu_sub_menu.createAt ? menu_sub_menu.createAt|date('d.m.Y H:i') : '-' }}</td>
+                                <td>{{ menu_sub_menu.updateAt ? menu_sub_menu.updateAt|date('d.m.Y H:i') : '-' }}</td>
+                                <td class="text-center">
+                                    <a href="{{ path('app_menu_sub_menu_show', {'id': menu_sub_menu.id}) }}" class="btn btn-outline-info btn-sm me-1" title="Anzeigen">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ path('app_menu_sub_menu_edit', {'id': menu_sub_menu.id}) }}" class="btn btn-outline-primary btn-sm" title="Bearbeiten">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="9" class="text-center text-muted py-4">
+                                    <i class="bi bi-exclamation-circle"></i> Keine Untermenüs gefunden
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const selectAllCheckbox = document.getElementById("selectAll");
+        const checkboxes = document.querySelectorAll(".menuSubMenuCheckbox");
+        const deleteButton = document.getElementById("deleteSelected");
+        const form = document.getElementById("menuSubMenuForm");
+
+        // Alle Checkboxen aktivieren/deaktivieren
+        selectAllCheckbox.addEventListener("change", function() {
+            checkboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
+        });
+
+        // Löschen-Button klicken → Form absenden
+        deleteButton.addEventListener("click", function(e) {
+            e.preventDefault();
+            if (document.querySelectorAll('.menuSubMenuCheckbox:checked').length === 0) {
+                alert("Bitte mindestens ein Untermenü auswählen!");
+                return;
+            }
+            if (confirm("Möchtest du die ausgewählten Untermenüs wirklich löschen?")) {
+                form.submit();
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<h1 class="mb-4">✨ Neuen Shortcode-Button erstellen</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        {{ include('shortcode_button/_form.html.twig', { form: form }) }}
+    </div>
+</div>
+
+<h4 class="mt-4 mb-2">🧪 Vorschau</h4>
+<div id="shortcode-button-preview"
+     class="border p-3 rounded bg-light text-center mb-3 shadow-sm">
+    {% if previewHtml is not empty %}
+        {{ previewHtml|raw }}
+    {% else %}
+        <span class="text-muted">Noch kein Button sichtbar...</span>
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    <label for="shortcodePreviewText" class="form-label fw-semibold">🔗 Dein Shortcode</label>
+    <div class="input-group">
+        <input type="text"
+               class="form-control"
+               id="shortcodePreviewText"
+               value='[[shortcode_button tag="{{ shortcode_button.tag }}"]]'
+               readonly>
+        <button class="btn btn-outline-secondary"
+                type="button"
+                onclick="navigator.clipboard.writeText(document.getElementById('shortcodePreviewText').value)">
+            📋 Kopieren
+        </button>
+    </div>
+</div>
+
+<a href="{{ path('app_shortcode_button_index') }}" class="btn btn-secondary mb-4">⬅️ Zurück zur Übersicht</a>
+
+{# Upload + Icon-Vorschau #}
+<div class="mb-3">
+    <label for="iconUploader">📥 Icon hochladen</label>
+    <input type="file" id="iconUploader" class="form-control mb-2" accept="image/*">
+    <div id="uploadProgress" class="progress d-none">
+        <div class="progress-bar" role="progressbar" style="width: 0%">0%</div>
+    </div>
+</div>
+
+<div class="mb-3">
+    <label>🖼️ Aktuelle Vorschau</label><br>
+    <img id="iconPreview" src="{{ shortcode_button.iconPath }}" alt="Icon-Vorschau" style="height: 48px;">
+    <input type="hidden" id="iconPathInput" name="shortcode_button[iconPath]" value="{{ shortcode_button.iconPath }}">
+</div>
+
+<h5>🧾 Icon-Galerie</h5>
+<div id="iconSelector" class="d-flex flex-wrap gap-2" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+    {% for icon in icons %}
+        <img src="{{ icon }}" alt="Icon" class="icon-thumb" data-path="{{ icon }}" style="height: 32px; cursor: pointer; border: 1px solid transparent;">
+    {% else %}
+        <div class="text-muted">Keine Icons gefunden im Ordner <code>/public/gfx/shortcode/</code></div>
+    {% endfor %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const iconInput = document.querySelector('#shortcode_button_iconPath');
+    const iconPreview = document.getElementById('iconPreview');
+    const uploader = document.getElementById('iconUploader');
+    const progressBar = document.querySelector('.progress-bar');
+    const progressWrapper = document.getElementById('uploadProgress');
+
+    const updatePreview = (path) => {
+        let cleanPath = path.replace(/^\/+/, '').replace('gfx/icons/', 'gfx/shortcode/');
+        iconInput.value = cleanPath;
+        iconPreview.src = '/' + cleanPath;
+    };
+
+    document.querySelectorAll('.icon-thumb').forEach(icon => {
+        icon.addEventListener('click', function () {
+            document.querySelectorAll('.icon-thumb').forEach(i => i.style.border = '1px solid transparent');
+            this.style.border = '2px solid #007bff';
+            updatePreview(this.dataset.path);
+        });
+    });
+
+    uploader.addEventListener('change', function () {
+        const file = uploader.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('icon', file);
+        progressWrapper.classList.remove('d-none');
+
+        fetch('{{ path("app_shortcode_button_upload_icon") }}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(resp => resp.json())
+        .then(data => {
+            if (data.success) {
+                updatePreview(data.path);
+                const img = document.createElement('img');
+                img.src = '/' + data.path;
+                img.classList.add('icon-thumb');
+                img.dataset.path = data.path;
+                img.style.cssText = 'height:32px;cursor:pointer;border:2px solid #28a745;margin:2px;';
+                img.title = 'Gerade hochgeladen';
+                document.getElementById('iconSelector').appendChild(img);
+                img.addEventListener('click', () => updatePreview(data.path));
+            } else {
+                alert("Fehler beim Upload: " + data.message);
+            }
+        })
+        .catch(() => alert("Upload fehlgeschlagen."))
+        .finally(() => {
+            progressWrapper.classList.add('d-none');
+            progressBar.style.width = '0%';
+        });
+    });
+});
+
+</script>
+{% endblock %}

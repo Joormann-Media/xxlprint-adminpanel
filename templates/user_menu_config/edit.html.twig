@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit UserMenuConfig{% endblock %}
+
+{% block body %}
+    <h1>Edit UserMenuConfig</h1>
+
+    {{ include('user_menu_config/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_user_menu_config_index') }}">back to list</a>
+
+    {{ include('user_menu_config/_delete_form.html.twig') }}
+{% endblock %}

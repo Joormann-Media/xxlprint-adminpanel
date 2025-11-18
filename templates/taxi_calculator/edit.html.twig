@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit TaxiCalculator{% endblock %}
+
+{% block body %}
+    <h1>Edit TaxiCalculator</h1>
+
+    {{ include('taxi_calculator/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_taxi_calculator_index') }}">back to list</a>
+
+    {{ include('taxi_calculator/_delete_form.html.twig') }}
+{% endblock %}

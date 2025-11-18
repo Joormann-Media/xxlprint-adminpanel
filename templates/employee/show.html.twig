@@ -1,0 +1,210 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mitarbeiter anzeigen{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-9">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Mitarbeiter-Details</h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <!-- Allgemeine Daten -->
+                        <dt class="col-sm-4">Vorname</dt>
+                        <dd class="col-sm-8">{{ employee.firstName }}</dd>
+                        <dt class="col-sm-4">Nachname</dt>
+                        <dd class="col-sm-8">{{ employee.lastName }}</dd>
+                        <dt class="col-sm-4">Personalnummer</dt>
+                        <dd class="col-sm-8">{{ employee.employeeNumber ?? '–' }}</dd>
+                        <dt class="col-sm-4">Kostenstelle</dt>
+                        <dd class="col-sm-8">{{ employee.costCenter ?? '–' }}</dd>
+                        <dt class="col-sm-4">Fahrer/in</dt>
+                        <dd class="col-sm-8">
+                            {{ employee.isDriver ? '✅ Ja' : '❌ Nein' }}
+                        </dd>
+                        <dt class="col-sm-4">Lizenzklassen</dt>
+                        <dd class="col-sm-8">
+                            {% for lc in employee.licenceClasses %}
+                                <span class="badge bg-info" title="{{ lc.description }}">{{ lc.shortName }}</span>
+                            {% else %}
+                                <span class="text-muted">Keine</span>
+                            {% endfor %}
+                        </dd>
+                        <dt class="col-sm-4">E-Mail</dt>
+                        <dd class="col-sm-8">{{ employee.email ?? employee.getPSEMail() ?? '–' }}</dd>
+                        <dt class="col-sm-4">Telefon</dt>
+                        <dd class="col-sm-8">{{ employee.phone ?? employee.getPSTelefon() ?? '–' }}</dd>
+                        <dt class="col-sm-4">Handy</dt>
+                        <dd class="col-sm-8">{{ employee.getPSHandy() ?? '–' }}</dd>
+                        <dt class="col-sm-4">Eingestellt am</dt>
+                        <dd class="col-sm-8">
+                            {{ employee.hiredAt ? employee.hiredAt|date('d.m.Y') : (employee.getPSEintrittsdatum() ? employee.getPSEintrittsdatum()|date('d.m.Y') : '–') }}
+                        </dd>
+                        <dt class="col-sm-4">Ausgeschieden am</dt>
+                        <dd class="col-sm-8">
+                            {{ employee.leftAt ? employee.leftAt|date('d.m.Y') : (employee.getPSAustrittsdatum() ? employee.getPSAustrittsdatum()|date('d.m.Y') : '–') }}
+                        </dd>
+                        <dt class="col-sm-4">Urlaubstage</dt>
+                        <dd class="col-sm-8">{{ employee.vacationDays ?? '0' }} (+{{ employee.vacationDaysExtra ?? 0 }})</dd>
+                        <dt class="col-sm-4">Sollstunden</dt>
+                        <dd class="col-sm-8">
+                            Täglich: {{ employee.agreedHoursDaily ?? 0 }}h<br>
+                            Wöchentlich: {{ employee.agreedHoursWeekly ?? 0 }}h<br>
+                            Monatlich: {{ employee.agreedHoursMonthly ?? 0 }}h
+                        </dd>
+                        <dt class="col-sm-4">🆘 Notfallkontakt</dt>
+                        <dd class="col-sm-8">
+                            {% if employee.emergencyContact %}
+                                {{ employee.emergencyContact.fullName ?? (employee.emergencyContact.firstName ~ ' ' ~ employee.emergencyContact.lastName) }}
+                            {% else %}
+                                <span class="text-muted">–</span>
+                            {% endif %}
+                        </dd>
+                        <dt class="col-sm-4">Systembenutzer</dt>
+                        <dd class="col-sm-8">
+                            {% if employee.user %}
+                                {{ employee.user.username ?? employee.user.email }}
+                            {% else %}
+                                <span class="text-muted">–</span>
+                            {% endif %}
+                        </dd>
+
+                        <!-- PS-/Excel-Importfelder -->
+                        <dt class="col-sm-4">PS Fahrernummer</dt>
+                        <dd class="col-sm-8">{{ employee.getPSFahrernummer() ?? '–' }}</dd>
+                        <dt class="col-sm-4">PS Anrede</dt>
+                        <dd class="col-sm-8">{{ employee.getPSAnrede() ?? '–' }}</dd>
+                        <dt class="col-sm-4">PS Name 1</dt>
+                        <dd class="col-sm-8">{{ employee.getPSName1() ?? '–' }}</dd>
+                        <dt class="col-sm-4">PS Name 2</dt>
+                        <dd class="col-sm-8">{{ employee.getPSName2() ?? '–' }}</dd>
+                        <dt class="col-sm-4">PS Suchwort</dt>
+                        <dd class="col-sm-8">{{ employee.getPSSuchwort() ?? '–' }}</dd>
+                        <dt class="col-sm-4">K/U/T</dt>
+                        <dd class="col-sm-8">{{ employee.getKUT() ?? '–' }}</dd>
+                        <dt class="col-sm-4">PS Straße</dt>
+                        <dd class="col-sm-8">{{ employee.getPSStrasse() ?? '–' }}</dd>
+                        <dt class="col-sm-4">PS PLZ/Ort</dt>
+                        <dd class="col-sm-8">{{ employee.getPSPlzOrt() ?? '–' }}</dd>
+                        <dt class="col-sm-4">PS Geburtsdatum</dt>
+                        <dd class="col-sm-8">
+                            {{ employee.getPSGeburtsdatum() ? employee.getPSGeburtsdatum()|date('d.m.Y') : '–' }}
+                        </dd>
+                        <dt class="col-sm-4">PS Beschäftigungsart</dt>
+                        <dd class="col-sm-8">{{ employee.getPSBeschaeftigungsart() ?? '–' }}</dd>
+                        <dt class="col-sm-4">PS Tätigkeit</dt>
+                        <dd class="col-sm-8">{{ employee.getPSTaetigkeit() ?? '–' }}</dd>
+                        <dt class="col-sm-4">FSZ befristet bis</dt>
+                        <dd class="col-sm-8">
+                            {{ employee.getFSZbefristetbis() ? employee.getFSZbefristetbis()|date('d.m.Y') : '–' }}
+                        </dd>
+                        <dt class="col-sm-4">PS Ausgeschieden</dt>
+                        <dd class="col-sm-8">
+                            {% if employee.isPSAusgeschieden() is not null %}
+                                {{ employee.isPSAusgeschieden() ? '✅ Ja' : '❌ Nein' }}
+                            {% else %}–{% endif %}
+                        </dd>
+                        <dt class="col-sm-4">PS Austrittsdatum</dt>
+                        <dd class="col-sm-8">
+                            {{ employee.getPSAustrittsdatum() ? employee.getPSAustrittsdatum()|date('d.m.Y') : '–' }}
+                        </dd>
+                        <dt class="col-sm-4">PS E-Mail</dt>
+                        <dd class="col-sm-8">{{ employee.getPSEMail() ?? '–' }}</dd>
+                        <dt class="col-sm-4">PS Telefon</dt>
+                        <dd class="col-sm-8">{{ employee.getPSTelefon() ?? '–' }}</dd>
+                        <dt class="col-sm-4">PS Handy</dt>
+                        <dd class="col-sm-8">{{ employee.getPSHandy() ?? '–' }}</dd>
+                        <dt class="col-sm-4">PS fährt Kindertouren</dt>
+                        <dd class="col-sm-8">
+                            {% if employee.isPSfaehrtKINDERTOUREN() is not null %}
+                                {{ employee.isPSfaehrtKINDERTOUREN() ? '✅ Ja' : '❌ Nein' }}
+                            {% else %}–{% endif %}
+                        </dd>
+                        <dt class="col-sm-4">PS Fahrerkürzel</dt>
+                        <dd class="col-sm-8">{{ employee.getPSFahrerkuerzel() ?? '–' }}</dd>
+                        <dt class="col-sm-4">PS P-Schein gültig bis</dt>
+                        <dd class="col-sm-8">
+                            {{ employee.getPSPScheinGueltigBis() ? employee.getPSPScheinGueltigBis()|date('d.m.Y') : '–' }}
+                        </dd>
+                        <dt class="col-sm-4">PS Busbegleitung ohne FS</dt>
+                        <dd class="col-sm-8">
+                            {% if employee.isPSBusbegleitungOFS() is not null %}
+                                {{ employee.isPSBusbegleitungOFS() ? '✅ Ja' : '❌ Nein' }}
+                            {% else %}–{% endif %}
+                        </dd>
+                        <dt class="col-sm-4">PS Busbegleitung mit FS</dt>
+                        <dd class="col-sm-8">
+                            {% if employee.isPSBusbegleitungMFS() is not null %}
+                                {{ employee.isPSBusbegleitungMFS() ? '✅ Ja' : '❌ Nein' }}
+                            {% else %}–{% endif %}
+                        </dd>
+                        <dt class="col-sm-4">PS fährt Schulbus</dt>
+                        <dd class="col-sm-8">
+                            {% if employee.isPSfaehrtSchulbus() is not null %}
+                                {{ employee.isPSfaehrtSchulbus() ? '✅ Ja' : '❌ Nein' }}
+                            {% else %}–{% endif %}
+                        </dd>
+                        <dt class="col-sm-4">PS fährt Taxi</dt>
+                        <dd class="col-sm-8">
+                            {% if employee.isPSfaehrtTAXI() is not null %}
+                                {{ employee.isPSfaehrtTAXI() ? '✅ Ja' : '❌ Nein' }}
+                            {% else %}–{% endif %}
+                        </dd>
+                        <dt class="col-sm-4">PS Büro</dt>
+                        <dd class="col-sm-8">
+                            {% if employee.isPSBuero() is not null %}
+                                {{ employee.isPSBuero() ? '✅ Ja' : '❌ Nein' }}
+                            {% else %}–{% endif %}
+                        </dd>
+                        <dt class="col-sm-4">PS Funk</dt>
+                        <dd class="col-sm-8">
+                            {% if employee.isPSFunk() is not null %}
+                                {{ employee.isPSFunk() ? '✅ Ja' : '❌ Nein' }}
+                            {% else %}–{% endif %}
+                        </dd>
+                        <dt class="col-sm-4">PS FS D1</dt>
+                        <dd class="col-sm-8">
+                            {% if employee.isPSFSD1() is not null %}
+                                {{ employee.isPSFSD1() ? '✅ Ja' : '❌ Nein' }}
+                            {% else %}–{% endif %}
+                        </dd>
+                        <dt class="col-sm-4">PS FS D</dt>
+                        <dd class="col-sm-8">
+                            {% if employee.isPSFSD() is not null %}
+                                {{ employee.isPSFSD() ? '✅ Ja' : '❌ Nein' }}
+                            {% else %}–{% endif %}
+                        </dd>
+                        <dt class="col-sm-4">PS FS DE</dt>
+                        <dd class="col-sm-8">
+                            {% if employee.isPSFSDE() is not null %}
+                                {{ employee.isPSFSDE() ? '✅ Ja' : '❌ Nein' }}
+                            {% else %}–{% endif %}
+                        </dd>
+                        <dt class="col-sm-4">FSZ Vertrag befristet</dt>
+                        <dd class="col-sm-8">
+                            {% if employee.isFSZvertragbefristet() is not null %}
+                                {{ employee.isFSZvertragbefristet() ? '✅ Ja' : '❌ Nein' }}
+                            {% else %}–{% endif %}
+                        </dd>
+                        <dt class="col-sm-4">PS Bus gültig bis</dt>
+                        <dd class="col-sm-8">
+                            {{ employee.getPSBusGueltigBis() ? employee.getPSBusGueltigBis()|date('d.m.Y') : '–' }}
+                        </dd>
+                        <dt class="col-sm-4">PS Taxi gültig bis</dt>
+                        <dd class="col-sm-8">
+                            {{ employee.getPSTaxiGueltigBis() ? employee.getPSTaxiGueltigBis()|date('d.m.Y') : '–' }}
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer text-end">
+                    <a href="{{ path('app_employee_edit', {'id': employee.id}) }}" class="btn btn-warning">✏️ Bearbeiten</a>
+                    <a href="{{ path('app_employee_index') }}" class="btn btn-secondary ms-2">⬅️ Zurück</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

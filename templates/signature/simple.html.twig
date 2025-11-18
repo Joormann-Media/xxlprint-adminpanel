@@ -1,0 +1,26 @@
+<table style="width: 100%; max-width: 300px; font-family: Arial, sans-serif; color: #333;">
+    <tr>
+        <td style="width: 100px; vertical-align: top;">
+
+        </td>
+        <td style="vertical-align: top;">
+            {% if signature.logoPath %}
+                <img src="{{ signature.logoPath }}" alt="Logo" style="max-height: 50px; max-width: 100%; height: auto; border-radius: 5px;">
+            {% endif %}
+            <div style="font-size: 16px; font-weight: bold; color: #2c3e50;">{{ signature.name }}</div>
+            <div style="font-size: 14px; color: #7f8c8d;">{{ signature.position }} {% if signature.company %} @ {{ signature.company }}{% endif %}</div>
+            <div style="font-size: 12px; color: #2980b9;">
+                <a href="mailto:{{ signature.email }}" style="text-decoration: none; color: #2980b9;">{{ signature.email }}</a>
+            </div>
+            <div style="font-size: 12px; color: #7f8c8d;">{% if signature.phone %}📞 {{ signature.phone }}{% endif %}</div>
+            <div style="font-size: 12px; color: #7f8c8d;">{% if signature.mobile %}📱 {{ signature.mobile }}{% endif %}</div>
+            <div style="font-size: 12px; color: #2980b9;">{% if signature.website %}🌐 
+                <a href="{{ signature.website }}" target="_blank" style="text-decoration: none;">{{ signature.website }}</a>
+            </div>{% endif %}
+            <div style="font-size: 12px; color: #7f8c8d;">
+                {% if signature.address %}🏠 {{ signature.address }}{% endif %}
+            </div>
+
+        </td>
+    </tr>
+</table>

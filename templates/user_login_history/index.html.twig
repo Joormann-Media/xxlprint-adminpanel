@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserLoginHistory index{% endblock %}
+
+{% block body %}
+    <h1>UserLoginHistory index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>LoginAt</th>
+                <th>IpAddress</th>
+                <th>UserAgent</th>
+                <th>Location</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_login_history in user_login_histories %}
+            <tr>
+                <td>{{ user_login_history.id }}</td>
+                <td>{{ user_login_history.loginAt ? user_login_history.loginAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user_login_history.ipAddress }}</td>
+                <td>{{ user_login_history.userAgent }}</td>
+                <td>{{ user_login_history.location }}</td>
+                <td>
+                    <a href="{{ path('app_user_login_history_show', {'id': user_login_history.id}) }}">show</a>
+                    <a href="{{ path('app_user_login_history_edit', {'id': user_login_history.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_login_history_new') }}">Create new</a>
+{% endblock %}

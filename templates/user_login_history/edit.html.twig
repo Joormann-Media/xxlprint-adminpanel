@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit UserLoginHistory{% endblock %}
+
+{% block body %}
+    <h1>Edit UserLoginHistory</h1>
+
+    {{ include('user_login_history/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_user_login_history_index') }}">back to list</a>
+
+    {{ include('user_login_history/_delete_form.html.twig') }}
+{% endblock %}

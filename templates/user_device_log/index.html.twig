@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserDeviceLog index{% endblock %}
+
+{% block body %}
+    <h1>UserDeviceLog index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>ActionType</th>
+                <th>IpAddress</th>
+                <th>Timestamp</th>
+                <th>Result</th>
+                <th>Note</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_device_log in user_device_logs %}
+            <tr>
+                <td>{{ user_device_log.id }}</td>
+                <td>{{ user_device_log.actionType }}</td>
+                <td>{{ user_device_log.ipAddress }}</td>
+                <td>{{ user_device_log.timestamp ? user_device_log.timestamp|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user_device_log.result }}</td>
+                <td>{{ user_device_log.note }}</td>
+                <td>
+                    <a href="{{ path('app_user_device_log_show', {'id': user_device_log.id}) }}">show</a>
+                    <a href="{{ path('app_user_device_log_edit', {'id': user_device_log.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_device_log_new') }}">Create new</a>
+{% endblock %}

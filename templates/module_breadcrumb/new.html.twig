@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ModuleBreadcrumb{% endblock %}
+
+{% block body %}
+    <h1>Create new ModuleBreadcrumb</h1>
+
+    {{ include('module_breadcrumb/_form.html.twig') }}
+
+    <a href="{{ path('app_module_breadcrumb_index') }}">back to list</a>
+{% endblock %}

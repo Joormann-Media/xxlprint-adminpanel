@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container py-4">
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Neue Benutzer-Dashboard-Konfiguration</h5>
+                <a href="{{ path('app_user_dashboard_config_index') }}" class="btn btn-secondary btn-sm">Zurück zur Liste</a>
+            </div>
+            <div class="card-body">
+                {{ include('user_dashboard_config/_form.html.twig', {'button_label': 'Erstellen'}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

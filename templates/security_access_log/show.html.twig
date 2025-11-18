@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SecurityAccessLog{% endblock %}
+
+{% block body %}
+    <h1>SecurityAccessLog</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ security_access_log.id }}</td>
+            </tr>
+            <tr>
+                <th>Timestamp</th>
+                <td>{{ security_access_log.timestamp ? security_access_log.timestamp|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td>{{ security_access_log.user }}</td>
+            </tr>
+            <tr>
+                <th>SourceIp</th>
+                <td>{{ security_access_log.sourceIp }}</td>
+            </tr>
+            <tr>
+                <th>SessionType</th>
+                <td>{{ security_access_log.sessionType }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ security_access_log.status }}</td>
+            </tr>
+            <tr>
+                <th>Details</th>
+                <td>{{ security_access_log.details }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_security_access_log_index') }}">back to list</a>
+
+    <a href="{{ path('app_security_access_log_edit', {'id': security_access_log.id}) }}">edit</a>
+
+    {{ include('security_access_log/_delete_form.html.twig') }}
+{% endblock %}

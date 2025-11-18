@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}VacationBooking{% endblock %}
+
+{% block body %}
+    <h1>VacationBooking</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ vacation_booking.id }}</td>
+            </tr>
+            <tr>
+                <th>DateTaken</th>
+                <td>{{ vacation_booking.dateTaken ? vacation_booking.dateTaken|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Days</th>
+                <td>{{ vacation_booking.days }}</td>
+            </tr>
+            <tr>
+                <th>Reason</th>
+                <td>{{ vacation_booking.reason }}</td>
+            </tr>
+            <tr>
+                <th>Comment</th>
+                <td>{{ vacation_booking.comment }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_vacation_booking_index') }}">back to list</a>
+
+    <a href="{{ path('app_vacation_booking_edit', {'id': vacation_booking.id}) }}">edit</a>
+
+    {{ include('vacation_booking/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1>Edit UserToken</h1>
+
+    {{ include('user_token/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_user_token_index') }}">back to list</a>
+
+    {{ include('user_token/_delete_form.html.twig') }}
+{% endblock %}

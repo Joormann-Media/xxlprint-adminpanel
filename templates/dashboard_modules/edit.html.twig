@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container py-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-body">
+            <h2 class="mb-4">📦 Dashboard-Modul bearbeiten</h2>
+
+            {{ form_start(form, {'attr': {'class': 'row g-4'}}) }}
+
+                <div class="col-md-6">
+                    {{ form_row(form.name) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_row(form.minRole) }}
+                </div>
+
+                <div class="col-md-12">
+                    {{ form_row(form.description) }}
+                </div>
+
+                <div class="col-md-12">
+                    {{ form_row(form.content) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_row(form.isActive) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_row(form.createdBy) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_row(form.createdAt) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_row(form.updatedBy) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_row(form.updatedAt) }}
+                </div>
+
+                <div class="col-12 text-end mt-4">
+                    <button class="btn btn-primary">💾 Speichern</button>
+                    <a href="{{ path('app_dashboard_modules_index') }}" class="btn btn-secondary ms-2">⬅️ Zurück</a>
+                </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

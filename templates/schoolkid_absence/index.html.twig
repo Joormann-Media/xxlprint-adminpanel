@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SchoolkidAbsence index{% endblock %}
+
+{% block body %}
+    <h1>SchoolkidAbsence index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>StartAway</th>
+                <th>EndAway</th>
+                <th>ReasonAway</th>
+                <th>ReportedBy</th>
+                <th>ReportMethod</th>
+                <th>ReceivedBy</th>
+                <th>ReportedAt</th>
+                <th>CreatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for schoolkid_absence in schoolkid_absences %}
+            <tr>
+                <td>{{ schoolkid_absence.id }}</td>
+                <td>{{ schoolkid_absence.startAway ? schoolkid_absence.startAway|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ schoolkid_absence.endAway ? schoolkid_absence.endAway|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ schoolkid_absence.reasonAway }}</td>
+                <td>{{ schoolkid_absence.reportedBy }}</td>
+                <td>{{ schoolkid_absence.reportMethod }}</td>
+                <td>{{ schoolkid_absence.receivedBy }}</td>
+                <td>{{ schoolkid_absence.reportedAt ? schoolkid_absence.reportedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ schoolkid_absence.createdAt ? schoolkid_absence.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_schoolkid_absence_show', {'id': schoolkid_absence.id}) }}">show</a>
+                    <a href="{{ path('app_schoolkid_absence_edit', {'id': schoolkid_absence.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_schoolkid_absence_new') }}">Create new</a>
+{% endblock %}

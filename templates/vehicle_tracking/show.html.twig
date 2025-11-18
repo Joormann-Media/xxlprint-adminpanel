@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}VehicleTracking{% endblock %}
+
+{% block body %}
+    <h1>VehicleTracking</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ vehicle_tracking.id }}</td>
+            </tr>
+            <tr>
+                <th>Timestamp</th>
+                <td>{{ vehicle_tracking.timestamp ? vehicle_tracking.timestamp|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Latitude</th>
+                <td>{{ vehicle_tracking.latitude }}</td>
+            </tr>
+            <tr>
+                <th>Longitude</th>
+                <td>{{ vehicle_tracking.longitude }}</td>
+            </tr>
+            <tr>
+                <th>Speed</th>
+                <td>{{ vehicle_tracking.speed }}</td>
+            </tr>
+            <tr>
+                <th>Course</th>
+                <td>{{ vehicle_tracking.course }}</td>
+            </tr>
+            <tr>
+                <th>Street</th>
+                <td>{{ vehicle_tracking.street }}</td>
+            </tr>
+            <tr>
+                <th>Postalcode</th>
+                <td>{{ vehicle_tracking.postalcode }}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{ vehicle_tracking.city }}</td>
+            </tr>
+            <tr>
+                <th>Display</th>
+                <td>{{ vehicle_tracking.display }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_vehicle_tracking_index') }}">back to list</a>
+
+    <a href="{{ path('app_vehicle_tracking_edit', {'id': vehicle_tracking.id}) }}">edit</a>
+
+    {{ include('vehicle_tracking/_delete_form.html.twig') }}
+{% endblock %}

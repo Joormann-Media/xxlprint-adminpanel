@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New AvailableEntity{% endblock %}
+
+{% block body %}
+    <h1>Create new AvailableEntity</h1>
+
+    {{ include('available_entity/_form.html.twig') }}
+
+    <a href="{{ path('app_available_entity_index') }}">back to list</a>
+{% endblock %}

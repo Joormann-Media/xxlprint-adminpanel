@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserSession index{% endblock %}
+
+{% block body %}
+    <h1>UserSession index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>SessionId</th>
+                <th>CreatedAt</th>
+                <th>LastActiveAt</th>
+                <th>Ip</th>
+                <th>UserAgent</th>
+                <th>IsActive</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_session in user_sessions %}
+            <tr>
+                <td>{{ user_session.id }}</td>
+                <td>{{ user_session.sessionId }}</td>
+                <td>{{ user_session.createdAt ? user_session.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user_session.lastActiveAt ? user_session.lastActiveAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user_session.ip }}</td>
+                <td>{{ user_session.userAgent }}</td>
+                <td>{{ user_session.isActive ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_user_session_show', {'id': user_session.id}) }}">show</a>
+                    <a href="{{ path('app_user_session_edit', {'id': user_session.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_session_new') }}">Create new</a>
+{% endblock %}

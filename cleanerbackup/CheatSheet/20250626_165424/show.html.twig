@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CheatSheet Details{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h1 class="h4 m-0"><i class="bi bi-stickies"></i> CheatSheet: {{ cheat_sheet.name }}</h1>
+                    <a href="{{ path('app_cheat_sheet_index') }}" class="btn btn-light btn-sm">
+                        <i class="bi bi-arrow-left"></i> Zurück
+                    </a>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-3">ID</dt>
+                        <dd class="col-sm-9">{{ cheat_sheet.id }}</dd>
+
+                        <dt class="col-sm-3">Kategorie</dt>
+                        <dd class="col-sm-9">{{ cheat_sheet.category }}</dd>
+
+                        <dt class="col-sm-3">Name</dt>
+                        <dd class="col-sm-9">{{ cheat_sheet.name }}</dd>
+
+                        <dt class="col-sm-3">Beschreibung</dt>
+                        <dd class="col-sm-9 text-break">
+                            {{ cheat_sheet.description |raw }}
+                        </dd>
+
+                        <dt class="col-sm-3">Inhalt</dt>
+                        <dd class="col-sm-9">
+                            <pre class="bg-light rounded p-3 mb-0 text-break" style="font-family: 'Fira Mono', 'Consolas', monospace; font-size:1rem; line-height:1.4; max-height:40vh; overflow:auto;">
+{{ cheat_sheet.content }}</pre>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-light d-flex justify-content-end gap-2 flex-wrap">
+                    <a href="{{ path('app_cheat_sheet_edit', {'id': cheat_sheet.id}) }}" class="btn btn-outline-primary">
+                        <i class="bi bi-pencil"></i> Bearbeiten
+                    </a>
+                    {{ include('cheat_sheet/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

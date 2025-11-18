@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container mt-4">
+
+    <div class="bg-light border rounded p-4 mb-4 shadow-sm">
+        <h2 class="mb-0">🌴 Urlaubsverwaltung</h2>
+        <p class="text-muted">Alle eingetragenen Urlaube im Überblick</p>
+        <a href="{{ path('app_vacation_manager_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Neuer Eintrag
+        </a>
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle shadow-sm">
+            <thead class="table-light">
+                <tr class="text-center">
+                    <th>#</th>
+                    <th>Status</th>
+                    <th>Beginn</th>
+                    <th>Ende</th>
+                    <th>Erstellt am</th>
+                    <th>Benutzer</th>
+                    <th>Kurzbeschreibung</th>
+                    <th>Inhalt</th>
+                    <th>Aktionen</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for vacation_manager in vacation_managers %}
+                <tr>
+                    <td class="text-center fw-bold">{{ vacation_manager.id }}</td>
+                    <td class="text-center">
+                        {% if vacation_manager.vacationStatus == 'approved' %}
+                            <span class="badge bg-success">Genehmigt</span>
+                        {% elseif vacation_manager.vacationStatus == 'pending' %}
+                            <span class="badge bg-warning text-dark">Offen</span>
+                        {% elseif vacation_manager.vacationStatus == 'rejected' %}
+                            <span class="badge bg-danger">Abgelehnt</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ vacation_manager.vacationStatus|capitalize }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ vacation_manager.vacationStart  ? vacation_manager.vacationStart|date('d.m.Y H:i') : '—' }}</td>
+                    <td>{{ vacation_manager.vacationExpires ? vacation_manager.vacationExpires|date('d.m.Y H:i') : '—' }}</td>
+                    <td>{{ vacation_manager.vacationCreate ? vacation_manager.vacationCreate|date('d.m.Y H:i') : '—' }}</td>
+                    <td>{{ vacation_manager.vacationUser }}</td>
+                    <td>{{ vacation_manager.vacationDescription }}</td>
+                    <td>{{ vacation_manager.vacationContent|raw }}</td>
+                    <td class="text-center">
+                        <a href="#" class="btn btn-sm btn-outline-primary me-1 open-popup" data-id="{{ vacation_manager.id }}" data-type="vacation" title="Anzeigen">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="{{ path('app_vacation_manager_edit', {'id': vacation_manager.id}) }}" class="btn btn-sm btn-outline-warning me-1" title="Bearbeiten">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a href="{{ path('app_vacation_manager_delete', {'id': vacation_manager.id}) }}" class="btn btn-sm btn-outline-danger" title="Löschen">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9" class="text-center text-muted">Keine Einträge gefunden.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

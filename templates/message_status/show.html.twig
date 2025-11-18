@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MessageStatus{% endblock %}
+
+{% block body %}
+    <h1>MessageStatus</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ message_status.id }}</td>
+            </tr>
+            <tr>
+                <th>DeliveredAt</th>
+                <td>{{ message_status.deliveredAt ? message_status.deliveredAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DisplayedAt</th>
+                <td>{{ message_status.displayedAt ? message_status.displayedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ConfirmedAt</th>
+                <td>{{ message_status.confirmedAt ? message_status.confirmedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeviceInfo</th>
+                <td>{{ message_status.deviceInfo }}</td>
+            </tr>
+            <tr>
+                <th>Ip</th>
+                <td>{{ message_status.ip }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_message_status_index') }}">back to list</a>
+
+    <a href="{{ path('app_message_status_edit', {'id': message_status.id}) }}">edit</a>
+
+    {{ include('message_status/_delete_form.html.twig') }}
+{% endblock %}

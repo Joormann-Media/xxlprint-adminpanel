@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ permission.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ permission.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ permission.description }}</td>
+            </tr>
+            <tr>
+                <th>Createdate</th>
+                <td>{{ permission.createdate ? permission.createdate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreateBy</th>
+                <td>{{ permission.createBy }}</td>
+            </tr>
+            <tr>
+                <th>PermissionRoute</th>
+                <td>{{ permission.permissionRoute }}</td>
+            </tr>
+            <tr>
+                <th>IsActive</th>
+                <td>{{ permission.isActive ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>OnMobileIOS</th>
+                <td>{{ permission.onMobileIOS ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>OnMobileAndroid</th>
+                <td>{{ permission.onMobileAndroid ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>OnOtherMobile</th>
+                <td>{{ permission.onOtherMobile ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>OnChromeOS</th>
+                <td>{{ permission.onChromeOS ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>OnWindows</th>
+                <td>{{ permission.onWindows ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>OnLinux</th>
+                <td>{{ permission.onLinux ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>OnMacOS</th>
+                <td>{{ permission.onMacOS ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>AllowedCountries</th>
+                <td>{{ permission.allowedCountries ? permission.allowedCountries|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>BlockedCountries</th>
+                <td>{{ permission.blockedCountries ? permission.blockedCountries|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>MinRole</th>
+                <td>{{ permission.minRole }}</td>
+            </tr>
+            <tr>
+                <th>PinRequired</th>
+                <td>{{ permission.pinRequired ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_permission_index') }}">back to list</a>
+
+    <a href="{{ path('app_permission_edit', {'id': permission.id}) }}">edit</a>
+
+    {{ include('permission/_delete_form.html.twig') }}
+{% endblock %}

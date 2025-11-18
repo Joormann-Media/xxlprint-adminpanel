@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1>UserHistory</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user_history.id }}</td>
+            </tr>
+            <tr>
+                <th>Timestamp</th>
+                <td>{{ user_history.timestamp ? user_history.timestamp|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Action</th>
+                <td>{{ user_history.action }}</td>
+            </tr>
+            <tr>
+                <th>IpAddress</th>
+                <td>{{ user_history.ipAddress }}</td>
+            </tr>
+            <tr>
+                <th>Device</th>
+                <td>{{ user_history.device }}</td>
+            </tr>
+            <tr>
+                <th>BrowserFingerprint</th>
+                <td>{{ user_history.browserFingerprint }}</td>
+            </tr>
+            <tr>
+                <th>MetaData</th>
+                <td>{{ user_history.metaData ? user_history.metaData|json_encode : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_history_index') }}">back to list</a>
+
+    <a href="{{ path('app_user_history_edit', {'id': user_history.id}) }}">edit</a>
+
+    {{ include('user_history/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New SystemConfig{% endblock %}
+
+{% block body %}
+    <h1>Create new SystemConfig</h1>
+
+    {{ include('system_config/_form.html.twig') }}
+
+    <a href="{{ path('app_system_config_index') }}">back to list</a>
+{% endblock %}

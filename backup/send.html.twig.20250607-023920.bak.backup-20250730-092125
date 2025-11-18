@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SMS versenden{% endblock %}
+
+{% block body %}
+<h1>SMS versenden</h1>
+
+{{ form_start(form) }}
+    {{ form_row(form.recipient) }}
+    {{ form_row(form.message) }}
+    <button class="btn btn-primary">Senden</button>
+{{ form_end(form) }}
+
+{% if result %}
+    <h3>API-Rückgabe</h3>
+    <pre>{{ dump(result) }}</pre>
+{% endif %}
+{% endblock %}

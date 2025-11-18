@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Mail bestätigen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+            color: #333;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin-top: 20px;
+            font-weight: bold;
+            background-color: #0d6efd;
+            color: white !important;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <h2>Willkommen bei Joormann-Media 👋</h2>
+
+        <p>Hallo {{ user.prename|default(user.username) }},</p>
+
+        <p>
+            Vielen Dank für deine Registrierung! Bitte bestätige deine E-Mail-Adresse, um dein Benutzerkonto zu aktivieren.
+        </p>
+
+        <p>
+            <a href="{{ verifyUrl }}" class="btn">📧 E-Mail-Adresse bestätigen</a>
+        </p>
+
+        <p>
+            Falls der Button nicht funktioniert, kopiere folgenden Link in deinen Browser:
+        </p>
+        <p style="word-break: break-all;">
+            <a href="{{ verifyUrl }}">{{ verifyUrl }}</a>
+        </p>
+
+        <div class="footer">
+            Du hast dich nicht registriert? Dann kannst du diese E-Mail ignorieren.<br>
+            &copy; {{ "now"|date("Y") }} Joormann-Media
+        </div>
+    </div>
+</body>
+</html>

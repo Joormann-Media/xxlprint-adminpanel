@@ -1,0 +1,150 @@
+{% set sort = sort|default('lastName') %}
+{% set direction = direction|default('ASC') %}
+{% set route = route|default(app.request.attributes.get('_route')) %}
+{% set query = query|default({}) %}
+
+{% macro sort_link(label, field, sort, direction, route, query) %}
+    {% set new_direction = (sort == field and direction == 'ASC') ? 'DESC' : 'ASC' %}
+    {% set icon = (sort == field)
+        ? (direction == 'ASC' ? '▲' : '▼')
+        : '<span class="text-muted" style="font-size:0.9em;">⇅</span>' %}
+    <a href="{{ path(route, query|merge({'sort':field, 'direction':new_direction, 'page': 1})) }}" class="sort-link">
+        {{ label|raw }} {{ icon|raw }}
+    </a>
+{% endmacro %}
+{% import _self as self %}
+
+<div id="employee-table-container">
+
+    {# --- Pagination oben --- #}
+    <div class="mt-0 mb-3">
+        {% if pagination.nbPages > 1 %}
+            <nav>
+                <ul class="pagination justify-content-center flex-wrap">
+                    <li class="page-item {% if pagination.currentPage == 1 %}disabled{% endif %}">
+                        <a class="page-link page-link-prev" href="{{ path(route, query|merge({'page': 1})) }}">&laquo;</a>
+                    </li>
+                    <li class="page-item {% if pagination.currentPage == 1 %}disabled{% endif %}">
+                        <a class="page-link page-link-prev" href="{{ path(route, query|merge({'page': pagination.currentPage - 1})) }}">&lt;</a>
+                    </li>
+                    {% for i in 1..pagination.nbPages %}
+                        {% if i == 1 or i == pagination.nbPages or (i >= pagination.currentPage-2 and i <= pagination.currentPage+2) %}
+                            <li class="page-item {% if i == pagination.currentPage %}active{% endif %}">
+                                <a class="page-link" href="{{ path(route, query|merge({'page': i})) }}">{{ i }}</a>
+                            </li>
+                        {% elseif i == 2 and pagination.currentPage > 4 %}
+                            <li class="page-item disabled"><span class="page-link">…</span></li>
+                        {% elseif i == pagination.nbPages-1 and pagination.currentPage < pagination.nbPages-3 %}
+                            <li class="page-item disabled"><span class="page-link">…</span></li>
+                        {% endif %}
+                    {% endfor %}
+                    <li class="page-item {% if pagination.currentPage == pagination.nbPages %}disabled{% endif %}">
+                        <a class="page-link page-link-next" href="{{ path(route, query|merge({'page': pagination.currentPage + 1})) }}">&gt;</a>
+                    </li>
+                    <li class="page-item {% if pagination.currentPage == pagination.nbPages %}disabled{% endif %}">
+                        <a class="page-link page-link-next" href="{{ path(route, query|merge({'page': pagination.nbPages})) }}">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        {% endif %}
+        <div class="text-muted text-center small mt-2">
+            Seite {{ pagination.currentPage }} von {{ pagination.nbPages }} ({{ pagination.nbResults }} Einträge)
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped align-middle mb-0" id="employeeTable">
+            <thead class="table-light sticky-top">
+                <tr>
+                    <th>{{ self.sort_link('Name', 'lastName', sort, direction, route, query) }}</th>
+                    <th>{{ self.sort_link('Personalnr.', 'employeeNumber', sort, direction, route, query) }}</th>
+                    <th>{{ self.sort_link('Fahrer', 'isDriver', sort, direction, route, query) }}</th>
+                    <th>{{ self.sort_link('Abteilung', 'costCenter', sort, direction, route, query) }}</th>
+                    <th>{{ self.sort_link('Betrieb', 'company', sort, direction, route, query) }}</th>
+                    <th>{{ self.sort_link('Lizenzklassen', 'licenceClass', sort, direction, route, query) }}</th>
+                    <th>{{ self.sort_link('Geburtsdatum', 'birthDate', sort, direction, route, query) }}</th>
+                    <th>{{ self.sort_link('Kontakt', 'phone', sort, direction, route, query) }}</th>
+                    <th>{{ self.sort_link('Adresse', 'address', sort, direction, route, query) }}</th>
+                    <th class="text-end">Aktionen</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.lastName }} {{ employee.firstName }}</td>
+                    <td>{{ employee.employeeNumber ?? '-' }}</td>
+                    <td>
+                        {% if employee.isDriver %}
+                            <span class="badge bg-primary">Ja</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Nein</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if employee.costCenters|length > 0 %}
+                            {% for cc in employee.costCenters %}
+                                <span class="badge bg-warning text-dark">{{ cc.name }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <span class="text-muted">Keine</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if employee.company %}
+                            {{ employee.company.companyname }}
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if employee.licenceClasses|length > 0 %}
+                            {% for lc in employee.licenceClasses %}
+                                <span class="badge bg-info" title="{{ lc.description }}">{{ lc.shortName }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <span class="text-muted">Keine</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if employee.birthDate %}
+                            {{ employee.birthDate|date('d.m.Y') }}
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+    {# Kontakt: Telefon & E-Mail kombiniert #}
+    {% set contacts = [] %}
+    {% if employee.phone %}
+        {% set contacts = contacts|merge([employee.phone]) %}
+    {% endif %}
+    {% if employee.email %}
+        {% set contacts = contacts|merge(['<a href="mailto:' ~ employee.email ~ '">' ~ employee.email ~ '</a>']) %}
+    {% endif %}
+    {{ contacts|join('<br>')|raw }}
+    {% if contacts is empty %}
+        <span class="text-muted">-</span>
+    {% endif %}
+</td>
+
+                    <td>
+                        {% if employee.address %}
+                            {{ employee.address.fullAddress ?? employee.address|default('-') }}
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-end">
+                        <a href="{{ path('app_employee_show', {'id': employee.id}) }}" class="btn btn-sm btn-outline-secondary">Anzeigen</a>
+                        <a href="{{ path('app_employee_edit', {'id': employee.id}) }}" class="btn btn-sm btn-outline-primary">Bearbeiten</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10" class="text-center text-muted">Keine Mitarbeiter gefunden.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

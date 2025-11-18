@@ -1,0 +1,62 @@
+{# templates/admin/qrcode/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container my-4">
+  <h2 class="mb-4">QR-Code Generator</h2>
+  
+  {{ form_start(form, {'attr': {'id': 'qr-form'}}) }}
+    {{ form_row(form.content) }}
+  {{ form_end(form) }}
+
+  <div class="my-4">
+    <h5>Live-Vorschau:</h5>
+    <div id="qr-preview" class="border p-3 rounded bg-light text-center"></div>
+  </div>
+
+  <button class="btn btn-outline-primary" id="qr-download">Download</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const input = document.querySelector('#qr_form_content');
+  const preview = document.getElementById('qr-preview');
+  const downloadBtn = document.getElementById('qr-download');
+  let qr;
+
+  function generateQR() {
+    preview.innerHTML = '';
+    if (input.value.trim()) {
+      qr = new QRCode(preview, {
+        text: input.value,
+        width: 200,
+        height: 200,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+  }
+
+  input.addEventListener('input', generateQR);
+
+  downloadBtn.addEventListener('click', () => {
+    const img = preview.querySelector('img');
+    if (img) {
+      const a = document.createElement('a');
+      a.href = img.src;
+      a.download = 'qr-code.png';
+      a.click();
+    }
+  });
+
+  // Initial preview if field has value
+  if (input.value.trim()) generateQR();
+});
+
+
+  // Initial preview if field has value
+  if (input.value.trim()) generateQR();
+</script>
+{% endblock %}

@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\SchoolTour;
+use App\Form\SchoolTourType;
+use App\Repository\SchoolTourRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+#[Route('/school/tour')]
+final class SchoolTourController extends AbstractController
+{
+    #[Route(name: 'app_school_tour_index', methods: ['GET'])]
+    public function index(SchoolTourRepository $schoolTourRepository): Response
+    {
+        return $this->render('school_tour/index.html.twig', [
+            'school_tours' => $schoolTourRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/new', name: 'app_school_tour_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $schoolTour = new SchoolTour();
+        $form = $this->createForm(SchoolTourType::class, $schoolTour);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($schoolTour);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_school_tour_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('school_tour/new.html.twig', [
+            'school_tour' => $schoolTour,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}', name: 'app_school_tour_show', methods: ['GET'])]
+    public function show(SchoolTour $schoolTour): Response
+    {
+        return $this->render('school_tour/show.html.twig', [
+            'school_tour' => $schoolTour,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}/edit', name: 'app_school_tour_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, SchoolTour $schoolTour, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(SchoolTourType::class, $schoolTour);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_school_tour_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('school_tour/edit.html.twig', [
+            'school_tour' => $schoolTour,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}', name: 'app_school_tour_delete', methods: ['POST'])]
+    public function delete(Request $request, SchoolTour $schoolTour, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$schoolTour->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($schoolTour);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_school_tour_index', [], Response::HTTP_SEE_OTHER);
+    }
+}

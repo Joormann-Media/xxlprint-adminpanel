@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserDeviceLog{% endblock %}
+
+{% block body %}
+    <h1>UserDeviceLog</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user_device_log.id }}</td>
+            </tr>
+            <tr>
+                <th>ActionType</th>
+                <td>{{ user_device_log.actionType }}</td>
+            </tr>
+            <tr>
+                <th>IpAddress</th>
+                <td>{{ user_device_log.ipAddress }}</td>
+            </tr>
+            <tr>
+                <th>Timestamp</th>
+                <td>{{ user_device_log.timestamp ? user_device_log.timestamp|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Result</th>
+                <td>{{ user_device_log.result }}</td>
+            </tr>
+            <tr>
+                <th>Note</th>
+                <td>{{ user_device_log.note }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_device_log_index') }}">back to list</a>
+
+    <a href="{{ path('app_user_device_log_edit', {'id': user_device_log.id}) }}">edit</a>
+
+    {{ include('user_device_log/_delete_form.html.twig') }}
+{% endblock %}

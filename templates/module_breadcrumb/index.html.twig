@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ModuleBreadcrumb index{% endblock %}
+
+{% block body %}
+    <h1>ModuleBreadcrumb index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Label</th>
+                <th>Route</th>
+                <th>Icon</th>
+                <th>SortOrder</th>
+                <th>RouteParameters</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for module_breadcrumb in module_breadcrumbs %}
+            <tr>
+                <td>{{ module_breadcrumb.id }}</td>
+                <td>{{ module_breadcrumb.label }}</td>
+                <td>{{ module_breadcrumb.route }}</td>
+                <td>{{ module_breadcrumb.icon }}</td>
+                <td>{{ module_breadcrumb.sortOrder }}</td>
+                <td>{{ module_breadcrumb.routeParameters ? module_breadcrumb.routeParameters|json_encode : '' }}</td>
+                <td>
+                    <a href="{{ path('app_module_breadcrumb_show', {'id': module_breadcrumb.id}) }}">show</a>
+                    <a href="{{ path('app_module_breadcrumb_edit', {'id': module_breadcrumb.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_module_breadcrumb_new') }}">Create new</a>
+{% endblock %}

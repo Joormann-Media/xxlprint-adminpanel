@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Fahrzeugschein OCR Extraktor</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; }
+        .preview-wrap { position: relative; display: inline-block; }
+        #scheinImg, #zoomImg, #previewImg {
+            max-width: 800px; max-height: 600px; display: block; border: 1px solid #aaa;
+        }
+        #zoomImg, #previewImg { display: none; position: absolute; top: 0; left: 820px; background: #fff; z-index: 20; box-shadow: 0 2px 12px #0002;}
+        #selectionBox {
+            position: absolute; border: 2px dashed #f00; background: rgba(255,0,0,0.2);
+            display: none; pointer-events: none; z-index: 5;
+        }
+        #ocrBtn {
+            position: absolute; z-index: 10; display: none;
+            background: #fff; color: #c00; font-weight: bold; border: 1px solid #c00;
+            border-radius: 5px; padding: 4px 10px; cursor: pointer; left: 0; top: 0;
+            box-shadow: 0 2px 8px #0002;
+        }
+        #sammel { margin-top: 30px; padding: 15px; border: 1px solid #999; min-height: 60px; background: #f8f8f8; }
+        #error { color: #b00; margin-top: 10px; }
+        #ui-bar { margin: 18px 0 8px 0; display: flex; gap: 24px; align-items: center; }
+        #ui-bar label { font-size: 14px; }
+        #ui-bar select, #ui-bar input { font-size: 14px; }
+        .zoom-toggle { margin-left: 10px; }
+        #zoomBox { margin-top: 8px; }
+        #previewBox { margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <h2>Fahrzeugschein OCR Extraktor</h2>
+    <div id="ui-bar">
+        <input type="file" id="upload" accept="image/*,.pdf">
+        <label>Zoom: <input type="checkbox" id="zoomToggle" class="zoom-toggle"> <span id="zoomLevelTxt">2x</span></label>
+        <label>OCR-Modus:
+            <select id="ocrPsm">
+                <option value="3">Automatisch (Block/Textzeile)</option>
+                <option value="6">Nur Textzeile</option>
+                <option value="7">Nur Einzelwort</option>
+                <option value="11">Nur Ziffern</option>
+            </select>
+        </label>
+        <label>Nachbesserung: 
+            <input type="checkbox" id="autoFix" checked> (O/0, I/1, B/8)
+        </label>
+    </div>
+    <div class="preview-wrap" id="previewWrap" style="margin-bottom: 8px;">
+        <img id="scheinImg" style="display:none;">
+        <div id="selectionBox"></div>
+        <button id="ocrBtn" type="button">OCR ausführen</button>
+        <canvas id="zoomImg"></canvas>
+    </div>
+    <div id="previewBox" style="display:none;">
+        <label>Backend-Vorverarbeitung (Preview):</label>
+        <img id="previewImg" src="" alt="Preprocessed Preview">
+    </div>
+    <div>
+        <button id="resetBtn" style="display:none;">Reset</button>
+    </div>
+    <h4>Gefundene Texte:</h4>
+    <div id="sammel"></div>
+    <div id="error"></div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8888'; // <---- ggf. anpassen!
+
+        const upload = document.getElementById('upload');
+        const scheinImg = document.getElementById('scheinImg');
+        const selectionBox = document.getElementById('selectionBox');
+        const ocrBtn = document.getElementById('ocrBtn');
+        const sammel = document.getElementById('sammel');
+        const resetBtn = document.getElementById('resetBtn');
+        const errorBox = document.getElementById('error');
+        const zoomToggle = document.getElementById('zoomToggle');
+        const zoomLevelTxt = document.getElementById('zoomLevelTxt');
+        const zoomImg = document.getElementById('zoomImg');
+        const ocrPsm = document.getElementById('ocrPsm');
+        const autoFix = document.getElementById('autoFix');
+        const previewBox = document.getElementById('previewBox');
+        const previewImg = document.getElementById('previewImg');
+        let imgNaturalWidth, imgNaturalHeight;
+        let startX, startY, endX, endY, dragging = false;
+        let selection = null;
+        let lastBoxRect = null;
+        let zoomActive = false;
+        let zoomLevel = 2;
+
+        upload.addEventListener('change', async (e) => {
+            sammel.innerText = '';
+            errorBox.innerText = '';
+            selectionBox.style.display = 'none';
+            ocrBtn.style.display = 'none';
+            previewBox.style.display = 'none';
+            previewImg.src = '';
+            selection = null;
+            scheinImg.style.display = 'none';
+            zoomImg.style.display = 'none';
+            const file = e.target.files[0];
+            if (!file) return;
+            try {
+                if (file.type === "application/pdf") {
+                    let formData = new FormData();
+                    formData.append('file', file);
+                    let resp = await fetch(API_URL + '/pdf2img', { method: 'POST', body: formData });
+                    if (!resp.ok) {
+                        let txt = await resp.text();
+                        throw new Error('PDF-Upload/Backend-Fehler: ' + txt);
+                    }
+                    let data = await resp.json();
+                    if (!data.image) throw new Error('Backend gibt kein Bild zurück');
+                    scheinImg.src = data.image;
+                } else {
+                    scheinImg.src = URL.createObjectURL(file);
+                }
+                scheinImg.style.display = 'block';
+                resetBtn.style.display = 'inline';
+            } catch (err) {
+                errorBox.innerText = err.message;
+                scheinImg.style.display = 'none';
+                resetBtn.style.display = 'none';
+            }
+        });
+
+        scheinImg.onload = function () {
+            imgNaturalWidth = scheinImg.naturalWidth;
+            imgNaturalHeight = scheinImg.naturalHeight;
+            selectionBox.style.display = 'none';
+            ocrBtn.style.display = 'none';
+            previewBox.style.display = 'none';
+            previewImg.src = '';
+            selection = null;
+        };
+
+        // --- ZOOM ---
+        zoomToggle.addEventListener('change', () => {
+            zoomActive = zoomToggle.checked;
+            zoomLevel = 2;
+            zoomLevelTxt.innerText = zoomActive ? '2x' : 'Off';
+            zoomImg.style.display = 'none';
+        });
+
+        // Mausbewegung für Zoom
+        scheinImg.addEventListener('mousemove', (e) => {
+            if (!zoomActive || scheinImg.style.display === 'none') {
+                zoomImg.style.display = 'none';
+                return;
+            }
+            const rect = scheinImg.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            // Bereich um Maus anzeigen (z.B. 120x120px)
+            let boxW = 120, boxH = 120;
+            // Canvas-Größe
+            zoomImg.width = boxW * zoomLevel;
+            zoomImg.height = boxH * zoomLevel;
+            zoomImg.style.width = (boxW * zoomLevel) + 'px';
+            zoomImg.style.height = (boxH * zoomLevel) + 'px';
+            // Position Canvas
+            zoomImg.style.left = (rect.width + 10) + 'px';
+            zoomImg.style.top = '0px';
+            zoomImg.style.display = 'block';
+
+            // Bereich aus Bild kopieren
+            let ratioX = imgNaturalWidth / scheinImg.width;
+            let ratioY = imgNaturalHeight / scheinImg.height;
+            let cx = Math.max(0, Math.min(x * ratioX - boxW / 2, imgNaturalWidth - boxW));
+            let cy = Math.max(0, Math.min(y * ratioY - boxH / 2, imgNaturalHeight - boxH));
+
+            let canvas = zoomImg.getContext('2d');
+            let tmp = document.createElement('canvas');
+            tmp.width = imgNaturalWidth;
+            tmp.height = imgNaturalHeight;
+            tmp.getContext('2d').drawImage(scheinImg, 0, 0, imgNaturalWidth, imgNaturalHeight);
+            canvas.imageSmoothingEnabled = false;
+            canvas.clearRect(0, 0, zoomImg.width, zoomImg.height);
+            canvas.drawImage(tmp, cx, cy, boxW, boxH, 0, 0, boxW * zoomLevel, boxH * zoomLevel);
+        });
+
+        // Auswahlrahmen: Start
+        scheinImg.addEventListener('mousedown', (e) => {
+            if (!scheinImg.src || scheinImg.style.display === 'none') return;
+            if (e.button !== 0) return;
+            dragging = true;
+            const rect = scheinImg.getBoundingClientRect();
+            startX = e.clientX - rect.left;
+            startY = e.clientY - rect.top;
+            selectionBox.style.left = `${startX}px`;
+            selectionBox.style.top = `${startY}px`;
+            selectionBox.style.width = '0';
+            selectionBox.style.height = '0';
+            selectionBox.style.display = 'block';
+            ocrBtn.style.display = 'none';
+            selection = null;
+        });
+
+        // Auswahlrahmen: Ziehen
+        scheinImg.addEventListener('mousemove', (e) => {
+            if (!dragging) return;
+            const rect = scheinImg.getBoundingClientRect();
+            endX = e.clientX - rect.left;
+            endY = e.clientY - rect.top;
+            let w = endX - startX, h = endY - startY;
+            selectionBox.style.width = Math.abs(w) + 'px';
+            selectionBox.style.height = Math.abs(h) + 'px';
+            selectionBox.style.left = (w > 0 ? startX : endX) + 'px';
+            selectionBox.style.top = (h > 0 ? startY : endY) + 'px';
+        });
+
+        // Auswahl beenden: Rahmen bleibt, Button wird sichtbar
+        scheinImg.addEventListener('mouseup', (e) => {
+            if (!dragging) return;
+            dragging = false;
+            const rect = scheinImg.getBoundingClientRect();
+            endX = e.clientX - rect.left;
+            endY = e.clientY - rect.top;
+            let sx = Math.min(startX, endX), sy = Math.min(startY, endY);
+            let ex = Math.max(startX, endX), ey = Math.max(startY, endY);
+            let w = Math.abs(ex - sx), h = Math.abs(ey - sy);
+
+            if (w < 5 || h < 5) {
+                errorBox.innerText = 'Bitte einen größeren Bereich auswählen!';
+                selectionBox.style.display = 'none';
+                ocrBtn.style.display = 'none';
+                selection = null;
+                return;
+            }
+            selection = {sx, sy, ex, ey, w, h};
+
+            // Button positionieren (immer innerhalb des Bildes)
+            let btnX = Math.max(0, Math.min(sx + w - 80, scheinImg.width - 80));
+            let btnY = sy - 36 < 0 ? sy + 10 : sy - 36;
+            ocrBtn.style.left = btnX + 'px';
+            ocrBtn.style.top = btnY + 'px';
+            ocrBtn.style.display = 'block';
+            lastBoxRect = {sx, sy, w, h};
+
+            // --- Preview-Request fürs Backend (zeigt das preprocessed Image, z. B. schwarz/weiß etc) ---
+            showPreview();
+        });
+
+        // OCR-Ausführung: Nur bei Klick auf Button
+        ocrBtn.addEventListener('click', async () => {
+            if (!selection) return;
+            let ratioX = imgNaturalWidth / scheinImg.width;
+            let ratioY = imgNaturalHeight / scheinImg.height;
+            let x = Math.round(selection.sx * ratioX), y = Math.round(selection.sy * ratioY);
+            let w = Math.round(selection.w * ratioX), h = Math.round(selection.h * ratioY);
+            let psm = ocrPsm.value;
+
+            try {
+                let canvas = document.createElement('canvas');
+                canvas.width = imgNaturalWidth;
+                canvas.height = imgNaturalHeight;
+                let ctx = canvas.getContext('2d');
+                ctx.drawImage(scheinImg, 0, 0, imgNaturalWidth, imgNaturalHeight);
+                let imgData = canvas.toDataURL('image/png');
+
+                let resp = await fetch(API_URL + '/ocr', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: imgData, rect: [x, y, w, h], psm: psm })
+                });
+                if (!resp.ok) {
+                    let txt = await resp.text();
+                    throw new Error('OCR-Fehler: ' + txt);
+                }
+                let data = await resp.json();
+                let ocrText = data.text || '';
+                // Nachbesserung
+                if (autoFix.checked) {
+                    ocrText = ocrText
+                        .replace(/\b0([A-Z])/g, 'O$1') // Null gefolgt von Buchstabe wird O
+                        .replace(/\bO(\d)/g, '0$1') // O gefolgt von Zahl wird 0
+                        .replace(/\b1([A-Z])/g, 'I$1')
+                        .replace(/\bI(\d)/g, '1$1')
+                        .replace(/\bB(\d)/g, '8$1')
+                        .replace(/\b8([A-Z])/g, 'B$1');
+                }
+                if (ocrText.trim().length > 0) {
+                    sammel.innerHTML += `<div>${ocrText}</div>`;
+                } else {
+                    sammel.innerHTML += `<div style="color: #b00;">(Kein Text erkannt)</div>`;
+                }
+            } catch (err) {
+                errorBox.innerText = err.message;
+            }
+            selectionBox.style.display = 'none';
+            ocrBtn.style.display = 'none';
+            selection = null;
+            previewBox.style.display = 'none';
+        });
+
+        function showPreview() {
+            if (!selection) return;
+            let ratioX = imgNaturalWidth / scheinImg.width;
+            let ratioY = imgNaturalHeight / scheinImg.height;
+            let x = Math.round(selection.sx * ratioX), y = Math.round(selection.sy * ratioY);
+            let w = Math.round(selection.w * ratioX), h = Math.round(selection.h * ratioY);
+            let psm = ocrPsm.value;
+
+            let canvas = document.createElement('canvas');
+            canvas.width = imgNaturalWidth;
+            canvas.height = imgNaturalHeight;
+            let ctx = canvas.getContext('2d');
+            ctx.drawImage(scheinImg, 0, 0, imgNaturalWidth, imgNaturalHeight);
+            let imgData = canvas.toDataURL('image/png');
+
+            fetch(API_URL + '/ocr/preview', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: imgData, rect: [x, y, w, h], psm: psm })
+            })
+            .then(resp => resp.ok ? resp.json() : Promise.reject("Preview-Fehler"))
+            .then(data => {
+                if (data.preview) {
+                    previewBox.style.display = 'block';
+                    previewImg.src = data.preview;
+                } else {
+                    previewBox.style.display = 'none';
+                }
+            }).catch(e => {
+                previewBox.style.display = 'none';
+            });
+        }
+
+        resetBtn.onclick = () => {
+            scheinImg.style.display = 'none';
+            upload.value = '';
+            sammel.innerHTML = '';
+            errorBox.innerText = '';
+            resetBtn.style.display = 'none';
+            selectionBox.style.display = 'none';
+            ocrBtn.style.display = 'none';
+            selection = null;
+            previewBox.style.display = 'none';
+            previewImg.src = '';
+            zoomImg.style.display = 'none';
+        };
+
+        document.body.addEventListener('mouseleave', () => {
+            if (dragging) {
+                dragging = false;
+                selectionBox.style.display = 'none';
+                ocrBtn.style.display = 'none';
+                selection = null;
+            }
+        });
+
+    </script>
+</body>
+</html>

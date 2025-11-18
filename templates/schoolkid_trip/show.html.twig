@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SchoolkidTrip{% endblock %}
+
+{% block body %}
+    <h1>SchoolkidTrip</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ schoolkid_trip.id }}</td>
+            </tr>
+            <tr>
+                <th>Weekday</th>
+                <td>{{ schoolkid_trip.weekday }}</td>
+            </tr>
+            <tr>
+                <th>TripType</th>
+                <td>{{ schoolkid_trip.tripType }}</td>
+            </tr>
+            <tr>
+                <th>PickupTime</th>
+                <td>{{ schoolkid_trip.pickupTime ? schoolkid_trip.pickupTime|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>WeekPattern</th>
+                <td>{{ schoolkid_trip.weekPattern }}</td>
+            </tr>
+            <tr>
+                <th>PickupAddress</th>
+                <td>{{ schoolkid_trip.pickupAddress }}</td>
+            </tr>
+            <tr>
+                <th>Destination</th>
+                <td>{{ schoolkid_trip.destination }}</td>
+            </tr>
+            <tr>
+                <th>Comment</th>
+                <td>{{ schoolkid_trip.comment }}</td>
+            </tr>
+            <tr>
+                <th>SpecialTrip</th>
+                <td>{{ schoolkid_trip.specialTrip ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>ValidFrom</th>
+                <td>{{ schoolkid_trip.validFrom ? schoolkid_trip.validFrom|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ValidTo</th>
+                <td>{{ schoolkid_trip.validTo ? schoolkid_trip.validTo|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Canceled</th>
+                <td>{{ schoolkid_trip.canceled ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>CanceledAt</th>
+                <td>{{ schoolkid_trip.canceledAt ? schoolkid_trip.canceledAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CancellationType</th>
+                <td>{{ schoolkid_trip.cancellationType }}</td>
+            </tr>
+            <tr>
+                <th>CancellationReason</th>
+                <td>{{ schoolkid_trip.cancellationReason }}</td>
+            </tr>
+            <tr>
+                <th>CanceledBy</th>
+                <td>{{ schoolkid_trip.canceledBy }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_schoolkid_trip_index') }}">back to list</a>
+
+    <a href="{{ path('app_schoolkid_trip_edit', {'id': schoolkid_trip.id}) }}">edit</a>
+
+    {{ include('schoolkid_trip/_delete_form.html.twig') }}
+{% endblock %}

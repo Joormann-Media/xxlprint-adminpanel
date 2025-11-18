@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GeoCoordinate index{% endblock %}
+
+{% block body %}
+    <h1>GeoCoordinate index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Altitude</th>
+                <th>Accuracy</th>
+                <th>Source</th>
+                <th>CapturedAt</th>
+                <th>IsActive</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for geo_coordinate in geo_coordinates %}
+            <tr>
+                <td>{{ geo_coordinate.id }}</td>
+                <td>{{ geo_coordinate.latitude }}</td>
+                <td>{{ geo_coordinate.longitude }}</td>
+                <td>{{ geo_coordinate.altitude }}</td>
+                <td>{{ geo_coordinate.accuracy }}</td>
+                <td>{{ geo_coordinate.source }}</td>
+                <td>{{ geo_coordinate.capturedAt ? geo_coordinate.capturedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ geo_coordinate.isActive ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_geo_coordinate_show', {'id': geo_coordinate.id}) }}">show</a>
+                    <a href="{{ path('app_geo_coordinate_edit', {'id': geo_coordinate.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_geo_coordinate_new') }}">Create new</a>
+{% endblock %}

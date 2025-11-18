@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserMenuConfig index{% endblock %}
+
+{% block body %}
+    <h1>UserMenuConfig index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>SortOrder</th>
+                <th>MenuPosition</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_menu_config in user_menu_configs %}
+            <tr>
+                <td>{{ user_menu_config.id }}</td>
+                <td>{{ user_menu_config.sortOrder }}</td>
+                <td>{{ user_menu_config.menuPosition }}</td>
+                <td>
+                    <a href="{{ path('app_user_menu_config_show', {'id': user_menu_config.id}) }}">show</a>
+                    <a href="{{ path('app_user_menu_config_edit', {'id': user_menu_config.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_menu_config_new') }}">Create new</a>
+{% endblock %}

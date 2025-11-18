@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ConcessionManager{% endblock %}
+
+{% block body %}
+    <h1>ConcessionManager</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ concession_manager.id }}</td>
+            </tr>
+            <tr>
+                <th>ConcessionNumber</th>
+                <td>{{ concession_manager.concessionNumber }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ concession_manager.type }}</td>
+            </tr>
+            <tr>
+                <th>Company</th>
+                <td>{{ concession_manager.company }}</td>
+            </tr>
+            <tr>
+                <th>ValidFrom</th>
+                <td>{{ concession_manager.validFrom ? concession_manager.validFrom|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ValidUntil</th>
+                <td>{{ concession_manager.validUntil ? concession_manager.validUntil|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Authority</th>
+                <td>{{ concession_manager.authority }}</td>
+            </tr>
+            <tr>
+                <th>IssueDate</th>
+                <td>{{ concession_manager.issueDate ? concession_manager.issueDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ concession_manager.status }}</td>
+            </tr>
+            <tr>
+                <th>DocumentFile</th>
+                <td>{{ concession_manager.documentFile }}</td>
+            </tr>
+            <tr>
+                <th>VehicleLimit</th>
+                <td>{{ concession_manager.vehicleLimit }}</td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>{{ concession_manager.notes }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ concession_manager.description }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ concession_manager.createdAt ? concession_manager.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ concession_manager.updatedAt ? concession_manager.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_concession_manager_index') }}">back to list</a>
+
+    <a href="{{ path('app_concession_manager_edit', {'id': concession_manager.id}) }}">edit</a>
+
+    {{ include('concession_manager/_delete_form.html.twig') }}
+{% endblock %}

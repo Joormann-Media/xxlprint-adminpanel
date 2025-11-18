@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit DevelopersBlog{% endblock %}
+
+{% block body %}
+    <h1>Edit DevelopersBlog</h1>
+
+    {{ include('developers_blog/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_developers_blog_index') }}">back to list</a>
+
+    {{ include('developers_blog/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GameStats index{% endblock %}
+
+{% block body %}
+    <h1>GameStats index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>StatTimestamp</th>
+                <th>ProjectName</th>
+                <th>Folder</th>
+                <th>Files</th>
+                <th>Images</th>
+                <th>Archives</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for game_stat in game_stats %}
+            <tr>
+                <td>{{ game_stat.id }}</td>
+                <td>{{ game_stat.statTimestamp ? game_stat.statTimestamp|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ game_stat.projectName }}</td>
+                <td>{{ game_stat.folder }}</td>
+                <td>{{ game_stat.files }}</td>
+                <td>{{ game_stat.images }}</td>
+                <td>{{ game_stat.archives }}</td>
+                <td>
+                    <a href="{{ path('app_game_stats_show', {'id': game_stat.id}) }}">show</a>
+                    <a href="{{ path('app_game_stats_edit', {'id': game_stat.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_game_stats_new') }}">Create new</a>
+{% endblock %}

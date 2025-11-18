@@ -1,0 +1,559 @@
+{{ form_start(form, {attr: {class: 'needs-validation'}}) }}
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-primary text-white">
+                <i class="bi bi-info-circle"></i> Allgemeine Infos
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    {{ form_label(form.name, 'Tourname', {label_attr: {class: 'form-label fw-bold'}}) }}
+                    {{ form_widget(form.name, {attr: {class: 'form-control'}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.description, 'Beschreibung') }}
+                    {{ form_widget(form.description, {attr: {class: 'form-control'}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.type, 'Tourtyp') }}
+                    {{ form_widget(form.type, {attr: {class: 'form-select'}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.operatingDays, 'Betriebstage') }}
+                    {{ form_widget(form.operatingDays, {attr: {class: 'form-control'}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.schoolYear, 'Schuljahr') }}
+                    {{ form_widget(form.schoolYear, {attr: {class: 'form-control'}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.companionRequirement, 'Begleitung') }}
+                    {{ form_widget(form.companionRequirement, {attr: {class: 'form-select'}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.status, 'Status') }}
+                    {{ form_widget(form.status, {attr: {class: 'form-select'}}) }}
+                </div>
+<div class="mb-3">
+    {{ form_label(form.distance, 'Distanz (km)') }}
+    {{ form_widget(form.distance, {attr: {class: 'form-control', id: 'tour-distance'}}) }}
+</div>
+<div class="mb-3">
+    {{ form_label(form.duration, 'Dauer (Sekunden)') }}
+    {{ form_widget(form.duration, {attr: {class: 'form-control', id: 'tour-duration'}}) }}
+</div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-success text-white">
+                <i class="bi bi-geo-alt"></i> Start & Ziel
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    {{ form_label(form.startAddress, 'Startadresse') }}
+                    {{ form_widget(form.startAddress, {attr: {class: 'form-control'}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.startTime, 'Startzeit') }}
+                    {{ form_widget(form.startTime, {attr: {class: 'form-control'}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.endAddress, 'Zieladresse') }}
+                    {{ form_widget(form.endAddress, {attr: {class: 'form-control'}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.endTime, 'Zielzeit') }}
+                    {{ form_widget(form.endTime, {attr: {class: 'form-control'}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.route, 'Route') }}
+                    {{ form_widget(form.route, {attr: {id: 'tour-route-json'}}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-3">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-warning text-dark">
+                <i class="bi bi-building"></i> Schule & Schüler
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    {{ form_label(form.school, 'Schule') }}
+                    {{ form_widget(form.school, {attr: {class: 'form-select'}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.kids, 'Schüler') }}
+                    <div class="border rounded p-2 bg-light" style="max-height: 200px; overflow-y:auto;">
+                        {{ form_widget(form.kids, {attr: {class: 'form-check-input'}}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-secondary text-white">
+                <i class="bi bi-signpost-split"></i> Stops
+            </div>
+            <div class="card-body" id="stops-wrapper" data-collection-holder>
+                {% for stopForm in form.stops %}
+                    <div class="card mb-2 p-2 stop-item shadow-sm"
+                         data-stop-id="{{ stopForm.vars.value.id ?? 'new-' ~ loop.index }}">
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                {{ form_widget(stopForm.address, {attr: {class: 'form-control', placeholder: 'Adresse'}}) }}
+                            </div>
+                            <div class="col-md-3">
+                                {{ form_widget(stopForm.plannedTime, {attr: {class: 'form-control'}}) }}
+                            </div>
+                            <div class="col-md-3">
+                                {{ form_widget(stopForm.sortOrder, {attr: {class: 'form-control', placeholder: '#'}}) }}
+                            </div>
+                            <button type="button" class="btn btn-outline-info btn-sm ms-2 focus-stop"
+                                    data-stop-id="{{ stopForm.vars.value.id ?? 'new-' ~ loop.index }}">
+                                📍
+                            </button>
+                        </div>
+                        <div class="row g-2 mt-2">
+                            <div class="col-md-6">
+                                {{ form_widget(stopForm.kids, {attr: {class: 'form-select'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_widget(stopForm.stopPoint, {attr: {class: 'form-select'}}) }}
+                                {{ form_widget(stopForm.latitude, {attr: {class: 'form-control'}}) }}
+                                {{ form_widget(stopForm.longitude, {attr: {class: 'form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            {{ form_widget(stopForm.notes, {attr: {class: 'form-control', placeholder: 'Notizen'}}) }}
+                        </div>
+                        <button type="button" class="btn btn-outline-danger btn-sm mt-2 remove-stop">
+                            ❌ Stop entfernen
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="btn btn-outline-success btn-sm mt-2" id="add-stop">
+                ➕ Stop hinzufügen
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <button class="btn btn-lg btn-primary">💾 Speichern</button>
+</div>
+
+{# 🔑 Nur den CSRF-Token manuell rendern, keine anderen Felder doppelt #}
+{{ form_widget(form._token) }}
+
+{{ form_end(form, { render_rest: false }) }}
+
+
+<!-- Prototype nur einmalig -->
+<div id="stops-prototype" style="display:none">
+    <div class="card mb-2 p-2 stop-item shadow-sm" data-stop-id="__name__">
+        <div class="row g-2">
+            <div class="col-md-6">
+                {{ form_widget(form.stops.vars.prototype.address, {attr: {class: 'form-control', placeholder: 'Adresse'}}) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_widget(form.stops.vars.prototype.plannedTime, {attr: {class: 'form-control'}}) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_widget(form.stops.vars.prototype.sortOrder, {attr: {class: 'form-control', placeholder: '#'}}) }}
+            </div>
+            <button type="button" class="btn btn-outline-info btn-sm ms-2 focus-stop" data-stop-id="__name__">📍</button>
+        </div>
+        <div class="row g-2 mt-2">
+            <div class="col-md-6">
+                {{ form_widget(form.stops.vars.prototype.kids, {attr: {class: 'form-select'}}) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_widget(form.stops.vars.prototype.stopPoint, {attr: {class: 'form-select'}}) }}
+                {{ form_widget(form.stops.vars.prototype.latitude, {attr: {class: 'form-control'}}) }}
+                {{ form_widget(form.stops.vars.prototype.longitude, {attr: {class: 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="mt-2">
+            {{ form_widget(form.stops.vars.prototype.notes, {attr: {class: 'form-control', placeholder: 'Notizen'}}) }}
+        </div>
+        <button type="button" class="btn btn-outline-danger btn-sm mt-2 remove-stop">❌ Stop entfernen</button>
+    </div>
+</div>
+
+
+
+<hr>
+<div style="display:none">
+    <h4>📋 Schüler dieser Schule:</h4>
+    <ul id="kids-list" class="list-group mb-3"></ul>
+</div>
+
+{% if school_tour is defined and school_tour.id %}
+  <script>
+    let mapWindow = window.open("{{ path('app_school_tour_map', {id: school_tour.id}) }}", "_blank", "width=1000,height=700");
+  </script>
+{% else %}
+  <script>
+    let mapWindow = window.open("{{ path('app_school_tour_map_generic') }}", "_blank", "width=1000,height=700");
+  </script>
+{% endif %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+const CONFIG = {
+  tourId: {{ (school_tour is defined ? school_tour.id : null)|json_encode|raw }},
+  schoolId: {{ (school_tour is defined and school_tour.school ? school_tour.school.id : null)|json_encode|raw }},
+  savedRoute: {{ saved_route|default(null)|json_encode|raw }},
+start: {
+  lat: {{ school_tour.startLatitude|default('null') }},
+  lng: {{ school_tour.startLongitude|default('null') }},
+  address: {{ school_tour.startAddress|default('')|json_encode|raw }}
+},
+end: {
+  lat: {{ school_tour.endLatitude|default('null') }},
+  lng: {{ school_tour.endLongitude|default('null') }},
+  address: {{ school_tour.endAddress|default('')|json_encode|raw }}
+},
+school: {
+  id: {{ school_tour.school.id|default('null') }},
+  name: {{ school_tour.school.name|default('')|json_encode|raw }},
+  address: {{ school_tour.school.address|default('')|json_encode|raw }},
+  lat: {{ school_tour.school.latitude|default('null') }},
+  lng: {{ school_tour.school.longitude|default('null') }}
+},
+
+};
+
+
+const channel = new BroadcastChannel("tour_map");
+const collectionHolder = document.querySelector('[data-collection-holder]');
+
+function updateSortOrder() {
+  collectionHolder.querySelectorAll('.stop-item').forEach((el, idx) => {
+    const sortInput = el.querySelector("input[name$='[sortOrder]']");
+    if (sortInput) sortInput.value = idx + 1;
+  });
+}
+
+function addRemoveListener(button) {
+  button.addEventListener('click', () => {
+    button.closest('.stop-item').remove();
+    updateSortOrder();
+  });
+}
+
+function enhanceStopItem(stopItem) {
+  const addressInput = stopItem.querySelector("input[name$='[address]']");
+  if (addressInput) {
+    attachAutocomplete(addressInput);
+
+    // 🆕 Beim Verlassen des Feldes Koordinaten setzen
+    addressInput.addEventListener("blur", async () => {
+      if (addressInput.value.trim() !== "") {
+        const { lat, lng } = await geocodeAddress(addressInput.value);
+        if (lat && lng) {
+          stopItem.querySelector('[name$="[latitude]"]').value = lat;
+          stopItem.querySelector('[name$="[longitude]"]').value = lng;
+        }
+      }
+    });
+  }
+}
+
+// 🆕 Scroll & Fokus-Helfer
+function scrollToStop(stopItem) {
+  stopItem.scrollIntoView({ behavior: "smooth", block: "center" });
+  const addr = stopItem.querySelector("input[name$='[address]']");
+  if (addr) addr.focus();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const addButton = document.getElementById('add-stop');
+  const prototypeTemplate = document.getElementById("stops-prototype").innerHTML;
+
+  if (addButton) {
+    addButton.addEventListener('click', async () => {
+      const index = collectionHolder.querySelectorAll('.stop-item').length;
+      const newForm = prototypeTemplate.replace(/__name__/g, index);
+
+      const div = document.createElement('div');
+      div.classList.add('card','mb-2','p-2','stop-item','shadow-sm');
+      div.innerHTML = newForm;
+      collectionHolder.appendChild(div);
+
+      const removeBtn = div.querySelector('.remove-stop');
+      if (removeBtn) addRemoveListener(removeBtn);
+
+      enhanceStopItem(div);
+      updateSortOrder();
+      scrollToStop(div);
+
+      // 🆕 Direkt Koordinaten nachtragen, falls Adresse vorhanden
+      const addressInput = div.querySelector('[name$="[address]"]');
+      const latInput = div.querySelector('[name$="[latitude]"]');
+      const lngInput = div.querySelector('[name$="[longitude]"]');
+      if (addressInput && latInput && lngInput && addressInput.value.trim() !== "") {
+        const { lat, lng } = await geocodeAddress(addressInput.value);
+        if (lat && lng) {
+          latInput.value = lat;
+          lngInput.value = lng;
+        }
+      }
+    });
+  }
+
+  collectionHolder.querySelectorAll('.remove-stop').forEach(addRemoveListener);
+  updateSortOrder();
+  collectionHolder.querySelectorAll('.stop-item').forEach(enhanceStopItem);
+
+  // 🚌 Kids/School Handling
+  const schoolSelect   = document.querySelector("select[name$='[school]']");
+  const typeSelect     = document.querySelector("select[name$='[type]']");
+  const startAddressEl = document.querySelector("input[name$='[startAddress]']");
+  const endAddressEl   = document.querySelector("input[name$='[endAddress]']");
+  const depotAddress   = "Rheinbabenstraße 4, 46483 Wesel";
+
+  async function updateAddresses() {
+    const schoolId = schoolSelect?.value;
+    const tourType = typeSelect?.value;
+    if (!tourType) return;
+
+    if (tourType === "outbound" && startAddressEl) startAddressEl.value = depotAddress;
+    if (tourType === "outbound" && schoolId) {
+      const school = await fetch(`/school/api/${schoolId}`).then(r => r.json());
+      if (endAddressEl) endAddressEl.value = school?.school?.address ?? "";
+    }
+    if (tourType === "return" && schoolId) {
+      const school = await fetch(`/school/api/${schoolId}`).then(r => r.json());
+      if (startAddressEl) startAddressEl.value = school?.school?.address ?? "";
+      if (endAddressEl) endAddressEl.value = depotAddress;
+    }
+  }
+
+  if (schoolSelect) {
+    schoolSelect.addEventListener("change", e => { loadSchoolData(e.target.value); updateAddresses(); });
+    if (schoolSelect.value) { loadSchoolData(schoolSelect.value); updateAddresses(); }
+  }
+  if (typeSelect) typeSelect.addEventListener("change", updateAddresses);
+
+  // 📍 Focus-Buttons
+  document.querySelectorAll(".focus-stop").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const stopId = btn.getAttribute("data-stop-id");
+      let lat = null, lng = null;
+
+      const wrapper = document.querySelector(`#stops-wrapper [data-stop-id="${stopId}"]`);
+      if (wrapper) {
+        lat = parseFloat(wrapper.querySelector('[name$="[latitude]"]').value);
+        lng = parseFloat(wrapper.querySelector('[name$="[longitude]"]').value);
+      }
+      if (isNaN(lat) || isNaN(lng)) {
+        try {
+          const stopFromMap = window.stops?.find(s => String(s.id) === String(stopId));
+          if (stopFromMap) {
+            lat = parseFloat(stopFromMap.lat);
+            lng = parseFloat(stopFromMap.lng);
+          }
+        } catch(e) { console.warn("Kein globaler Stops-Array gefunden:", e); }
+      }
+      if (!isNaN(lat) && !isNaN(lng)) {
+        channel.postMessage({ focusStop: { id: stopId, lat, lng } });
+      } else {
+        alert("⚠️ Keine Koordinaten für diesen Stop vorhanden.");
+      }
+    });
+  });
+
+  // 🆕 Drag & Drop Sortierung
+  new Sortable(collectionHolder, {
+    handle: ".card",
+    animation: 150,
+    onEnd: () => updateSortOrder()
+  });
+});
+
+// 🔎 Adresse → Koordinaten
+async function geocodeAddress(address) {
+  if (!address) return { lat:null,lng:null };
+  try {
+    const url = `http://localhost:7071/search?format=json&q=${encodeURIComponent(address)}`;
+    const res = await fetch(url); if (!res.ok) throw new Error(await res.text());
+    const data = await res.json();
+    if (data?.length > 0) return { lat:parseFloat(data[0].lat), lng:parseFloat(data[0].lon) };
+  } catch(e) { console.error("Geocoding-Fehler:",e); }
+  return { lat:null,lng:null };
+}
+
+// Stops einsammeln
+async function collectStops() {
+  const stops = [];
+  const stopItems = document.querySelectorAll('#stops-wrapper .stop-item');
+  for (const el of stopItems) {
+    const address = el.querySelector("input[name$='[address]']")?.value ?? null;
+    const sortOrder = el.querySelector("input[name$='[sortOrder]']")?.value ?? null;
+    const { lat, lng } = await geocodeAddress(address);
+    stops.push({ address, sortOrder, lat, lng });
+  }
+  return stops;
+}
+
+// Autocomplete
+function attachAutocomplete(inputEl) {
+  const suggestions = document.createElement("div");
+  suggestions.className = "suggestions list-group";
+  suggestions.style.position = "absolute";
+  suggestions.style.zIndex = "9999";
+  suggestions.style.background = "white";
+  suggestions.style.border = "1px solid #ddd";
+  suggestions.style.width = inputEl.offsetWidth+"px";
+  suggestions.style.maxHeight = "200px";
+  suggestions.style.overflowY = "auto";
+  inputEl.parentNode.style.position="relative";
+  inputEl.insertAdjacentElement("afterend", suggestions);
+
+  let timeout;
+  inputEl.addEventListener("input", () => {
+    const query = inputEl.value.trim();
+    clearTimeout(timeout);
+    if (query.length < 3) { suggestions.innerHTML=""; return; }
+    timeout = setTimeout(async () => {
+      try {
+        const res = await fetch(`http://localhost:7071/search?format=json&limit=5&q=${encodeURIComponent(query)}`);
+        if (!res.ok) return;
+        const data = await res.json(); suggestions.innerHTML="";
+        data.forEach(item => {
+          const btn=document.createElement("button");
+          btn.type="button"; btn.className="list-group-item list-group-item-action";
+          btn.textContent=item.display_name;
+          btn.addEventListener("click",()=> {
+            inputEl.value=item.display_name;
+
+            const wrapper = inputEl.closest(".stop-item");
+            if (wrapper) {
+              wrapper.querySelector('[name$="[latitude]"]').value = item.lat;
+              wrapper.querySelector('[name$="[longitude]"]').value = item.lon;
+            }
+
+            suggestions.innerHTML="";
+            channel.postMessage({ zoomTo:{lat:parseFloat(item.lat),lng:parseFloat(item.lon)} });
+          });
+          suggestions.appendChild(btn);
+        });
+      } catch(e){ console.error("Autocomplete Fehler:",e); }
+    },300);
+  });
+  document.addEventListener("click",(ev)=>{ if(!suggestions.contains(ev.target)&&ev.target!==inputEl){ suggestions.innerHTML=""; }});
+}
+
+// Schule laden + Map updaten
+async function loadSchoolData(schoolId) {
+  if (!schoolId) return;
+  const startAddressEl=document.querySelector("input[name$='[startAddress]']");
+  const endAddressEl=document.querySelector("input[name$='[endAddress]']");
+  try {
+    const res=await fetch(`/school-tour/school/${schoolId}/kids`); if(!res.ok) throw new Error(await res.text());
+    const kids=await res.json();
+    const list=document.getElementById("kids-list"); list.innerHTML="";
+    kids.forEach(k=>{ const li=document.createElement("li"); li.className="list-group-item"; li.textContent=k.name+" – "+(k.address??''); list.appendChild(li); });
+    const schoolRes=await fetch(`/school/api/${schoolId}`); const schoolData=await schoolRes.json();
+    const stops=await collectStops();
+    channel.postMessage({
+      kids, school:schoolData.school,
+      start:{ address:startAddressEl?.value??null, lat:51.6506477,lng:6.6128397 },
+      end:{ address:endAddressEl?.value??null, lat:schoolData.school?.lat??null, lng:schoolData.school?.lng??null },
+      stops
+    });
+  } catch(err){ console.error("Fehler beim Laden der Schuldaten:",err); }
+}
+
+// Map → Formular sync
+channel.onmessage = (ev) => {
+  const data = ev.data || {};
+  if (data.updateMeta) {
+  const distInput = document.getElementById("tour-distance");
+  const durInput  = document.getElementById("tour-duration");
+
+  if (distInput) {
+    distInput.value = data.updateMeta.distance;
+    distInput.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+  if (durInput) {
+    durInput.value = data.updateMeta.duration;
+    durInput.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+}
+
+
+  if (data.updateRoute) {
+    const input = document.getElementById("tour-route-json");
+    if (input) {
+      input.value = JSON.stringify({
+        geojson: data.updateRoute.geojson,
+        stops: data.updateRoute.stops
+      });
+    }
+  }
+
+  if (data.updateStop) {
+    const stop = data.updateStop;
+    const wrapper = document.querySelector(`#stops-wrapper [data-stop-id="${stop.id}"]`);
+    if (wrapper) {
+      wrapper.querySelector('[name$="[latitude]"]').value  = stop.lat.toFixed(6);
+      wrapper.querySelector('[name$="[longitude]"]').value = stop.lng.toFixed(6);
+      wrapper.querySelector('[name$="[address]"]').value   = stop.address || "";
+    }
+  }
+
+  if (data.removeStop) {
+    const stop = data.removeStop;
+    const wrapper = document.querySelector(`#stops-wrapper [data-stop-id="${stop.id}"]`);
+    if (wrapper) {
+      wrapper.remove();
+      updateSortOrder();
+    }
+  }
+
+  if (data.addStop) {
+    const prototypeTemplate = document.getElementById("stops-prototype").innerHTML;
+    const index = collectionHolder.querySelectorAll('.stop-item').length;
+    const newForm = prototypeTemplate.replace(/__name__/g, index);
+
+    const div = document.createElement('div');
+    div.classList.add('card','mb-2','p-2','stop-item','shadow-sm');
+    div.innerHTML = newForm;
+
+    div.querySelector('[name$="[address]"]').value   = data.addStop.address;
+    div.querySelector('[name$="[latitude]"]').value  = data.addStop.lat;
+    div.querySelector('[name$="[longitude]"]').value = data.addStop.lng;
+
+    const sortInput = div.querySelector('[name$="[sortOrder]"]');
+    if (sortInput) sortInput.value = index + 1;
+
+    div.setAttribute("data-stop-id", data.addStop.id);
+    collectionHolder.appendChild(div);
+
+    const removeBtn = div.querySelector('.remove-stop');
+    if (removeBtn) addRemoveListener(removeBtn);
+
+    enhanceStopItem(div);
+    updateSortOrder();
+    scrollToStop(div);
+  }
+};
+</script>
+
+

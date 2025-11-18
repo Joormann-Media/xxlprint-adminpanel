@@ -1,0 +1,12 @@
+vich_uploader:
+    db_driver: orm
+    mappings:
+        online_status_icons:
+            uri_prefix: /uploads/status_icons
+            upload_destination: '%kernel.project_dir%/public/uploads/status_icons'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+
+        taxi_calculator_regulations:   # <-- DAS HIER ERGÄNZEN
+            uri_prefix: /uploads/taxi_calculator_regulations
+            upload_destination: '%kernel.project_dir%/public/uploads/taxi_calculator_regulations'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

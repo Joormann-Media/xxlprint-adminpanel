@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Haltestelle {{ vrr_busstop.stopNr }} anzeigen{% endblock %}
+
+{% block body %}
+<h1>Haltestelle {{ vrr_busstop.stopNr }} anzeigen</h1>
+
+<table class="table table-bordered table-striped table-sm w-auto">
+  <tbody>
+    <tr>
+      <th>Stop Nr</th>
+      <td>{{ vrr_busstop.stopNr }}</td>
+    </tr>
+    <tr>
+      <th>Version</th>
+      <td>{{ vrr_busstop.version }}</td>
+    </tr>
+    <tr>
+      <th>Stop Type</th>
+      <td>{{ vrr_busstop.stopType ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>Stop Name</th>
+      <td>{{ vrr_busstop.stopName }}</td>
+    </tr>
+    <tr>
+      <th>Stop Name ohne Ort</th>
+      <td>{{ vrr_busstop.stopNameWoLocality ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>Stop Kurzname</th>
+      <td>{{ vrr_busstop.stopShortName ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>Position X (Longitude)</th>
+      <td>{{ vrr_busstop.stopPosX ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>Position Y (Latitude)</th>
+      <td>{{ vrr_busstop.stopPosY ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>Place</th>
+      <td>{{ vrr_busstop.place ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>OCC</th>
+      <td>{{ vrr_busstop.occ ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>Fare Zone 1 Nr</th>
+      <td>{{ vrr_busstop.fareZone1Nr ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>Fare Zone 2 Nr</th>
+      <td>{{ vrr_busstop.fareZone2Nr ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>Fare Zone 3 Nr</th>
+      <td>{{ vrr_busstop.fareZone3Nr ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>Fare Zone 4 Nr</th>
+      <td>{{ vrr_busstop.fareZone4Nr ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>Fare Zone 5 Nr</th>
+      <td>{{ vrr_busstop.fareZone5Nr ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>Fare Zone 6 Nr</th>
+      <td>{{ vrr_busstop.fareZone6Nr ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>Global ID</th>
+      <td>{{ vrr_busstop.globalId }}</td>
+    </tr>
+    <tr>
+      <th>Gültig von</th>
+      <td>{{ vrr_busstop.validFrom ? vrr_busstop.validFrom|date('Y-m-d') : '-' }}</td>
+    </tr>
+    <tr>
+      <th>Gültig bis</th>
+      <td>{{ vrr_busstop.validTo ? vrr_busstop.validTo|date('Y-m-d') : '-' }}</td>
+    </tr>
+    <tr>
+      <th>Place ID</th>
+      <td>{{ vrr_busstop.placeId ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>GIS Mot Flag</th>
+      <td>{{ vrr_busstop.gisMotFlag ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>Zentralhalt</th>
+      <td>{{ vrr_busstop.isCentralStop() ? 'Ja' : 'Nein' }}</td>
+    </tr>
+    <tr>
+      <th>Verantwortlich</th>
+      <td>{{ vrr_busstop.isResponsibleStop() ? 'Ja' : 'Nein' }}</td>
+    </tr>
+    <tr>
+      <th>Umsteigeart</th>
+      <td>{{ vrr_busstop.interchangeType ?? '-' }}</td>
+    </tr>
+    <tr>
+      <th>Umsteigequalität</th>
+      <td>{{ vrr_busstop.interchangeQuality ?? '-' }}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+{% endblock %}

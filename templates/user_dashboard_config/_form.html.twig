@@ -1,0 +1,70 @@
+{{ form_start(form) }}
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <strong>Allgemeine Einstellungen</strong>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    {{ form_label(form.sortOrder, 'Sortierreihenfolge', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.sortOrder, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.sortOrder) }}
+                </div>
+
+                <div class="mb-3 form-check">
+                    {{ form_widget(form.isVisible, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_label(form.isVisible, 'Sichtbar', {'label_attr': {'class': 'form-check-label'}}) }}
+                    {{ form_errors(form.isVisible) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.position, 'Position', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.position, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.position) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.module, 'Modul', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.module, {'attr': {'class': 'form-select'}}) }}
+                    {{ form_errors(form.module) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.user, 'Benutzer', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.user, {'attr': {'class': 'form-select'}}) }}
+                    {{ form_errors(form.user) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <strong>Systeminformationen</strong>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    {{ form_label(form.createdAt, 'Erstellt am', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.createdAt, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.createdAt) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.updatedAt, 'Bearbeitet am', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.updatedAt, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.updatedAt) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 d-flex justify-content-between">
+    <button class="btn btn-success">{{ button_label|default('Speichern') }}</button>
+    <a href="{{ path('app_user_dashboard_config_index') }}" class="btn btn-outline-secondary">Zurück zur Liste</a>
+</div>
+
+{{ form_end(form) }}

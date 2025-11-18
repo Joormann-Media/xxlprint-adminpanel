@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rides{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h2 class="mb-0">Ride List</h2>
+        <a href="{{ path('app_ride_new') }}" class="btn btn-success">➕ New Ride</a>
+    </div>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="text" id="rideSearch" class="form-control" placeholder="🔍 Search rides...">
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0" id="rideTable">
+                    <thead class="table-light sticky-top">
+                        <tr>
+                            <th>Id</th>
+                            <th>RideId</th>
+                            <th>Start</th>
+                            <th>Destination</th>
+                            <th>Description</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Time</th>
+                            <th>Length</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for ride in rides %}
+                        <tr>
+                            <td>{{ ride.id }}</td>
+                            <td>{{ ride.rideId }}</td>
+                            <td>
+                                {{ ride.startStreet }} {{ ride.startStreetNo }}<br>
+                                {{ ride.startZip }} {{ ride.startCity }}<br>
+                                <small>{{ ride.startCountry }}</small>
+                            </td>
+                            <td>
+                                {{ ride.destStreet }} {{ ride.destStreetNo }}<br>
+                                {{ ride.destZip }} {{ ride.destCity }}<br>
+                                <small>{{ ride.destCountry }}</small>
+                            </td>
+                            <td>
+                                <span class="d-inline-block text-truncate" style="max-width: 160px;">
+                                    {{ ride.rideDescription|default('—') }}
+                                </span>
+                            </td>
+                            <td>{{ ride.rideDateStart ? ride.rideDateStart|date('Y-m-d H:i') : '' }}</td>
+                            <td>{{ ride.rideDateEnd ? ride.rideDateEnd|date('Y-m-d H:i') : '' }}</td>
+                            <td>{{ ride.rideTime ? ride.rideTime|date('H:i') : '' }}</td>
+                            <td>{{ ride.rideLength }}</td>
+                            <td class="text-center">
+                                <a href="{{ path('app_ride_show', {'id': ride.id}) }}"
+                                   class="btn btn-sm btn-outline-info" title="Show"><i class="bi bi-eye"></i></a>
+                                <a href="{{ path('app_ride_edit', {'id': ride.id}) }}"
+                                   class="btn btn-sm btn-outline-primary ms-1" title="Edit"><i class="bi bi-pencil"></i></a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="10" class="text-center">No records found.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById('rideSearch');
+    searchInput.addEventListener('input', function() {
+        const value = this.value.toLowerCase();
+        document.querySelectorAll("#rideTable tbody tr").forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(value) ? '' : 'none';
+        });
+    });
+});
+</script>
+{% endblock %}

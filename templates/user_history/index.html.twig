@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1>UserHistory index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Timestamp</th>
+                <th>Action</th>
+                <th>IpAddress</th>
+                <th>Device</th>
+                <th>BrowserFingerprint</th>
+                <th>MetaData</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_history in user_histories %}
+            <tr>
+                <td>{{ user_history.id }}</td>
+                <td>{{ user_history.timestamp ? user_history.timestamp|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user_history.action }}</td>
+                <td>{{ user_history.ipAddress }}</td>
+                <td>{{ user_history.device }}</td>
+                <td>{{ user_history.browserFingerprint }}</td>
+                <td>{{ user_history.metaData ? user_history.metaData|json_encode : '' }}</td>
+                <td>
+                    <a href="{{ path('app_user_history_show', {'id': user_history.id}) }}">show</a>
+                    <a href="{{ path('app_user_history_edit', {'id': user_history.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_history_new') }}">Create new</a>
+{% endblock %}

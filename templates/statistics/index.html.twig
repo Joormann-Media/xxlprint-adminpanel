@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistics index{% endblock %}
+
+{% block body %}
+    <h1>Statistics index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>StatsDate</th>
+                <th>PanelStartet</th>
+                <th>TotalFiles</th>
+                <th>TotalFolders</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for statistic in statistics %}
+            <tr>
+                <td>{{ statistic.id }}</td>
+                <td>{{ statistic.statsDate ? statistic.statsDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ statistic.panelStartet }}</td>
+                <td>{{ statistic.totalFiles }}</td>
+                <td>{{ statistic.totalFolders }}</td>
+                <td>
+                    <a href="{{ path('app_statistics_show', {'id': statistic.id}) }}">show</a>
+                    <a href="{{ path('app_statistics_edit', {'id': statistic.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_statistics_new') }}">Create new</a>
+{% endblock %}

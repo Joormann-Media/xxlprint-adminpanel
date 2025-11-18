@@ -1,0 +1,53 @@
+<table style="width: 100%; max-width: 600px; font-family: 'Segoe UI', sans-serif; color: #2c3e50;">
+    <tr>
+        {% if signature.logoPath %}
+        <td style="vertical-align: top; padding-right: 15px;">
+            <img src="{{ signature.logoPath }}" alt="Logo" style="height: 60px; border-radius: 8px;">
+        </td>
+        {% endif %}
+        <td style="vertical-align: top;">
+            <div style="font-size: 18px; font-weight: 600;">{{ signature.name }}</div>
+            <div style="font-size: 14px; color: #7f8c8d;">{{ signature.position }} @ {{ signature.company }}</div>
+            <div style="margin-top: 8px;">
+                <strong>📧</strong> <a href="mailto:{{ signature.email }}" style="color: #2980b9;">{{ signature.email }}</a><br>
+                <strong>📞</strong> {{ signature.phone }}{% if signature.mobile %} | <strong>📱</strong> {{ signature.mobile }}{% endif %}<br>
+                <strong>🌐</strong> <a href="{{ signature.website }}" target="_blank" style="color: #2980b9;">{{ signature.website }}</a><br>
+                {% if signature.address %}
+                    <strong>🏠</strong> {{ signature.address }}
+                {% endif %}
+            </div>
+
+            {% if signature.linkedin or signature.facebook or signature.twitter %}
+            <div style="margin-top: 10px;">
+                {% if signature.linkedin %}
+                    <a href="{{ signature.linkedin }}" style="margin-right: 10px;">
+                        <img src="https://cdn-icons-png.flaticon.com/24/174/174857.png" alt="LinkedIn" />
+                    </a>
+                {% endif %}
+                {% if signature.facebook %}
+                    <a href="{{ signature.facebook }}" style="margin-right: 10px;">
+                        <img src="https://cdn-icons-png.flaticon.com/24/733/733547.png" alt="Facebook" />
+                    </a>
+                {% endif %}
+                {% if signature.twitter %}
+                    <a href="{{ signature.twitter }}">
+                        <img src="https://cdn-icons-png.flaticon.com/24/733/733579.png" alt="Twitter" />
+                    </a>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if signature.bannerPath %}
+            <div style="margin-top: 15px;">
+                <img src="{{ signature.bannerPath }}" style="max-width: 100%; height: auto; border-radius: 6px;">
+            </div>
+            {% endif %}
+
+            {% if signature.disclaimer %}
+            <div style="font-size: 10px; color: #95a5a6; margin-top: 15px;">
+                {{ signature.disclaimer|nl2br }}
+            </div>
+            {% endif %}
+        </td>
+    </tr>
+</table>

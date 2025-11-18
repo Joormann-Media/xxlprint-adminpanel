@@ -1,0 +1,465 @@
+01Reg
+01Reg(EA30E5)                            -> /register
+01Reg(7673BF)                            -> /verify/email
+01Reg(67769A)                            -> /test-mail
+EXITMARKER
+
+02QRC
+02QRC(48480E)                            -> /qr-code/generator
+EXITMARKER
+
+03TIM
+03TIM                                    -> /get-time
+EXITMARKER
+
+04USR
+04USR(100048)                            -> /admin/user-device
+04USR(5888FD)                            -> app_user_device_index
+04USR(3E0C79)                            -> /new
+04USR(A38197)                            -> /{id<\d+>}
+04USR(D0FAF8)                            -> /{id<\d+>}/edit
+04USR(A38197)                            -> /{id<\d+>}
+04USR(6AE8D5)                            -> /me
+04USR(EBED1E)                            -> /me/add
+04USR(9B052C)                            -> /me/edit/{id<\d+>}
+04USR(C92FD5)                            -> /me/delete/{id<\d+>}
+EXITMARKER
+
+05CON
+05CON(41EDA4)                            -> /admin/contact
+05CON(E7D433)                            -> app_contact_index
+05CON(757276)                            -> /new
+05CON(9C5AE3)                            -> /{id<\d+>}
+05CON(9947D7)                            -> /{id<\d+>}/edit
+05CON(9C5AE3)                            -> /{id<\d+>}
+EXITMARKER
+
+06SEC
+06SEC(40BD0C)                            -> /admin/user-roles
+06SEC(9EECC2)                            -> app_user_roles_index
+06SEC(09D4E9)                            -> /sort
+06SEC(5AF170)                            -> /new
+06SEC(144947)                            -> /{id}
+06SEC(1AC864)                            -> /{id}/edit
+06SEC(144947)                            -> /{id}
+EXITMARKER
+
+07SMS
+07SMS(8C9610)                            -> /sms/send
+EXITMARKER
+
+08SEC
+08SEC(2B978C)                            -> /login
+08SEC(CA39FE)                            -> /logout
+08SEC(B7E567)                            -> /logout-success
+EXITMARKER
+
+09MOD
+09MOD(29FE76)                            -> /admin/module-manager
+09MOD(808A19)                            -> app_module_manager_index
+09MOD(3E5C7B)                            -> /new
+09MOD(3D1EA9)                            -> /{id}
+09MOD(6EAD59)                            -> /{id}/edit
+09MOD(3D1EA9)                            -> /{id}
+EXITMARKER
+
+10TOK
+10TOK(CD72FA)                            -> /verify/{token}
+10TOK(AA0B45)                            -> /reset-password/{token}
+10TOK(87B885)                            -> /reset-pin/{token}
+10TOK(3EB404)                            -> /consume/{token}
+EXITMARKER
+
+11PER
+11PER(F78EED)                            -> /admin/permission
+11PER(605AF3)                            -> app_permission_index
+11PER(6C1E7E)                            -> /new
+11PER(6B1664)                            -> /{id}
+11PER(3650B5)                            -> /{id}/edit
+11PER(6B1664)                            -> /{id}
+11PER(D3A873)                            -> /permission/bulk-delete
+EXITMARKER
+
+12TES
+12TES(6994F9)                            -> /admin/test-upload
+EXITMARKER
+
+13EMA
+13EMA(AE45B7)                            -> /admin/email-signature
+13EMA(9F6BB7)                            -> app_email_signature_index
+13EMA(FF5ADE)                            -> /new
+13EMA(405E7C)                            -> /{id}
+13EMA(F54590)                            -> /{id}/edit
+13EMA(405E7C)                            -> /{id}
+13EMA(C3634C)                            -> /signature/preview
+EXITMARKER
+
+14MEN
+14MEN(22178C)                            -> /admin/menu-item
+14MEN(0B8EE8)                            -> app_menu_item_index
+14MEN(B5EED8)                            -> /sort
+14MEN(565115)                            -> /new
+14MEN(079F8B)                            -> /{id}
+14MEN(7BE345)                            -> /{id}/edit
+14MEN(5824E4)                            -> /delete/{id}
+14MEN(598851)                            -> /bulk-delete
+EXITMARKER
+
+15WEB
+15WEB(3869BF)                            -> /webhook/ping
+EXITMARKER
+
+16USE
+16USE(18106C)                            -> /admin/user-token
+16USE(97DA17)                            -> app_user_token_index
+16USE(C02E5F)                            -> /new
+16USE(BDF178)                            -> /{id}
+16USE(176EC9)                            -> /{id}/edit
+16USE(BDF178)                            -> /{id}
+EXITMARKER
+
+17DAS
+17DAS(0FAC61)                            -> /admin/dashboard-modules
+17DAS(15042D)                            -> app_dashboard_modules_index
+17DAS(11DD71)                            -> /new
+17DAS(3463C9)                            -> /{id}
+17DAS(81EBF3)                            -> /{id}/edit
+17DAS(3463C9)                            -> /{id}
+EXITMARKER
+
+18SHE
+18SHE(246CD9)                            -> /shell-commands
+18SHE(38FF94)                            -> app_shell_commands_index
+18SHE(C0548D)                            -> /new
+18SHE(DE10DC)                            -> /{id<\d+>}
+18SHE(EBC6E2)                            -> /{id<\d+>}/edit
+18SHE(DE10DC)                            -> /{id<\d+>}
+18SHE(C2C62C)                            -> /import
+EXITMARKER
+
+19API
+EXITMARKER
+
+20SMS
+20SMS(726F32)                            -> /admin/sms-template
+20SMS(64361F)                            -> app_sms_template_index
+20SMS(2E8138)                            -> /new
+20SMS(016883)                            -> /{id}
+20SMS(FBAAEA)                            -> /{id}/edit
+20SMS(016883)                            -> /{id}
+20SMS(14A01E)                            -> /{id}/send
+EXITMARKER
+
+21CAT
+21CAT(AEF78B)                            -> /categories
+21CAT(2E65CA)                            -> app_categories_index
+21CAT(557098)                            -> /new
+21CAT(C7ED52)                            -> /{id}
+21CAT(D9895C)                            -> /{id}/edit
+21CAT(C7ED52)                            -> /{id}
+EXITMARKER
+
+22POP
+22POP(C661CA)                            -> /admin/popup-manager
+22POP(74F77F)                            -> app_pop_up_manager_index
+22POP(6AFB4E)                            -> /new
+22POP(3D1B3D)                            -> /{id}
+22POP(96C646)                            -> /{id}/edit
+22POP(3D1B3D)                            -> /{id}
+EXITMARKER
+
+23MOB
+23MOB(8C7B3B)                            -> /verify-mobile
+EXITMARKER
+
+24VAC
+24VAC(249C55)                            -> /admin/vacation-manager
+24VAC(0831D2)                            -> app_vacation_manager_index
+24VAC(EDF06D)                            -> /new
+24VAC(279D3A)                            -> /{id}
+24VAC(0A563A)                            -> /{id}/edit
+24VAC(279D3A)                            -> /{id}
+EXITMARKER
+
+25SHO
+25SHO(643E81)                            -> /admin/shortcode-button
+25SHO(ABACFE)                            -> app_shortcode_button_index
+25SHO(86BA8C)                            -> /new
+25SHO(91508C)                            -> /{id<\d+>}/edit
+25SHO(553EC9)                            -> /{id<\d+>}
+25SHO(6C00F7)                            -> /{id<\d+>}/delete
+25SHO(3FEA4B)                            -> /preview
+25SHO(3003F9)                            -> /upload-icon
+25SHO(DEF5E1)                            -> /admin/shortcode/test
+EXITMARKER
+
+26USE
+26USE(9346D6)                            -> /admin/user-dashboard/config
+26USE(DDBFE2)                            -> app_user_dashboard_config_index
+26USE(5A4C73)                            -> /new
+26USE(C2DAB2)                            -> /me
+26USE(E8DE1D)                            -> /me/add
+26USE(07EA87)                            -> /me/edit/{id}
+26USE(D0AC5B)                            -> /me/delete/{id}
+26USE(9C2376)                            -> /me/sort
+26USE(CDFF0E)                            -> /{id}
+26USE(C605E9)                            -> /{id}/edit
+26USE(830983)                            -> /{id}/delete
+EXITMARKER
+
+27ADD
+27ADD(B5EEE4)                            -> /admin/address-book
+27ADD(1F3E0C)                            -> app_address_book_index
+27ADD(AB9394)                            -> /new
+27ADD(971AC5)                            -> /{id}
+27ADD(ACB2B7)                            -> /{id}/edit
+27ADD(971AC5)                            -> /{id}
+EXITMARKER
+
+28WEB
+28WEB(F781FC)                            -> /admin/website-settings
+28WEB(658BEF)                            -> app_website_settings_index
+28WEB(D951CF)                            -> /new
+28WEB(096231)                            -> /{id}
+28WEB(360FFC)                            -> /{id}/edit
+28WEB(096231)                            -> /{id}
+EXITMARKER
+
+29REL
+29REL(2BA116)                            -> /admin/release
+29REL(E4571B)                            -> app_release_index
+29REL(C68A53)                            -> /new
+29REL(BA9CC3)                            -> /{id}
+29REL(56C45A)                            -> /{id}/edit
+29REL(BA9CC3)                            -> /{id}
+29REL(8373E8)                            -> /download/id/{id}
+29REL(296224)                            -> /download/token/{token}
+29REL(6D4B76)                            -> /{id}/upload
+29REL(9C46A5)                            -> /generate-token/{id}
+EXITMARKER
+
+30RES
+30RES(A5DEB4)                            -> /request-reset-pin
+30RES(E5137C)                            -> /request-reset-password
+EXITMARKER
+
+31CAL
+31CAL(8917F2)                            -> /admin/calendar
+31CAL(D5891F)                            -> app_calendar_index
+31CAL(EA99A2)                            -> /new
+31CAL(22E7CE)                            -> /{id}
+31CAL(CDE7B1)                            -> /{id}/edit
+31CAL(22E7CE)                            -> /{id}
+EXITMARKER
+
+32POP
+32POP(3516DE)                            -> /admin/popup-manager/category
+32POP(E01B18)                            -> app_pop_up_category_index
+32POP(223980)                            -> /new
+32POP(5E671E)                            -> /{id}
+32POP(38D354)                            -> /{id}/edit
+32POP(5E671E)                            -> /{id}
+EXITMARKER
+
+33POP
+33POP(5D2418)                            -> /popup/view/{id}
+33POP(F0707F)                            -> /vacation/view/{id}
+33POP(EDF91E)                            -> /help/view/{id}
+EXITMARKER
+
+34TOD
+34TOD(D53C69)                            -> /todolist
+34TOD(C9D313)                            -> app_todolist_index
+34TOD(CC1CFC)                            -> /new
+34TOD(4542CF)                            -> /{id}
+34TOD(7755E0)                            -> /{id}/edit
+34TOD(4542CF)                            -> /{id}
+EXITMARKER
+
+35SEL
+35SEL(E96DB1)                            -> /self/register
+EXITMARKER
+
+36USE
+36USE(A32503)                            -> /admin/user
+36USE(8CF57D)                            -> app_user_index_or_show
+36USE(C62FEA)                            -> app_user_index
+36USE(61B447)                            -> /new
+36USE(376CE5)                            -> /{id}
+36USE(731934)                            -> /{id}/edit
+36USE(376CE5)                            -> /{id}
+36USE(2DF507)                            -> /sort
+36USE(59BDE5)                            -> /bulk-delete
+EXITMARKER
+
+37TES
+37TES(872C45)                            -> /api/test
+EXITMARKER
+
+38USE
+38USE(ABD418)                            -> /admin/user-permissions
+38USE(C1C7C9)                            -> app_user_permissions_index
+38USE(9757B8)                            -> /new
+38USE(E19BC5)                            -> /{id}
+38USE(37DD2B)                            -> /{id}/edit
+38USE(E19BC5)                            -> /{id}
+EXITMARKER
+
+39USE
+39USE(F9A93B)                            -> /admin/my-files
+39USE(D51742)                            -> /{subdir}
+39USE(5FA626)                            -> /upload/{subdir}
+39USE(2C78DC)                            -> /delete/{subdir}/{filename}
+EXITMARKER
+
+40LIC
+40LIC(56E825)                            -> /license/activation
+40LIC(10E328)                            -> app_license_activation_index
+40LIC(4917EE)                            -> /new
+40LIC(6DEEFB)                            -> /{id}
+40LIC(B39D87)                            -> /{id}/edit
+40LIC(6DEEFB)                            -> /{id}
+EXITMARKER
+
+41COD
+41COD(D034BA)                            -> /code-identifier
+41COD(30EE50)                            -> app_code_identifier_index
+41COD(47C6CD)                            -> /new
+41COD(68FBA0)                            -> /{id}
+41COD(D80A0D)                            -> /{id}/edit
+41COD(68FBA0)                            -> /{id}
+41COD(735F16)                            -> /import
+EXITMARKER
+
+42SHO
+42SHO(C1015C)                            -> /admin/shortcode
+42SHO(4B93DB)                            -> app_shortcode_image_index
+42SHO(D64802)                            -> /new
+42SHO(2B2564)                            -> /{id}
+42SHO(561DB5)                            -> /{id}/edit
+42SHO(2B2564)                            -> /{id}
+42SHO(328564)                            -> /admin/shortcode/preview
+EXITMARKER
+
+43DAV
+43DAV(490FFF)                            -> /dav/{path}
+43DAV(F4E0A8)                            -> /.well-known/carddav
+EXITMARKER
+
+44LIC
+44LIC(0CF562)                            -> /license
+44LIC(688DE3)                            -> app_license_index
+44LIC(96DF1D)                            -> /new
+44LIC(5DC2F2)                            -> /{id}
+44LIC(C19700)                            -> /{id}/edit
+44LIC(5DC2F2)                            -> /{id}
+EXITMARKER
+
+45COM
+45COM(B3003D)                            -> /company
+45COM(515329)                            -> app_company_index
+45COM(A19538)                            -> /new
+45COM(74EA07)                            -> /{id}
+45COM(693C42)                            -> /edit/{id}
+45COM(64AC70)                            -> /upload-image
+45COM(74EA07)                            -> /{id}
+EXITMARKER
+
+46IMA
+46IMA(7C39BB)                            -> /admin/upload-image
+EXITMARKER
+
+47SMS
+47SMS(AEFF75)                            -> /api/test/sms
+EXITMARKER
+
+48MEN
+48MEN(474C22)                            -> /admin/sub-menu
+48MEN(AAEB56)                            -> app_menu_sub_menu_index
+48MEN(646F65)                            -> /new
+48MEN(EBA088)                            -> /{id}
+48MEN(832E4D)                            -> /{id}/edit
+48MEN(0AF55B)                            -> /delete/{id}
+48MEN(7F3F80)                            -> /bulk-delete
+EXITMARKER
+
+49CAL
+49CAL(F2204A)                            -> /admin/calendar-event
+49CAL(D2ED77)                            -> app_calendar_event_index
+49CAL(54BBAD)                            -> /new
+49CAL(397733)                            -> /{id}
+49CAL(84A691)                            -> /{id}/edit
+49CAL(397733)                            -> /{id}
+EXITMARKER
+
+50USE
+50USE(D80A08)                            -> /admin/user-profile
+50USE(C91657)                            -> app_user_profile_index_or_show
+50USE(796187)                            -> /new
+50USE(9E31ED)                            -> /{id}
+50USE(F6AD8F)                            -> /{id}/edit
+50USE(9E31ED)                            -> /{id}
+EXITMARKER
+
+51HOM
+51HOM(BBA579)                            -> /
+51HOM(3FF434)                            -> /home
+EXITMARKER
+
+52HEL
+52HEL(47FF6A)                            -> /admin/help-entry
+52HEL(9FE643)                            -> admin_app_help_entry_index
+52HEL(E80315)                            -> /new
+52HEL(482C4C)                            -> /{id}
+52HEL(8CF165)                            -> /{id}/edit
+52HEL(482C4C)                            -> /{id}
+EXITMARKER
+
+53USE
+53USE(AD4E0D)                            -> /admin/user-groups
+53USE(C625D7)                            -> app_user_groups_index
+53USE(0FD52C)                            -> /new
+53USE(50CBED)                            -> /{id}
+53USE(617B9A)                            -> /{id}/edit
+53USE(50CBED)                            -> /{id}
+EXITMARKER
+
+54MEN
+54MEN(789B22)                            -> /admin/menu
+54MEN(C85B23)                            -> app_menu_index
+54MEN(1FD00D)                            -> /new
+54MEN(738B51)                            -> /{id}
+54MEN(063333)                            -> /{id}/edit
+54MEN(0EF98A)                            -> /delete/{id}
+54MEN(15B45D)                            -> /bulk-delete
+EXITMARKER
+
+55OPE
+55OPE(64B59C)                            -> /admin/opening-hours
+55OPE(D85466)                            -> app_opening_hours_index
+55OPE(A86937)                            -> /new
+55OPE(1AAF0B)                            -> /{id}
+55OPE(A098CA)                            -> /{id}/edit
+55OPE(4D26A2)                            -> /{id}/update
+55OPE(A728D1)                            -> /{id}/inline-update
+55OPE(8679E9)                            -> /{id}/edit/ajax
+55OPE(1AAF0B)                            -> /{id}
+EXITMARKER
+
+56USE
+56USE(920932)                            -> /admin/user-history
+56USE(119334)                            -> app_user_history_index
+56USE(2BD8B8)                            -> /new
+56USE(35465A)                            -> /{id}
+56USE(4233B8)                            -> /{id}/edit
+56USE(35465A)                            -> /{id}
+EXITMARKER
+
+57CUS
+57CUS(755E1B)                            -> /customer/user
+57CUS(58794A)                            -> app_customer_user_index
+57CUS(41FFB9)                            -> /new
+57CUS(BD793E)                            -> /{id}
+57CUS(1C48A1)                            -> /{id}/edit
+57CUS(BD793E)                            -> /{id}
+EXITMARKER

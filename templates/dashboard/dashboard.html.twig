@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+
+
+<div class="row g-4">
+    {% for config in modules %}
+        <div class="col-md-6 col-xl-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    {{ config.getName() }}
+                </div>
+                <div class="card-body">
+                    {{ config.renderedContent|raw }} {# ✅ Das wurde im Controller gerendert #}
+
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">Noch keine Module konfiguriert.</div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+
+

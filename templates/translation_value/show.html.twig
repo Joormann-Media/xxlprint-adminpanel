@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TranslationValue{% endblock %}
+
+{% block body %}
+    <h1>TranslationValue</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ translation_value.id }}</td>
+            </tr>
+            <tr>
+                <th>Value</th>
+                <td>{{ translation_value.value }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_translation_value_index') }}">back to list</a>
+
+    <a href="{{ path('app_translation_value_edit', {'id': translation_value.id}) }}">edit</a>
+
+    {{ include('translation_value/_delete_form.html.twig') }}
+{% endblock %}

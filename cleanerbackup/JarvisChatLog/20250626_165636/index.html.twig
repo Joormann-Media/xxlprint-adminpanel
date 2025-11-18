@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}JarvisChatLog index{% endblock %}
+
+{% block body %}
+    <h1>JarvisChatLog index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Prompt</th>
+                <th>Response</th>
+                <th>CreatedAt</th>
+                <th>Status</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for jarvis_chat_log in jarvis_chat_logs %}
+            <tr>
+                <td>{{ jarvis_chat_log.id }}</td>
+                <td>{{ jarvis_chat_log.prompt }}</td>
+                <td>{{ jarvis_chat_log.response }}</td>
+                <td>{{ jarvis_chat_log.createdAt ? jarvis_chat_log.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ jarvis_chat_log.status }}</td>
+                <td>
+                    <a href="{{ path('app_jarvis_chat_log_show', {'id': jarvis_chat_log.id}) }}">show</a>
+                    <a href="{{ path('app_jarvis_chat_log_edit', {'id': jarvis_chat_log.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_jarvis_chat_log_new') }}">Create new</a>
+{% endblock %}

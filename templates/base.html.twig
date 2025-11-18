@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {# Favicons und Metas #}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+
+    <meta charset="UTF-8">
+    <title>{% block title %}XXL Print - Admin{% endblock %}</title>
+
+    {# CSS Stylesheets #}
+    <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/app_custom_styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/menu.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/buttons.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/error/error.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    {# ...vorhandene Styles... #}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+{# Optional: Bootstrap 5 Theme für Select2 (nur falls du Theme: 'bootstrap-5' nutzt) #}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.6.2/dist/select2-bootstrap4.min.css">
+
+{# ...deine bisherigen Scripte... #}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    {# Mapbox CSS & JS #}
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+
+    {# Optional: Mapbox Geocoder Plugin #}
+    <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.1.2/mapbox-gl-geocoder.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.1.2/mapbox-gl-geocoder.min.js"></script>
+
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+
+    {# Eigene Zusatzscripts im head, falls nötig #}
+    <script src="{{ asset('js/live_time.js') }}"></script>
+</head>
+<body>
+    {% if app.user %}
+        {% include 'sidebar.html.twig' %}
+    {% endif %}
+
+    <main class="ms-250 p-4">
+        <div class="xxl-wrapper">
+            {% if app.user %}
+                {% include 'header.html.twig' with { 'page_title': page_title|default('Standardtitel') } %}
+            {% endif %}
+
+            <main class="xxl-content">
+                <div class="xxl-container">
+                    {% block body %}{% endblock %}
+                </div>
+            </main>
+
+            {% if app.user %}
+                {# Footer #}
+                {% include 'footer.html.twig' %}
+            {% endif %}
+        </div>
+    </main>
+
+    {# Global Modal #}
+    <div class="modal fade" id="globalModalViewer" tabindex="-1" inert>
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="globalModalTitle">🔔 Info</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+                </div>
+                <div class="modal-body" id="globalModalBody">
+                    <div class="text-center text-muted">⏳ Lade Inhalt...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Klassische JavaScript-Bibliotheken (NUR HIER! KEINE Importmap!) #}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('js/menu.js') }}"></script>
+    <script src="{{ asset('js/modal-helper.js') }}"></script>
+    <script src="{{ asset('js/security-helper.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    {# TinyMCE-Init & Sonstiges: #}
+    <script>
+        function toggleDevMenu() {
+            const list = document.getElementById('dev-routes-list');
+            list.classList.toggle('hidden');
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            if (typeof tinymce !== 'undefined') {
+                tinymce.remove();
+
+                const baseConfig = {
+                    base_url: '/js/tinymce',
+                    suffix: '.min',
+                    language: 'de',
+                    language_url: "{{ asset('js/tinymce/langs/de.js') }}",
+                    license_key: 'gpl',
+                    plugins: 'lists link image code table',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code | image table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+                    automatic_uploads: true,
+                    images_upload_url: '{{ path("upload_image") }}',
+                    images_upload_credentials: true,
+                    file_picker_types: 'image',
+                    setup: function (editor) {
+                        editor.on('change', function () {
+                            editor.save();
+                        });
+                    },
+                    images_upload_handler: function (blobInfo, progress) {
+                        return new Promise(function (resolve, reject) {
+                            const xhr = new XMLHttpRequest();
+                            xhr.open('POST', '{{ path("upload_image") }}');
+                            xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token("upload_image") }}');
+
+                            xhr.onload = function () {
+                                if (xhr.status !== 200) {
+                                    reject('HTTP Error: ' + xhr.status);
+                                    return;
+                                }
+
+                                let json;
+                                try {
+                                    json = JSON.parse(xhr.responseText);
+                                } catch (e) {
+                                    reject('Invalid JSON: ' + xhr.responseText);
+                                    return;
+                                }
+
+                                if (!json || typeof json.location !== 'string') {
+                                    reject('Invalid JSON structure: ' + xhr.responseText);
+                                    return;
+                                }
+
+                                console.log("Image upload successful, location:", json.location);
+                                resolve(json.location);
+                            };
+
+                            xhr.onerror = function () {
+                                reject('XHR transport error.');
+                            };
+
+                            const formData = new FormData();
+                            formData.append('file', blobInfo.blob(), blobInfo.filename());
+                            xhr.send(formData);
+                        });
+                    }
+                };
+
+                // 🟩 Init für die spezielle Signatur
+                tinymce.init({
+                    ...baseConfig,
+                    selector: 'textarea.tinymce-signatur',
+                    width: 400,
+                    setup: function (editor) {
+                        editor.on('change keyup input paste', function () {
+                            editor.save();
+                            updatePreview && updatePreview();
+                        });
+                    }
+                });
+
+                // 🟦 Init für alle anderen
+                tinymce.init({
+                    ...baseConfig,
+                    selector: 'textarea.tinymce:not(.tinymce-signatur)',
+                    width: 850,
+                });
+
+                console.log("✅ TinyMCE Instanzen erfolgreich geladen.");
+            } else {
+                console.error("❌ TinyMCE konnte nicht geladen werden.");
+            }
+        });
+
+    function openFilePickerModal() {
+    loadModalFromUrl('/file-manager/explorer', 'Dateimanager');
+}
+
+window.setCorrespondingFiles = function(files) {
+    const input = document.getElementById('module_manager_form_correspondingFiles');
+    if (input) input.value = JSON.stringify(files);
+
+    // Vorschau aktualisieren (optional)
+    const preview = document.getElementById('correspondingFilesPreview');
+    if (preview) {
+        preview.innerHTML = files.map(f => `<span class="badge bg-secondary me-1">${f}</span>`).join('');
+    }
+};
+
+
+
+    </script>
+    {# in base.html.twig oder footer einfügen #}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const badge = document.getElementById('globalMessageBadge');
+
+    window.updateMessageBadge = function () {
+    fetch('{{ path("app_message_unread_count") }}')
+        .then(r => r.json())
+        .then(data => {
+            console.log('[🔁 Update]', data);
+
+            const badge = document.getElementById('globalMessageBadge');
+            const unread = parseInt(data.unreadMessages || 0);
+            const urgent = parseInt(data.urgentNews || 0);
+
+            const hasContent = unread > 0 || urgent > 0;
+
+            if (hasContent) {
+                badge.textContent = (unread > 0 ? unread : '') + (urgent > 0 ? '!' : '');
+                badge.style.display = 'inline-block';
+                console.log(`[✅ Badge sichtbar] Inhalt: ${badge.textContent}`);
+            } else {
+                badge.textContent = '';
+                badge.style.display = 'none';
+                console.log('[📭 Kein Inhalt, Badge versteckt]');
+            }
+        })
+        .catch(err => console.error('[❌ Fehler beim Nachrichten-Check]:', err));
+};
+
+
+
+    // Starte Polling
+    updateMessageBadge();
+    setInterval(updateMessageBadge, 1000); // alle 15s
+});
+</script>
+
+    {% include '_dev_overlay.html.twig' %}
+    
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {% include 'chat/chat_widget.html.twig' %}
+{% endif %}
+
+    
+
+    {# WebSocket-Chat-Logik #}
+
+</body>
+</html>

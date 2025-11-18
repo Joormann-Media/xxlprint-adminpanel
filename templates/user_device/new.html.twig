@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Neues Benutzergerät</h1>
+
+        {% include 'user_device/_form.html.twig' with { 'is_edit': false } %}
+
+
+    </div>
+{% endblock %}

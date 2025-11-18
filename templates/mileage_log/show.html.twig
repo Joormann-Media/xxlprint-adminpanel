@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MileageLog{% endblock %}
+
+{% block body %}
+    <h1>MileageLog</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ mileage_log.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ mileage_log.date ? mileage_log.date|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>StartMile</th>
+                <td>{{ mileage_log.startMile }}</td>
+            </tr>
+            <tr>
+                <th>EndMile</th>
+                <td>{{ mileage_log.endMile }}</td>
+            </tr>
+            <tr>
+                <th>Purpose</th>
+                <td>{{ mileage_log.purpose }}</td>
+            </tr>
+            <tr>
+                <th>Route</th>
+                <td>{{ mileage_log.route }}</td>
+            </tr>
+            <tr>
+                <th>StartLocation</th>
+                <td>{{ mileage_log.startLocation }}</td>
+            </tr>
+            <tr>
+                <th>EndLocation</th>
+                <td>{{ mileage_log.endLocation }}</td>
+            </tr>
+            <tr>
+                <th>Passengers</th>
+                <td>{{ mileage_log.passengers }}</td>
+            </tr>
+            <tr>
+                <th>GasDate</th>
+                <td>{{ mileage_log.gasDate ? mileage_log.gasDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>GasQuantity</th>
+                <td>{{ mileage_log.gasQuantity }}</td>
+            </tr>
+            <tr>
+                <th>RefuelReceipt</th>
+                <td>{{ mileage_log.refuelReceipt }}</td>
+            </tr>
+            <tr>
+                <th>AdBlueDate</th>
+                <td>{{ mileage_log.adBlueDate ? mileage_log.adBlueDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>AdBlueQuantity</th>
+                <td>{{ mileage_log.adBlueQuantity }}</td>
+            </tr>
+            <tr>
+                <th>OilDate</th>
+                <td>{{ mileage_log.oilDate ? mileage_log.oilDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>OilQuantity</th>
+                <td>{{ mileage_log.oilQuantity }}</td>
+            </tr>
+            <tr>
+                <th>WasherFluidDate</th>
+                <td>{{ mileage_log.washerFluidDate ? mileage_log.washerFluidDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>WasherFluidQuantity</th>
+                <td>{{ mileage_log.washerFluidQuantity }}</td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>{{ mileage_log.notes }}</td>
+            </tr>
+            <tr>
+                <th>Signature</th>
+                <td>{{ mileage_log.signature }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ mileage_log.createdAt ? mileage_log.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ mileage_log.updatedAt ? mileage_log.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_mileage_log_index') }}">back to list</a>
+
+    <a href="{{ path('app_mileage_log_edit', {'id': mileage_log.id}) }}">edit</a>
+
+    {{ include('mileage_log/_delete_form.html.twig') }}
+{% endblock %}

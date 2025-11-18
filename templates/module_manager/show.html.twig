@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modul-Details{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+            <div class="card shadow rounded-4">
+                <div class="card-header bg-dark text-light d-flex align-items-center">
+                    <i class="bi bi-hammer me-2"></i> Modul-Details
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">ID</dt>
+                        <dd class="col-sm-8">{{ module_manager.id }}</dd>
+
+                        <dt class="col-sm-4">Name</dt>
+                        <dd class="col-sm-8">{{ module_manager.name }}</dd>
+
+                        <dt class="col-sm-4">Erstellt am</dt>
+                        <dd class="col-sm-8">{{ module_manager.create ? module_manager.create|date('Y-m-d H:i:s') : '' }}</dd>
+
+                        <dt class="col-sm-4">Letzte Änderung</dt>
+                        <dd class="col-sm-8">{{ module_manager.lastUpdate ? module_manager.lastUpdate|date('Y-m-d H:i:s') : '' }}</dd>
+
+                        <dt class="col-sm-4">LogId</dt>
+                        <dd class="col-sm-8">{{ module_manager.logId }}</dd>
+
+                        <dt class="col-sm-4">Zugehörige Dateien</dt>
+                        <dd class="col-sm-8">
+                            {% if module_manager.correspondingFiles %}
+                                <ul class="list-unstyled mb-0">
+                                    {% for file in module_manager.correspondingFiles %}
+                                        <li><i class="bi bi-file-earmark-code"></i> {{ file }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <span class="text-muted">–</span>
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-4">Status</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-info">{{ module_manager.status ?: '–' }}</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Mapped Entities</dt>
+                        <dd class="col-sm-8">
+                            {% if module_manager.mappedEntitys %}
+                                <ul class="list-unstyled mb-0">
+                                    {% for entity in module_manager.mappedEntitys %}
+                                        <li><i class="bi bi-link-45deg"></i> {{ entity }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <span class="text-muted">–</span>
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-4">Readme</dt>
+                        <dd class="col-sm-8">
+                            <pre class="mb-0" style="white-space:pre-wrap">{{ module_manager.readme }}</pre>
+                        </dd>
+
+                        <dt class="col-sm-4">Beschreibung</dt>
+                        <dd class="col-sm-8">
+                            <pre class="mb-0" style="white-space:pre-wrap">{{ module_manager.description }}</pre>
+                        </dd>
+
+                        <dt class="col-sm-4">Maintainer</dt>
+                        <dd class="col-sm-8">
+                            {% if module_manager.maintainer is not empty %}
+                                <ul class="list-inline mb-0">
+                                    {% for maintainer in module_manager.maintainer %}
+                                        <li class="list-inline-item">
+                                            <span class="badge bg-secondary">
+                                                <i class="bi bi-person"></i> {{ maintainer.username }}
+                                            </span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <span class="text-muted">Kein Maintainer hinterlegt</span>
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-4">Dependencies</dt>
+                        <dd class="col-sm-8">{{ module_manager.dependencies ?: '–' }}</dd>
+                    </dl>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center bg-light">
+                    <a href="{{ path('app_module_manager_index') }}" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left"></i> Zurück zur Liste
+                    </a>
+                    <div>
+                        <a href="{{ path('app_module_manager_edit', {'id': module_manager.id}) }}" class="btn btn-warning me-2">
+                            <i class="bi bi-pencil-square"></i> Bearbeiten
+                        </a>
+                        <form method="post"
+      action="{{ path('app_module_manager_delete', {'id': module_manager.id}) }}"
+      class="d-inline"
+      onsubmit="return confirm('Bist du dir GANZ sicher, dass du das Modul über die Planke schickst?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ module_manager.id) }}">
+    <button class="btn btn-danger btn-sm px-3">
+        <i class="bi bi-trash3-fill"></i>
+        Löschen
+    </button>
+</form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

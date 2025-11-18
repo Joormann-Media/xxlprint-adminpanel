@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DevelopersBlog index{% endblock %}
+
+{% block body %}
+    <h1>DevelopersBlog index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Slug</th>
+                <th>Content</th>
+                <th>Excerpt</th>
+                <th>FeaturedImageUrl</th>
+                <th>Status</th>
+                <th>ReadingTime</th>
+                <th>PublishedAt</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Tags</th>
+                <th>BlogPostId</th>
+                <th>CommentsAllowed</th>
+                <th>CommentsVisibility</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for developers_blog in developers_blogs %}
+            <tr>
+                <td>{{ developers_blog.id }}</td>
+                <td>{{ developers_blog.title }}</td>
+                <td>{{ developers_blog.slug }}</td>
+                <td>{{ developers_blog.content }}</td>
+                <td>{{ developers_blog.excerpt }}</td>
+                <td>{{ developers_blog.featuredImageUrl }}</td>
+                <td>{{ developers_blog.status }}</td>
+                <td>{{ developers_blog.readingTime }}</td>
+                <td>{{ developers_blog.publishedAt ? developers_blog.publishedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ developers_blog.createdAt ? developers_blog.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ developers_blog.updatedAt ? developers_blog.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ developers_blog.tags }}</td>
+                <td>{{ developers_blog.blogPostId }}</td>
+                <td>{{ developers_blog.commentsAllowed ? 'Yes' : 'No' }}</td>
+                <td>{{ developers_blog.commentsVisibility }}</td>
+                <td>
+                    <a href="{{ path('app_developers_blog_show', {'id': developers_blog.id}) }}">show</a>
+                    <a href="{{ path('app_developers_blog_edit', {'id': developers_blog.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="16">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_developers_blog_new') }}">Create new</a>
+{% endblock %}

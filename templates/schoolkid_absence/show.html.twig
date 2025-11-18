@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SchoolkidAbsence{% endblock %}
+
+{% block body %}
+    <h1>SchoolkidAbsence</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ schoolkid_absence.id }}</td>
+            </tr>
+            <tr>
+                <th>StartAway</th>
+                <td>{{ schoolkid_absence.startAway ? schoolkid_absence.startAway|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>EndAway</th>
+                <td>{{ schoolkid_absence.endAway ? schoolkid_absence.endAway|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ReasonAway</th>
+                <td>{{ schoolkid_absence.reasonAway }}</td>
+            </tr>
+            <tr>
+                <th>ReportedBy</th>
+                <td>{{ schoolkid_absence.reportedBy }}</td>
+            </tr>
+            <tr>
+                <th>ReportMethod</th>
+                <td>{{ schoolkid_absence.reportMethod }}</td>
+            </tr>
+            <tr>
+                <th>ReceivedBy</th>
+                <td>{{ schoolkid_absence.receivedBy }}</td>
+            </tr>
+            <tr>
+                <th>ReportedAt</th>
+                <td>{{ schoolkid_absence.reportedAt ? schoolkid_absence.reportedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ schoolkid_absence.createdAt ? schoolkid_absence.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_schoolkid_absence_index') }}">back to list</a>
+
+    <a href="{{ path('app_schoolkid_absence_edit', {'id': schoolkid_absence.id}) }}">edit</a>
+
+    {{ include('schoolkid_absence/_delete_form.html.twig') }}
+{% endblock %}

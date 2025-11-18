@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container my-3">
+        <h1 class="mb-4"><i class="bi bi-envelope-at-fill"></i> E-Mail-Signaturen Übersicht</h1>
+
+        <div class="row">
+            {% for e_mail_signature in e_mail_signatures %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">{{ e_mail_signature.name }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"><strong>Position:</strong> {{ e_mail_signature.position }}</p>
+                            <p class="card-text"><strong>Company:</strong> {{ e_mail_signature.company }}</p>
+                            <p class="card-text"><strong>Email:</strong> <a href="mailto:{{ e_mail_signature.email }}">{{ e_mail_signature.email }}</a></p>
+                            <p class="card-text"><strong>Phone:</strong> {{ e_mail_signature.phone }}</p>
+                            <p class="card-text"><strong>Website:</strong> <a href="{{ e_mail_signature.website }}" target="_blank">{{ e_mail_signature.website }}</a></p>
+                            
+                            <a href="{{ path('app_email_signature_show', {'id': e_mail_signature.id}) }}" class="btn btn-primary btn-sm">Show</a>
+                            <a href="{{ path('app_email_signature_edit', {'id': e_mail_signature.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                        <form id="delete-form-{{ e_mail_signature.id }}" method="post" action="{{ path('app_email_signature_delete', {'id': e_mail_signature.id}) }}" style="display:inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ e_mail_signature.id) }}">
+                                <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Sind Sie sicher, dass Sie diese Signatur löschen möchten?')">
+                                    <i class="bi bi-trash"></i> Löschen
+                                </button>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-warning" role="alert">
+                        Keine E-Mail-Signaturen gefunden.
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="mt-4">
+            <a href="{{ path('app_email_signature_new') }}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Neue Signatur erstellen
+            </a>
+        </div>
+    </div>
+{% endblock %}

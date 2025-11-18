@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PenaltyCatalogEntry{% endblock %}
+
+{% block body %}
+    <h1>PenaltyCatalogEntry</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ penalty_catalog_entry.id }}</td>
+            </tr>
+            <tr>
+                <th>OffenseTitle</th>
+                <td>{{ penalty_catalog_entry.offenseTitle }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ penalty_catalog_entry.description }}</td>
+            </tr>
+            <tr>
+                <th>Paragraph</th>
+                <td>{{ penalty_catalog_entry.paragraph }}</td>
+            </tr>
+            <tr>
+                <th>Category</th>
+                <td>{{ penalty_catalog_entry.category }}</td>
+            </tr>
+            <tr>
+                <th>VehicleTypes</th>
+                <td>{{ penalty_catalog_entry.vehicleTypes ? penalty_catalog_entry.vehicleTypes|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>PenaltyMin</th>
+                <td>{{ penalty_catalog_entry.penaltyMin }}</td>
+            </tr>
+            <tr>
+                <th>PenaltyMax</th>
+                <td>{{ penalty_catalog_entry.penaltyMax }}</td>
+            </tr>
+            <tr>
+                <th>Points</th>
+                <td>{{ penalty_catalog_entry.points }}</td>
+            </tr>
+            <tr>
+                <th>DrivingBanMonths</th>
+                <td>{{ penalty_catalog_entry.drivingBanMonths }}</td>
+            </tr>
+            <tr>
+                <th>IsProbezeitRelevant</th>
+                <td>{{ penalty_catalog_entry.isProbezeitRelevant ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>SeverityLevel</th>
+                <td>{{ penalty_catalog_entry.severityLevel }}</td>
+            </tr>
+            <tr>
+                <th>Active</th>
+                <td>{{ penalty_catalog_entry.active ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_penalty_catalog_entry_index') }}">back to list</a>
+
+    <a href="{{ path('app_penalty_catalog_entry_edit', {'id': penalty_catalog_entry.id}) }}">edit</a>
+
+    {{ include('penalty_catalog_entry/_delete_form.html.twig') }}
+{% endblock %}

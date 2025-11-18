@@ -1,0 +1,536 @@
+ID	Name	Street	Number	ZIP	City	Grund
+1457	Sizar Tahseen Abdi	Robert-Bunsen-Str.	30	46485	Wesel	nicht gefunden
+1458	Elias Abel	Hünxer Str.	363	46537	Dinslaken	nicht gefunden
+1460	Samira Abel	Hünxer Str.	363	46537	Dinslaken	nicht gefunden
+1461	Finn Abelsmann	Hamminkelner Landstr.	17	46487	Wesel	nicht gefunden
+1463	Mohammed Ammeer Adebayo	Bahnhofstr.	7	46599	Hamminkeln	nicht gefunden
+1467	Hamza Akbulut	Spellener Straße	71	46562	Voerde	nicht gefunden
+1468	Ayse Akca	Heierfeld	50	46562	Voerde	nicht gefunden
+1469	Mira Pelin Akcetin	Tiergartenstr.	81	46485	Wesel	nicht gefunden
+1470	Okan Anil Akcetin	Tiergartenstr.	81	46485	Wesel	nicht gefunden
+1472	Yagiz Akkaya	Hugo-Müller-Straße	66	46562	Voerde	nicht gefunden
+1473	Nisagül Aktas	Augustastr.	270	46537	Dinslaken	nicht gefunden
+1475	Dilzar Al Azeez	Juliusstr.	11	46535	Dinslaken	nicht gefunden
+1476	Anne Al Daher	Hamminkelner Str.	8	46499	Hamminkeln	nicht gefunden
+1477	Aja Al Driess	Hünxer Str.	201	46537	Dinslaken	nicht gefunden
+1478	Ali Al Driess	Hünxer Straße	201	46535	Dinslaken	nicht gefunden
+1480	Bayan Alabdo	Borther Str.	225	47495	Rheinberg	nicht gefunden
+1481	Blessing Alabi	Frankfurter Straße	80	46562	Voerde	nicht gefunden
+1482	Convenant Alabi	Frankfurter Straße	80	46562	Voerde	nicht gefunden
+1483	Youssef Aldlle	Sterkrader Str.	258a	46539	Dinslaken	nicht gefunden
+1484	Lina Ali	Am Lilienvenn	83	46485	Wesel	nicht gefunden
+1485	Jana Allak	Frankfurter Str.	74	46562	Voerde	nicht gefunden
+1486	Jonas Allich	Wertherbrucher Str.	10	46499	Hamminkeln	nicht gefunden
+1487	Rama Alsaid	Reeser Landstr.	13	46483	Wesel	nicht gefunden
+1488	Rawan Alsaid	Reeser Landstr.	13	46483	Wesel	nicht gefunden
+1490	Qusay Alzaglol	Korbmacherstr.	13	46483	Wesel	nicht gefunden
+1491	Adam Amathanov	Talstr.	65	46537	Dinslaken	nicht gefunden
+1494	Manuela Andree	Agnetenstr.	2	46446	Emmerich	nicht gefunden
+1495	Emilia Angulo Rojas	Mehrumer Straße	8	46562	Voerde	nicht gefunden
+1497	Imran Aoudou	Donaustr.	164	47443	Moers	nicht gefunden
+1498	Charlotte Lillian Aoun	Heinrich-Bernts-Str.	5	46483	Wesel	nicht gefunden
+1499	Tayo Apel	Zimmermannsweg	39	46562	Voerde	nicht gefunden
+1500	Marco Arndt	Am Rheintor		46509	Xanten	unvollständig
+1501	Ferat Arslan	Nollenburger Weg	53	46446	Emmerich	nicht gefunden
+1502	Martin Arts	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+1504	Angelo Luca Autieri	Sandstr.	29	46499	Hamminkeln	nicht gefunden
+1505	Nosakhare Avbumwen	Kurze Str.	12	46483	Wesel	nicht gefunden
+1512	Enes Aydogdu	Rahmstr.	113	46562	Voerde	nicht gefunden
+1513	I-Helfer Aydogdu	Rahmstr.	113	46562	Voerde	nicht gefunden
+1514	Shad Aziz	Amalienstr.	20	46537	Dinslaken	nicht gefunden
+1515	Mariam-Marta Babala	Goethestr.	54	46535	Dinslaken	nicht gefunden
+1516	Celine Bachmann	Bahnhofstr.	5	46499	Hamminkeln	nicht gefunden
+1517	Simon Bachmann	Bahnhofstr.	5	46499	Hamminkeln	nicht gefunden
+1520	Edwin Baier	Am Tichelouwen		46487	Wesel	unvollständig
+1523	Julian Balluff	Lingelmannstraße 3 a		46539	Dinslaken	unvollständig
+1524	Darjio Baluci	Hofmeisterweg		46483	Wesel	unvollständig
+1527	Lemar Bareksei	Flurstraße	33	46353	Dinslaken	nicht gefunden
+1530	Jaqueline Bauduin	Hansastr.	52	46446	Emmerich	nicht gefunden
+1533	Jasmin Beem	Hansastr.	52	46446	Emmerich	nicht gefunden
+1534	Verena Beem	Hansastr.	52	46446	Emmerich	nicht gefunden
+1535	Zoe Isabel Beenen	Neuhardenbergstr.	21	46499	Hamminkeln	nicht gefunden
+1537	Nuhan Bejzak	Birkenstr.	19a	46485	Wesel	nicht gefunden
+1540	Aylin Belka	Bierbrauerstr.	2	46483	Wesel	nicht gefunden
+1541	Tom Belka	Bierbrauerstr.	2	46483	Wesel	nicht gefunden
+1543	Enrico Beller	Lindenweg	26	46562	Voerde	nicht gefunden
+1544	Pauline Benninghoff	Annastraße	8a	46562	Voerde	nicht gefunden
+1547	Elmedin Beqiri			46483	Wesel	unvollständig
+1548	David Bergener	Holzweg	29	46483	Wesel	nicht gefunden
+1549	Maximilian Bergmann	Ringenberger Str.	26	46499	Hamminkeln	nicht gefunden
+1550	Michelle Berns	Bahnhofstr.	23	46446	Emmerich	nicht gefunden
+1551	Manuel Marc Bertelsen	Poststraße	77	46562	Voerde	nicht gefunden
+1552	Louis Bialik	Tiergartenstr.	67	46485	Wesel	nicht gefunden
+1553	Luke Bialkowski	Frankfurter Str.	19	46485	Wesel	nicht gefunden
+1555	I-Helfer Biella			46485	Wesel	unvollständig
+1557	Ian-Luca Biesemann	Zingelstr.	24	46499	Hamminkeln	nicht gefunden
+1558	Hasan Bilal	Wolfhagenstr.	46	46519	Alpen	nicht gefunden
+1559	Nora Bitter	Försterstr.	33	46539	Dinslaken	nicht gefunden
+1560	Milan Black	Hugo-Müller-Str.	4	46562	Voerde	nicht gefunden
+1561	Monique Blaise	Reshover Weg	30	46562	Voerde	nicht gefunden
+1563	Elisabeth Boamah	Schlesierstraße	32	46562	Voerde	nicht gefunden
+1564	Lukas Boche	Frankenstr.	122	46446	Emmerich	nicht gefunden
+1569	Leland Bongers	Hamminkelner Landstr.	14	46483	Wesel	nicht gefunden
+1570	Aileen Borowski	Schlossstr.	75	46535	Dinslaken	nicht gefunden
+1571	Lukas Borowski	Birkenstr. 19 a		46485	Wesel	unvollständig
+1572	Lia Borrmann	Grenzweg	33	46562	Voerde	nicht gefunden
+1574	Elias Boxbücher	Isselstr.	13	46483	Wesel	nicht gefunden
+1575	Dennis Braam	Reeser Str.	250	46446	Emmerich	nicht gefunden
+1577	Jennifer Brehm	Isselstr.	17	46483	Wesel	nicht gefunden
+1579	Samuel Breuer	Luisenstr.	70	46537	Dinslaken	nicht gefunden
+1582	Lilith Eve Bruce	Hamminkelner Landstr.	38a	46483	Wesel	nicht gefunden
+1583	Marselo Bruci	Augustastr.	63	46535	Dinslaken	nicht gefunden
+1587	Vincent Buiting	Tönningstr.	52	46562	Voerde	nicht gefunden
+1588	Arne Bulaic	Weimarer Str.	6	46483	Wesel	nicht gefunden
+1591	Tim-Elias Burk	Augustastr.	108	46537	Dinslaken	nicht gefunden
+1592	Giuseppe Caccioffoli	Isselstr.		46483	Wesel	unvollständig
+1593	Emily Tamila Cardeneo	Hugo-Becker-Str.	2	46483	Wesel	nicht gefunden
+1594	Alexander Carson	Dorfstr.	3	46487	Wesel	nicht gefunden
+1595	Christian Celanowski	Haagstr.	7a	46519	Alpen	nicht gefunden
+1596	Efe Ömer Celik	Am Kindergarten	5	46562	Voerde	nicht gefunden
+1597	Muhammed-Ishak Celik	Ziegeleiweg	21	46539	Dinslaken	nicht gefunden
+1598	Noyan Nuri Celik	Gabainstr.	22	46483	Wesel	nicht gefunden
+1599	Umut Celik	Am Kindergarten	5	46562	Voerde	nicht gefunden
+1600	Maja Certa	Kuhstraße	2	47495	Rheinberg	nicht gefunden
+1603	Ruhan Chouhan	Pastor-Bergmann-Str.	43	46485	Wesel	nicht gefunden
+1606	Abdülhamid Cil	Steinstr.	23	46537	Dinslaken	nicht gefunden
+1607	Elyesa Ciplak	Sterkrader Straße	264	46535	Dinslaken	nicht gefunden
+1608	Ben Leo Claas	Am Spaltmannsfeld	15b	46485	Wesel	nicht gefunden
+1609	Özgür Colpa	Kasinostr.	2b	46537	Dinslaken	nicht gefunden
+1611	Celine Croset	Talstr.	74	46537	Dinslaken	nicht gefunden
+1613	Thaddaeus Garrett Cunanan	Duisburger Str.	101	46535	Dinslaken	nicht gefunden
+1614	Asan Danailov	Ida-Noddack-Str.	2	46485	Wesel	nicht gefunden
+1615	Silvi Daoud Kassim	Isselstr.	17	46483	Wesel	nicht gefunden
+1620	Pascal Derksen	Im Polderbusch	4	46446	Emmerich	nicht gefunden
+1623	Stella Melina Dettmar	Bismarckstr.	1	46535	Dinslaken	nicht gefunden
+1625	Svenja Diekmann	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+1626	Aleksandra Dimcheva	Birkenstr.	19a	46485	Wesel	nicht gefunden
+1627	Nico Dinter	Dinslakener Str.	114	46569	Hünxe	nicht gefunden
+1629	Aras Dogru	Otto-Lilienthal-Str.	10a	46539	Dinslaken	nicht gefunden
+1630	Stefanie Dohrmann	Sophienweg	14	46485	Wesel	nicht gefunden
+1631	Angel Miguel Donkers	Ulmenweg	14	46562	Voerde	nicht gefunden
+1632	Jay-Lucas Donkers	Birkenstr.	19a	46485	Wesel	nicht gefunden
+1633	Ingrid Doormann	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+1634	Tamara Dordevic	Reeser Landstr.	13	46483	Wesel	nicht gefunden
+1635	Jonas Drost	Friedrichstr.	6	46483	Wesel	nicht gefunden
+1637	Kacper Dycz	Solvaystr.	55	46487	Wesel	nicht gefunden
+1638	Rafael Eberl	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+1639	Purity Edokpolor	Holtener Str.	34	46539	Dinslaken	nicht gefunden
+1641	Elias Eimer	Lindenweg	12	46562	Voerde	nicht gefunden
+1642	Sumeye Ekinci	Wiesenstr.	11	46485	Wesel	nicht gefunden
+1647	Cemre Er	Birkenstr.	19a	46485	Wesel	nicht gefunden
+1649	Onur Ergin	Zechenstr.	11	46537	Dinslaken	nicht gefunden
+1650	Can Erus	Grafenweg	37	46562	Voerde	nicht gefunden
+1654	Max Burak Evin	Duisburger Str.	6	46499	Hamminkeln	nicht gefunden
+1656	Schilan Ezat Ali	Abelstr.	33	46483	Wesel	nicht gefunden
+1657	Jill Faas	Holzweg 83 a		46509	Xanten	unvollständig
+1658	Fadel Fakhro	Talstr.	74	46537	Dinslaken	nicht gefunden
+1659	Alexander Faßbender	Schäfersweg	17	46499	Hamminkeln	nicht gefunden
+1660	Kostiantyn Fedoruk	Bahnstr.	53	46535	Dinslaken	nicht gefunden
+1661	Celina Rabia Fehrmann	Hamminkelner Landstr.	197	46483	Wesel	nicht gefunden
+1662	Luca Feike	Eichenweg	1	46562	Voerde	nicht gefunden
+1663	Georg Feltes	Reitzensteinstr.	45	46485	Wesel	nicht gefunden
+1665	Nils Fleischer	Uedemer Str.	2	46509	Xanten	nicht gefunden
+1666	Selina Sara Foteva	Rheinstr.	202	46562	Voerde	nicht gefunden
+1667	Yan Freitag	Brückstr.	4	46483	Wesel	nicht gefunden
+1668	Leland Freund	Amalienstr.	60	46537	Dinslaken	nicht gefunden
+1671	Justin Fuchs	Roßmühle 2 a		46499	Hamminkeln	unvollständig
+1672	Jesko Fude	Buschacker	11	46562	Voerde	nicht gefunden
+1673	Jürgen Fuhrmann	Zur Licht	121	47655	Sonsbeck	nicht gefunden
+1675	Leon Gähr	Raiffeisenstr.	7	46499	Hamminkeln	nicht gefunden
+1676	Maximilian Gähr	Gravinsel	3	46487	Wesel	nicht gefunden
+1678	Menderes Gasi	Buchenstr.	59	46569	Hünxe	nicht gefunden
+1682	Leon Geis	Waymannskath	28	46562	Voerde	nicht gefunden
+1685	Christoph Giese	Hansastr.	52	46446	Emmerich	nicht gefunden
+1686	Volker Giesen	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+1690	Ensar Göktas	Talstr.	74	46537	Dinslaken	nicht gefunden
+1691	Zinar Göktas	Brüner Landstr.	44	46485	Wesel	nicht gefunden
+1693	Felix Gorres	Uedemer Str.	2	46509	Xanten	nicht gefunden
+1696	Jakub Gromke	Frankfurter Straße	378	46562	Voerde	nicht gefunden
+1698	Michelle Groß	Hühnerfeld	4	46562	Voerde	nicht gefunden
+1701	Emily Grüters	Waymannskath	18	46562	Voerde	nicht gefunden
+1702	Maurice Patrick Grüters	Weseler Str.	4	46562	Voerde	nicht gefunden
+1704	Lenny (Flüren) Grütter	Herderweg	5	46487	Wesel	nicht gefunden
+1705	Janine Guderian	Uedemer Str.	2	46509	Xanten	nicht gefunden
+1708	Raffael Gülle	Wielandstr.	35	46535	Dinslaken	nicht gefunden
+1710	Luka Gutzeit	Marschallstr.	20	46539	Dinslaken	nicht gefunden
+1714	Felix Hähnel	Schermbecker Landstr.	185	46485	Wesel	nicht gefunden
+1715	Sheefa Hamadeh	Talstr.	65	46537	Dinslaken	nicht gefunden
+1716	Sabrina Hamm	Am Rheintor		46509	Xanten	unvollständig
+1717	Sherezada Hamzic			46483	Wesel	unvollständig
+1718	Kristina Hansen	Isselstr.		46483	Wesel	unvollständig
+1719	Natascha Hansen	Isselstr.		46483	Wesel	unvollständig
+1720	Sissy Hansen	Isselstr.		46483	Wesel	unvollständig
+1721	Mo-Jannik Hasenkamp	Tiergartenstr.	61	46485	Wesel	nicht gefunden
+1723	Max Hauffe	Birkenstr.	19a	46485	Wesel	nicht gefunden
+1725	Florian Hausmann	Am Wiesenrain	2	47495	Rheinberg	nicht gefunden
+1726	Arda Hazar	Lohbergstr.	16	46537	Dinslaken	nicht gefunden
+1727	Jonny Luca Hebink	Schermbecker Landstr.	15	46569	Hünxe	nicht gefunden
+1728	Rico Heide	Hühnerfeld	43	46562	Voerde	nicht gefunden
+1729	Maximilian Heidemann	Wackenbrucher Str.	20	46485	Wesel	nicht gefunden
+1730	Junes Heider	Hochfeldstr.	10	47495	Rheinberg	nicht gefunden
+1731	Marie Heller	Försterstr.	9	46539	Dinslaken	nicht gefunden
+1733	Philis Herbst	Hahnenstraße	11a	46562	Voerde	nicht gefunden
+1734	Sandy Herold	Bahnhofstr.	23	46446	Emmerich	nicht gefunden
+1735	John Maddox Herten	Bahnhofstr.	12	46499	Hamminkeln	nicht gefunden
+1736	Sebastian Hetzel	Gerhard-Cremer-Str.	109	46446	Emmerich	nicht gefunden
+1739	#VALUE! #VALUE!	Repelener Str.	73	47441	Moers	nicht gefunden
+1740	#VALUE! #VALUE!	Repelener Str.	73	47441	Moers	nicht gefunden
+1741	Vito Leonid Hieronimus	Amalienstr.	119	46537	Dinslaken	nicht gefunden
+1743	Heike Hinricher	Im Polderbusch	4	46446	Emmerich	nicht gefunden
+1746	Holger Höbel	Friedrichsstr.	8	46483	Wesel	nicht gefunden
+1748	Ramona Hoevelmans	Am Rheintor		46509	Xanten	unvollständig
+1749	Amy Hoffmann	Wilhelmstr.	25	47495	Rheinberg	nicht gefunden
+1752	Larissa Sharleen Hoffmann	Friedrichsfelder Str.	39	46562	Voerde	nicht gefunden
+1753	Len Emil Hoffmann	Kurfürstenring	20	46562	Voerde	nicht gefunden
+1754	Mats Hoffmann	Bahnhofstr.	5	46499	Hamminkeln	nicht gefunden
+1755	Eugen Hofmann	Isselstr.		46483	Wesel	unvollständig
+1756	Carmen Rebecca Hofmeister	Uedemer Str.	2	46509	Xanten	nicht gefunden
+1757	Noah Hogh	Müssenweg 1 a		46562	Voerde	unvollständig
+1759	Benedikt Holz	Handwerker Str.	34	46562	Voerde	nicht gefunden
+1760	Valentin Holz	Handwerkerstraße	34	46562	Voerde	nicht gefunden
+1762	Donald Hopf	Gerhard-Cremer-Str.	109	46446	Emmerich	nicht gefunden
+1763	Marcel Hopp	Sankt-Bernadin-Str.	65	47655	Sonsbeck	nicht gefunden
+1764	Abdul Kerim Horata	Hünxer Str.	393	46535	Dinslaken	nicht gefunden
+1765	Dean Hugo Hörst	Weser Str.	3	46487	Wesel	nicht gefunden
+1767	Jennifer Höschler	Am Rheintor		46509	Xanten	unvollständig
+1769	Mirco Hövelmann	Kleiner Löwe	5	46446	Emmerich	nicht gefunden
+1771	Laurentz Elias Hülsbusch	Feuerdornstr.	18	46483	Wesel	nicht gefunden
+1774	Tim Hüser	Yorckstr.	22	46485	Wesel	nicht gefunden
+1775	Ismayil Huseynguliyev	Isselstr.	15	46483	Wesel	nicht gefunden
+1776	Sanan Huseynguliyev	Isselstr.	15	46483	Wesel	nicht gefunden
+1781	Finn Hüting	Frietenweg	20	46499	Hamminkeln	nicht gefunden
+1784	Finn Idem	Spellener Str.	44	46562	Voerde	nicht gefunden
+1786	Bryan Inverneiro de Sousa	Ringstr.	25	46499	Hamminkeln	nicht gefunden
+1787	Zidane Issaoun	Hanßsmannsweg	2	46514	Schermbeck	nicht gefunden
+1788	Nadya Zlatkova Ivanova	Böhlstr.	15	46483	Wesel	nicht gefunden
+1790	Leon Jansen	Flurstr.	36	46499	Hamminkeln	nicht gefunden
+1791	Louis Jansen	Rastenburger Str.	33	46483	Wesel	nicht gefunden
+1792	Antonio Janssen	Kleiner Löwe	5	46446	Emmerich	nicht gefunden
+1794	Thorsten Janssen	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+1795	Petra Janzik	Agnetenstr.	2	46446	Emmerich	nicht gefunden
+1796	Alexander Jasarevic	Hans-Böckler-Str.	5	46483	Wesel	nicht gefunden
+1798	Elena Jasim	Friedrichsfelder Str.	39	46562	Voerde	nicht gefunden
+1799	Eva Katharina Jellonek	Feldstr.	66	46485	Wesel	nicht gefunden
+1803	Henry Samuel Jüngling	Kurt-Kräcker-Str.	65	46485	Wesel	nicht gefunden
+1804	Simon Junker	Otto-Marx-Str.	8	46509	Xanten	nicht gefunden
+1805	Sinan Noah Junkes	Kapellchenweg. 27 a		46509	Xanten	unvollständig
+1807	Enes Kadam	Amalienstr.	28	46537	Dinslaken	nicht gefunden
+1808	Krankenschwester (Enes) Kadam	Amalienstr.	28	46537	Dinslaken	nicht gefunden
+1809	Devin Kadioglu	Neustr.	1	46535	Dinslaken	nicht gefunden
+1810	Deniz Hüseyin Kalafat	Krusenstr.	35	46539	Dinslaken	nicht gefunden
+1812	Mojsija Kamberovski	Hans-Böckler-Str.	15	46483	Wesel	nicht gefunden
+1813	Sabrina Kamps	Im Polderbusch	4B	46446	Emmerich	nicht gefunden
+1814	Marie Celine Kanski	Diersfordter Str.	11	46483	Wesel	nicht gefunden
+1815	Andy Luca Kanz	Brüner Landstr.	301	46485	Wesel	nicht gefunden
+1816	Ben Kaplitza	Kalbecksweg	39	46562	Voerde	nicht gefunden
+1817	Sanja Karadzic	Böckersche Str.	1	46487	Wesel	nicht gefunden
+1818	Enes Karatas	Zechenstr.	4	46537	Dinslaken	nicht gefunden
+1819	Mira Karatas			46483	Wesel	unvollständig
+1820	Vitalii Karpizin	Marienvreder Str.	25	46499	Hamminkeln	nicht gefunden
+1821	I-Hilfe Kasatkin	Hans-Böckler-Straße	19	48483	Wesel	nicht gefunden
+1823	Majed Kashoum	Friedrichsfelder Str.	41	46562	Voerde	nicht gefunden
+1826	Nikolaos Katsaros	Könzgenplatz	4	47169	Duisburg	nicht gefunden
+1827	Jessica Kauf	Birkenstr.	19a	46485	Wesel	nicht gefunden
+1828	Bewar Kechel-Kushto	Katte Kull	15	47495	Rheinberg	nicht gefunden
+1829	Nieroj Kechel-Kushto	Katte Kull	15	47495	Rheinberg	nicht gefunden
+1830	Daniel Kegel	Im Polderbusch	4B	46446	Emmerich	nicht gefunden
+1831	Benedikt Keim	Haagstr.	7a	46519	Alpen	nicht gefunden
+1832	Reiner Kempf	Kleiner Löwe	5	46446	Emmerich	nicht gefunden
+1836	Sura Nur Keskin	Krengelstraße 38 b		46539	Dinslaken	unvollständig
+1837	Emran Khetabi	Talstr.	74	46537	Dinslaken	nicht gefunden
+1839	Aya Khoshnaw	Duisburger Str.	2	46535	Dinslaken	nicht gefunden
+1842	Luisa Marie Kirchner	Flurstr.	40	46535	Dinslaken	nicht gefunden
+1844	Daniel Kirstein	Heiligenbergweg	11	46499	Hamminkeln	nicht gefunden
+1845	Justin Kirstein	Heiligenbergweg	11	46499	Hamminkeln	nicht gefunden
+1847	Mary-Jane Beate Klaes	Wilhelminenstr.	146	46537	Dinslaken	nicht gefunden
+1848	Manuela Klaus	Kalkarer Str.	71	46509	Xanten	nicht gefunden
+1849	Conner Klein	Tiergartenstr.	105	46485	Wesel	nicht gefunden
+1851	Jannis Kleintjes	Beethovenstr.	4	46487	Wesel	nicht gefunden
+1853	Bettina Klisch	Kurt-Kräcker-Str.		46485	Wesel	unvollständig
+1855	Simon Klose	Rheinstr.	17a	46499	Hamminkeln	nicht gefunden
+1856	Tamara Kloster	Heinrich-Bernts-Str.	11	46483	Wesel	nicht gefunden
+1858	Max Knappe			46483	Wesel	unvollständig
+1859	Patrick Knauer	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+1862	Tyler Knümann	Luisenstr.	110	46537	Dinslaken	nicht gefunden
+1864	Bernhard Koenen	Agnetenstr.	2	46446	Emmerich	nicht gefunden
+1865	Leon Kokozinski	Klarastr.	96	46535	Dinslaken	nicht gefunden
+1866	Ramon Elias Könings	Hamminkelner Landstr.	28	46483	Wesel	nicht gefunden
+1867	Stephan Koppers	Friedrichsstr.	8	46483	Wesel	nicht gefunden
+1869	Dante Koslik	Schafstege	119	46562	Voerde	nicht gefunden
+1870	Lisa Koslowski	Steinstraße	125	46562	Voerde	nicht gefunden
+1872	Annika Kovsca	Dinslakener Str.	104	46562	Voerde	nicht gefunden
+1873	Marlon Krajuszek	Stettiner Str.	7a	46483	Wesel	nicht gefunden
+1874	Deyan Krasniqi	Dickerstr.	1	46539	Dinslaken	nicht gefunden
+1876	Leon Erich Kraus	Königsberger Straße	99	46487	Wesel	nicht gefunden
+1877	Jason Krause	Diersfordter Str.	60b	46499	Hamminkeln	nicht gefunden
+1878	Alexander Marcus Krausz	Dicker Str.	5	46453	Dinslaken	nicht gefunden
+1879	Yannik Kretschmer	Regnitstr.	20	46485	Wesel	nicht gefunden
+1881	Mia Joline Kreutz	Birkenstr.	19a	46485	Wesel	nicht gefunden
+1882	Isabel Kreuzbach	Birkenstr. 19 a		46485	Wesel	unvollständig
+1883	Justin Kreuzer	Ringenberger Str.	16	46499	Hamminkeln	nicht gefunden
+1885	Alexander Kroll	An der Herzjesu Kirche	10	46483	Wesel	nicht gefunden
+1886	Maurice Kroneberg	Hansastr.	52	46446	Emmerich	nicht gefunden
+1887	Nina Krothofer	Uedemer Str.	2	46509	Xanten	nicht gefunden
+1888	Jana Krüsmann	Hünxer Str.	415	46537	Dinslaken	nicht gefunden
+1889	Jeremy Krüsmann	Luisenstr.	53a	46537	Dinslaken	nicht gefunden
+1890	Matheo Kugellis	Julius-Leber-Str.	68	46485	Wesel	nicht gefunden
+1892	Jan-Luca Kuiper	Schmidtstr.	8	46483	Wesel	nicht gefunden
+1893	Louisa Kulina	Gartenstr.	14	46499	Hamminkeln	nicht gefunden
+1894	Noel Küper	Homberger Str.	239	47443	Moers	nicht gefunden
+1896	Faye Joleen Kürten	Bülowstraße	42	46562	Voerde	nicht gefunden
+1898	Simon Kurtic	Hans-Böckler-Str.	1	46483	Wesel	nicht gefunden
+1899	Jason Laader	Julius-Leber-Str.	82	46485	Wesel	nicht gefunden
+1900	Justin Lackmann	Diersfordter Str.	60b	46499	Hamminkeln	nicht gefunden
+1901	Cathaleya Lange	Feldstr.	39	46485	Wesel	nicht gefunden
+1902	Robin Langer	Talstr.	65	46537	Dinslaken	nicht gefunden
+1905	Tyrese Jerome Lauer	Tönningstr.	76	46562	Voerde	nicht gefunden
+1906	Mailo Laux	Weißenburgstr.	40	46537	Dinslaken	nicht gefunden
+1907	Pierre Lavista	Friedrichsstr.	8	46483	Wesel	nicht gefunden
+1908	Diana Leer	Böckersche Str.	1	46487	Wesel	nicht gefunden
+1910	Dominik Leinmann	Im Polderbusch	4	46446	Emmerich	nicht gefunden
+1913	Emma Liegmann	Hamminkelner Landstr.	191	46487	Wesel	nicht gefunden
+1914	Selyna Linnarz	Am Rheintor		46509	Xanten	unvollständig
+1915	Ingo Lins	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+1916	Elaina Caroline Lobach	Tiergartenstr.	57	46485	Wesel	nicht gefunden
+1918	Leila Löbbe	Holtener Str.	38	46539	Dinslaken	nicht gefunden
+1919	Laura Loch	Hauptstr.	17	46499	Hamminkeln	nicht gefunden
+1922	Nick Löffler	Goethestr.	39	46487	Wesel	nicht gefunden
+1923	Julien Lohmann	Hansastr.	52	46446	Emmerich	nicht gefunden
+1925	Melina Theres Lorig	Auf dem Kamp	40a	46562	Voerde	nicht gefunden
+1926	Dean Loschinski	Bergerstr.	104	46539	Dinslaken	nicht gefunden
+1927	Enrico Losco	Agnetenstr.	2	46446	Emmerich	nicht gefunden
+1930	Leon Lübbers	Isseltr.	54	46499	Hamminkeln	nicht gefunden
+1934	Julian Lukrawka	Augustastr.	264	46537	Dinslaken	nicht gefunden
+1935	Jonas Lümers	An der Ley	2	47655	Sonsbeck	nicht gefunden
+1936	Darrel Lütgenhaus	Isselstr.	27	46483	Wesel	nicht gefunden
+1937	Tayler-Levent Maas	Frankenstr.	12	46487	Wesel	nicht gefunden
+1938	Laura Magyar	Dinslakener Landstr.	7	46483	Wesel	nicht gefunden
+1939	Mohammad Mahmoud	Haldenstr.	2	46537	Dinslaken	nicht gefunden
+1940	Elisabeth Maier	Hamminkelner Landstr.	42	46483	Wesel	nicht gefunden
+1941	Olivia Marie Maikowski	Mühlenweg	127	46483	Wesel	nicht gefunden
+1943	Paul Makula	Ulmenweg	14	46562	Voerde	nicht gefunden
+1945	Oliver Malich	Agnetenstr.	2	46446	Emmerich	nicht gefunden
+1946	Amira Mallah	Tannenstr.	63	46485	Wesel	nicht gefunden
+1947	Patricia Mallzahn	Seemannskath	14	46562	Voerde	nicht gefunden
+1948	Nadine Mandl	Bismarckstr.	5	46535	Dinslaken	nicht gefunden
+1952	Theodora Marinkovic	Hugo-Müller-Straße	2a	46562	Voerde	nicht gefunden
+1953	Brian Marquardt	Dieselstr.	136	47166	Duisburg	nicht gefunden
+1954	Antonio Martens	Friedrichsfelder Str.	38	46562	Voerde	nicht gefunden
+1956	Milan Matberg	Kirchturmstr.	101	46485	Wesel	nicht gefunden
+1958	Jayden Scott Matenaar	Kaiserstr.	13	47441	Moers	nicht gefunden
+1959	Theo Matthews	Waymannskath	28	46562	Voerde	nicht gefunden
+1960	Carlos McCallum	Hansastr.	52	46446	Emmerich	nicht gefunden
+1961	Jens Mechtersheimer	Am Rheintor		46509	Xanten	unvollständig
+1963	Janina Mertin	Uedemer Str.	2	46509	Xanten	nicht gefunden
+1964	Jannik Mertins	Silviastr.	50	46537	Dinslaken	nicht gefunden
+1965	Tim Meßing	Goldstr.	5	46485	Wesel	nicht gefunden
+1966	Jolina Meyer	Winkelstr.	42	46562	Voerde	nicht gefunden
+1967	Oliver Meyer	Reeser Str.	285	46446	Emmerich	nicht gefunden
+1968	Noel Michalsky	Buchenweg	22	46562	Voerde	nicht gefunden
+1970	Helmut MoennIg	Haagstr.	7A	46519	Alpen	nicht gefunden
+1972	Henrik Möllmann	Benninghoffsweg	16	46562	Voerde	nicht gefunden
+1975	Tim Jerik Mrwoka	Dickerstr.	21	46539	Dinslaken	nicht gefunden
+1976	Emilia Mühlen	Schermbecker Landstr.	7a	46485	Wesel	nicht gefunden
+1977	Samir Mula	Grünstr.	76	46483	Wesel	nicht gefunden
+1978	Anja Müller	Kleiner Löwe	5	46446	Emmerich	nicht gefunden
+1979	Paul Müller	Kirchstr.	271	46539	Dinslaken	nicht gefunden
+1980	Sharif Ayaz Murad	Krenglerstr.	2	46539	Dinslaken	nicht gefunden
+1982	Taman Naser	Isselstr.	17	46483	Wesel	nicht gefunden
+1983	Kimo Negm	Klausenhofstr.	38	46499	Hamminkeln	nicht gefunden
+1984	Anja Nehring	Hansastr.	52	46446	Emmerich	nicht gefunden
+1985	Guenter Nehring	Hansastr.	52	46446	Emmerich	nicht gefunden
+1986	Mia Nellesen	Dürer Straße	28	47623	Kevelaer	nicht gefunden
+1987	Ali Neme	Teichacker	16	46562	Voerde	nicht gefunden
+1989	Fynn Neumann	Kilianstr.	51	46514	Schermbeck	nicht gefunden
+1990	Tyler Neumann	Kilianstr.	51	46514	Schermbeck	nicht gefunden
+1991	Zoe-Sofie Neumann	Im Rönskensfeld	6	46562	Voerde	nicht gefunden
+1992	Finn Neutert	Kurt Schumacher Str.	92	46539	Dinslaken	nicht gefunden
+1993	Jan-Luca Nickel	Korbmacherstr.	31	46483	Wesel	nicht gefunden
+1994	Rebekka Nix	Uedemer Str.	2	46509	Xanten	nicht gefunden
+1995	Sarah Madeleine Nordhoff	Leitkamp	66	46562	Voerde	nicht gefunden
+1996	Nathan Ntela Batantou	Gerhard-Malina-Str.	91	46537	Dinslaken	nicht gefunden
+1998	Levin Ochmann	Kirchstr.	92	46539	Dinslaken	nicht gefunden
+2000	Fiona Oldenburg	Böskenstraße	20	46562	Voerde	nicht gefunden
+2002	Can Omar	Bülowstraße	61	46562	Voerde	nicht gefunden
+2003	Ali Hussein Omeirat	Hühnerfeld	7	46562	Voerde	nicht gefunden
+2004	Rainer Opgen-Rhein	Reeser Str.	580	46446	Emmerich	nicht gefunden
+2006	Yannis Orlowski	Schillerweg	8	46569	Hünxe	nicht gefunden
+2007	Hamza Ortakci	Steinstr.	4	46537	Dinslaken	nicht gefunden
+2008	Annalena Osenberg	Krudenburger Str.	5	46569	Hünxe	nicht gefunden
+2009	Viola Owczazak	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+2010	Selim Isa Özcetin	Elbingerweg	11	46487	Wesel	nicht gefunden
+2012	Can Mirkan Özden	Mühlenstr.	1	46562	Voerde	nicht gefunden
+2013	Lara Pajenberg	Müssenweg	35	46562	Voerde	nicht gefunden
+2014	Joel Palka	Bahnhofstr.	31	46562	Voerde	nicht gefunden
+2015	Leonie Palka	Bahnhofstr.	31	46562	Voerde	nicht gefunden
+2017	Elisa Pantina	Bahnhofstr.	144h	46562	Voerde	nicht gefunden
+2021	Philip Julian Patzke	Ulmenweg	17	46509	Xanten	nicht gefunden
+2022	Sophie Elke Patzke	Ulmenweg	17	46509	Xanten	nicht gefunden
+2023	Yannick Paya	Siegfriedstr.	21	46539	Dinslaken	nicht gefunden
+2026	Mia Pech	Hans-Böckler-Str.	7	46535	Dinslaken	nicht gefunden
+2027	Sophie Pech	Hans-Böckler-Straße	7	46537	Dinslaken	nicht gefunden
+2028	Jonah Peters	Elisabethstr.	7	46562	Voerde	nicht gefunden
+2029	Marcel Peters	Tiergartenstr.	69	46485	Wesel	nicht gefunden
+2033	Angus Peymann	Katte Kull	3	47495	Rheinberg	nicht gefunden
+2036	Nico Pier	Friedrichsstr.	8	46483	Wesel	nicht gefunden
+2037	Alexander Gabriel Pietrass	Dimpnastr.	6	46509	Xanten	nicht gefunden
+2039	Benjamin Pjetrog	Talst.	64	46537	Dinslaken	nicht gefunden
+2040	I-Helfer Pjetrog	Talst.	64	46537	Dinslaken	nicht gefunden
+2041	Maylen Platzek	Parkstr.	13	46562	Voerde	nicht gefunden
+2043	Noah Pohler	Bahnhofstr.	69	46499	Hamminkeln	nicht gefunden
+2045	John Pössel	Birkenstr.	19a	46485	Wesel	nicht gefunden
+2046	Nico Pössel	Hindenburgstr.	79	46562	Voerde	nicht gefunden
+2048	Leon Preuth	Agnetenstr.	2	46446	Emmerich	nicht gefunden
+2050	Milano Paul Prison	Keramagstr.	125	46483	Wesel	nicht gefunden
+2053	Dominik Raaf	Im Polderbusch	4	46446	Emmerich	nicht gefunden
+2054	Husein Ramiz	Wilhelm-Lantermann-Str.	24	46535	Dinslaken	nicht gefunden
+2056	Mia Sophie Reuschenbach	Böckersche Str.	1	46487	Wesel	nicht gefunden
+2057	Clement Rialland	In den Streepen	14	47495	Rheinberg	nicht gefunden
+2058	Noah Richter	Hamminkelner Landstr.	43	46483	Wesel	nicht gefunden
+2060	Malte Ringleb	Schermbecker Landstr.	9	46569	Hünxe	nicht gefunden
+2061	Toni Rippe	Hauptstraße	18F	46509	Xanten	nicht gefunden
+2062	Sofia Ristow	Waldacker	17	46562	Voerde	nicht gefunden
+2063	Kacper Röder	Torstr.	19	46483	Wesel	nicht gefunden
+2067	Jayden Tyler Röllig	Hans-Böckler-Str.	1	46483	Wesel	nicht gefunden
+2072	Valentino Roß	Schlesierstraße	32	46562	Voerde	nicht gefunden
+2075	Daniel Rubens	Agnetenstr.	2	46446	Emmerich	nicht gefunden
+2076	Elijah Sven Rucks	Buchenstr.	49	46569	Hünxe	nicht gefunden
+2077	Nico Rudnik	Südstr.	185	46535	Dinslaken	nicht gefunden
+2078	Pia-Sophie Ruef	Hamminkelner Str.	65	46499	Hamminkeln	nicht gefunden
+2079	Leon Ruff	Werkstr.	8b	46562	Voerde	nicht gefunden
+2081	Dennis Ruja	Markstr.	1a	46499	Hamminkeln	nicht gefunden
+2082	Jamin Antonio Rullo	Ferdinand-Galle-Straße Nr.	3	46483	Wesel	nicht gefunden
+2086	Phian Robby Rütten	Am Bauhof	18	46562	Voerde	nicht gefunden
+2087	Aland Sadiq	Parkstr.	21	46562	Voerde	nicht gefunden
+2088	Kerem Sagir	Spellener Straße	59	46562	Voerde	nicht gefunden
+2089	Ghannam Saker	Augustastr.	3a	46537	Dinslaken	nicht gefunden
+2090	Hassan Saker	Augustastr.	3a	46537	Dinslaken	nicht gefunden
+2091	Nico Sallmayer	Hansastr.	52	46446	Emmerich	nicht gefunden
+2093	Myron Salzmann	Schmidtstr.	1	46483	Wesel	nicht gefunden
+2094	Tobias Leon Saternus	In der Sandheide	8	46562	Voerde	nicht gefunden
+2096	Arin Savgat	Brunnenweg	52	46562	Voerde	nicht gefunden
+2098	Lukas Schäfer	Schulstr.	8	46487	Wesel	nicht gefunden
+2099	Marius Schaffeld	Hoogefeldstr.	42	46499	Hamminkeln	nicht gefunden
+2100	John Tyler Schaffrath	Tiergartenstr.	105	46485	Wesel	nicht gefunden
+2103	Julian Scheen	Eyländer Weg	20c	46487	Wesel	nicht gefunden
+2104	Mike-Leon Scheld	Talstr.	74	46537	Dinslaken	nicht gefunden
+2105	Ben Schellenberg	Bislicherstr	111	46483	Bislich	nicht gefunden
+2106	Ben (JG) Schellenberg	Bislicherstr	111	46483	Wesel	nicht gefunden
+2107	Lars André Schenkhoff	Marthastr. 36 b		46537	Dinslaken	unvollständig
+2108	Petra Scheuten	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+2109	Elias Schiff	Karl-Straube-Str.	17	46483	Wesel	nicht gefunden
+2111	Finn Schindelar	Friedrichsfelder Str.	39	46562	Voerde	nicht gefunden
+2112	Karen Schindler	Augustastr.	64	46537	Dinslaken	nicht gefunden
+2113	Marco Alois Schlemmer	Dorotheenweg	4	46483	Wesel	nicht gefunden
+2114	Daniel Schlosser	Südstr.	103	46535	Dinslaken	nicht gefunden
+2115	Lisa Sophie Schlupp	Hasenstr.	70b	46535	Dinslaken	nicht gefunden
+2116	Felix Johannes Schmidt	Jägerstr.	58	46539	Dinslaken	nicht gefunden
+2118	Lya-Lynn Joda Shiniq Schmitt	Bahnhofstr.	92	46562	Voerde	nicht gefunden
+2119	Benjamin Schmitz	Frankfurter Str.	209	46562	Voerde	nicht gefunden
+2120	Dean Schmitz	Kurt-Kräcker-Str.	65	46485	Wesel	nicht gefunden
+2121	Lina Amelia Schmitz	Wilh.-Lantermann-Str.	31	46535	Dinslaken	nicht gefunden
+2123	Kim-Sarah Schneider	Am Rheintor		46509	Xanten	unvollständig
+2125	Michael Schneider	Uedemer Str.	2	46509	Xanten	nicht gefunden
+2126	Alina-Marie Schnell	Tilsiter Str.	7	46483	Wesel	nicht gefunden
+2128	Katja Schöffel	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+2130	Jona Josefa Scholz	Blumenkamper Weg	130	46483	Wesel	nicht gefunden
+2131	Tamara Schoofs	Im Polderbusch	4	46446	Emmerich	nicht gefunden
+2132	Chris Adrian Schrammen	Brahmstraße	6	46487	Wesel	nicht gefunden
+2133	Maren Lyann Schrammen	Brahmsstr.	6	46487	Wesel	nicht gefunden
+2134	Simon Schremmer	Bruchkamp	29	46562	Voerde	nicht gefunden
+2135	Louis Alexander Schroer	Wilhelm-Schreuer-Str.	11	46483	Wesel	nicht gefunden
+2137	Jeska Levke Schulz	Brüner Str.	11	46499	Hamminkeln	nicht gefunden
+2139	Maurice Schulz	Baustr.	30	46483	Wesel	nicht gefunden
+2140	Paula Schulze	Scholtenstr.	36	46509	Xanten	nicht gefunden
+2141	Lena Schütze			46483	Wesel	unvollständig
+2142	Zoe-Sofie Schützelhofer	Horstweg	22	46562	Voerde	nicht gefunden
+2143	Liam Schwanitz	Kampshof	12	46562	Voerde	nicht gefunden
+2145	Denis Schwarz	Frankenstr.	74	46446	Emmerich	nicht gefunden
+2146	Marie-Sophie Schwenty	Grabenstr.	23	46499	Hamminkeln	nicht gefunden
+2147	Sven Schwickert	Rosenborgen	2	47665	Sonsbeck	nicht gefunden
+2149	Jonah Dorian Seib	Am hohen Malberg	19	46487	Wesel	nicht gefunden
+2151	Finja Sendt	Drevenacker Str.	16	46485	Wesel	nicht gefunden
+2152	Daniel Serban	Föhrenbacheck	13	47551	Bedburg-Hau	nicht gefunden
+2153	Stella Servos	Luisenstr.	53a	46537	Dinslaken	nicht gefunden
+2154	Tom Servos	Luisenstr.	53a	46537	Dinslaken	nicht gefunden
+2157	Enrico Sierau	Uedemer Str.	2	46509	Xanten	nicht gefunden
+2158	Tiago Sievers	Tiergartenstraße	73	46585	Wesel	nicht gefunden
+2159	Pascal Simons	Im Polderbusch	4B	46446	Emmerich	nicht gefunden
+2160	Jaysan Singh	Neustraße	19	46535	Dinslaken	nicht gefunden
+2161	Michael Slabosz	Im Polderbusch	4B	46446	Emmerich	nicht gefunden
+2162	Fynn-Luka Diego Smrcka	Teichacker	14	46562	Voerde	nicht gefunden
+2163	Liam Hagen Sökefeld	Krummackerweg	41	46562	Voerde	nicht gefunden
+2164	Sofia Sondermann	Isselstr.	24	46499	Hamminkeln	nicht gefunden
+2165	Juan Sonje	Baustr.	1	46483	Wesel	nicht gefunden
+2170	Evelyn Stein	Tiergartenstr.	73	46485	Wesel	nicht gefunden
+2171	Robin Leon Steinbach	Sterkrader Str.	20	46539	Dinslaken	nicht gefunden
+2173	Finn Steinl	Duisburger Str.	6	46499	Hamminkeln	nicht gefunden
+2174	Joel Steinl	Duisburger Str.	6	46499	Hamminkeln	nicht gefunden
+2175	Andrea Stenzel	Am Rheintor		46509	Xanten	unvollständig
+2176	Geron Stephan	Meisenweg	14	47665	Sonsbeck	nicht gefunden
+2181	Joerg Strunk	Zur Licht	121	47655	Sonsbeck	nicht gefunden
+2182	Nic Sturm	Wertherbrucher Str.	26	46499	Hamminkeln	nicht gefunden
+2183	Nico Sütel	Uedemer Str.	2	46509	Xanten	nicht gefunden
+2184	Andreyi Syniavskyi	Luisenstr.	80	46537	Dinslaken	nicht gefunden
+2185	Elif Tagay	Friedrichsfelder Str.	47	46562	Voerde	nicht gefunden
+2186	Felix Taher	Am Rheintor		46509	Xanten	unvollständig
+2188	Malik Talipoglu	Sohlenstr.	7	46537	Dinslaken	nicht gefunden
+2189	Davin Taylan	Gerhard-Cremer-Str.	109	46446	Emmerich	nicht gefunden
+2190	I-Helfer Tellers	Dickerstraße 21 (Kinderheim)		46539	Dinslaken	unvollständig
+2191	Noel Tellers	Dickerstraße 21 (Kinderheim)		46539	Dinslaken	unvollständig
+2192	Fabio ter Schmitten	Gerhard-Cremer-Str.	109	46446	Emmerich	nicht gefunden
+2194	Pierre Terlinden	Kevelaerer Straße	77	47665	Sonsbeck	nicht gefunden
+2195	Christian Termine	Isselstr.	11	46485	Wesel	nicht gefunden
+2196	Fabian Terwiel	Frankfurter Str.	76	46562	Voerde	nicht gefunden
+2197	Lara Theisen	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+2201	Elina Sherin Tiedt	Gelisstr.	39	46485	Wesel	nicht gefunden
+2202	Ben Tischer	Bestener Str.	257	46514	Schermbeck	nicht gefunden
+2204	Marlon Töben	Talstr.	65	46537	Dinslaken	nicht gefunden
+2206	Medina Toplu	Goethestr.	2b	46562	Voerde	nicht gefunden
+2207	Finn Trepesch	Hamminkelner Landstr.	197	46487	Wesel	nicht gefunden
+2208	Stefanie Trübe	Kurt-Kräcker-Str.		46485	Wesel	unvollständig
+2209	Ramona Tscheppe	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+2210	Marvin Konstantin Tserkezi	Beguinenstr.	13	46485	Wesel	nicht gefunden
+2216	Tina Unglaub	Kleiner Löwe	5	46446	Emmerich	nicht gefunden
+2219	Malik Necati Uzunoglu	Kurierweg	29b	46562	Voerde	nicht gefunden
+2221	Rogier van Berkel	Reichenberger Str.	15	47166	Duisburg	nicht gefunden
+2223	Milow Van der Lugt	Finkenstr.	7	46487	Wesel	nicht gefunden
+2226	Marc van Hall	Weißenburgstr.	42	46537	Dinslaken	nicht gefunden
+2228	Veit van Peeren	Finkenweg	103	46562	Voerde	nicht gefunden
+2229	Fabienne Vet	Friedrichsfelder Str.	13	46562	Voerde	nicht gefunden
+2231	Thorsten Volger	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+2232	Justus-John vom Hofe	Wisselmannweg	22	46562	Voerde	nicht gefunden
+2233	Franziska Voß	Birkenstr.	19a	46485	Wesel	nicht gefunden
+2234	Joel Voß	Birkenstr.	19a	46485	Wesel	nicht gefunden
+2235	Stefania Vrabie	Birkenstr.	19a	46485	Wesel	nicht gefunden
+2237	Karin Wagner	Kleiner Löwe	5	46446	Emmerich	nicht gefunden
+2238	Tobias Leon Waha	Bahnhofstr.	70	46562	Voerde	nicht gefunden
+2239	Shirin Waldmann	In den Streepen	12	47495	Rheinberg	nicht gefunden
+2241	Lennard Walter	Bahnhofstr.	144d	46562	Voerde	nicht gefunden
+2242	Henry Warnecke	Bahnhofstr. 144 e		46562	Voerde	unvollständig
+2245	Lukas Helmut Weidlich	Beethovenstr.	2e	46487	Wesel	nicht gefunden
+2249	Jan Weiß	In den Streepen	12	47495	Rheinberg	nicht gefunden
+2251	Melanie Weiss	Am Rheintor		46509	Xanten	unvollständig
+2252	Christopher Wellmann	Hansastr.	52	46446	Emmerich	nicht gefunden
+2253	Leonard Wentz	Schützenstr.	13a	46535	Dinslaken	nicht gefunden
+2254	Lukas Wentz	Schützenstr.	13a	46535	Dinslaken	nicht gefunden
+2256	Felix Wenzel	Kirchstr.	85	46514	Schermbeck	nicht gefunden
+2257	Taylor Weseloh	Lindenweg	9	46562	Voerde	nicht gefunden
+2258	Mandy Wilhelmi	Speelberger Str.	39	46446	Emmerich	nicht gefunden
+2259	Manjano Willan	Keramagstr.	125	46483	Wesel	nicht gefunden
+2262	Christiane Wolfrath	Speelberger Str.	39	46446	Emmerich	nicht gefunden
+2263	Damian Wontorra	Kastanienstr.	33	46514	Schermbeck	nicht gefunden
+2264	Ilona Wreth	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+2265	Arnold Wunderle	Uedemer Str.	2	46509	Xanten	nicht gefunden
+2266	Cindy Wunderle	Uedemer Str.	2	46509	Xanten	nicht gefunden
+2267	Eva-Maria Wunderle	Uedemer Str.	2	46509	Xanten	nicht gefunden
+2268	Agathe Wypich	Reitzensteinstr.	45	46485	Wesel	nicht gefunden
+2272	Arda Yildiz	Dinslakener Str.	72	46562	Voerde	nicht gefunden
+2273	Ahmet-Davud Yöndemli	Kurt-Schumacher-Str.	173	46539	Dinslaken	nicht gefunden
+2274	Saad Althaahaer Almulhim	Hamminkelner Str.	8	46499	Hamminkeln	nicht gefunden
+2277	Bjoern Ziaja	Friedrichsstr.	8	46483	Wesel	nicht gefunden
+2278	Simone Zientz	Gerhart-Hauptmann-Str.	26	46483	Wesel	nicht gefunden
+2279	Sarina Zilles	Raiffeisenstr.	12	46499	Hamminkeln	nicht gefunden
+2283	Lisa Zimmermann	Isselstr.	13	46483	Wesel	nicht gefunden
+2284	Leni Zimmnau	Rostocker Str.	31	46485	Wesel	nicht gefunden
+2285	Heike Zobel	Kleiner Löwe	5	46446	Emmerich	nicht gefunden

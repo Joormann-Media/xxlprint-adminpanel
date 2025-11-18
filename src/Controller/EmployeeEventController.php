@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\EmployeeEvent;
+use App\Form\EmployeeEventType;
+use App\Repository\EmployeeEventRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+#[Route('/employee-event')]
+final class EmployeeEventController extends AbstractController
+{
+    #[Route(name: 'app_employee_event_index', methods: ['GET'])]
+    public function index(EmployeeEventRepository $employeeEventRepository): Response
+    {
+        return $this->render('employee_event/index.html.twig', [
+            'employee_events' => $employeeEventRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/new', name: 'app_employee_event_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $employeeEvent = new EmployeeEvent();
+        $form = $this->createForm(EmployeeEventType::class, $employeeEvent);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($employeeEvent);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_employee_event_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('employee_event/new.html.twig', [
+            'employee_event' => $employeeEvent,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}', name: 'app_employee_event_show', methods: ['GET'])]
+    public function show(EmployeeEvent $employeeEvent): Response
+    {
+        return $this->render('employee_event/show.html.twig', [
+            'employee_event' => $employeeEvent,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}/edit', name: 'app_employee_event_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, EmployeeEvent $employeeEvent, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(EmployeeEventType::class, $employeeEvent);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_employee_event_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('employee_event/edit.html.twig', [
+            'employee_event' => $employeeEvent,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id<\d+>}', name: 'app_employee_event_delete', methods: ['POST'])]
+    public function delete(Request $request, EmployeeEvent $employeeEvent, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$employeeEvent->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($employeeEvent);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_employee_event_index', [], Response::HTTP_SEE_OTHER);
+    }
+}

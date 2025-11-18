@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1>CustomerUser</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ customer_user.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ customer_user.email }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ customer_user.password }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ customer_user.roles ? customer_user.roles|json_encode : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_customer_user_index') }}">back to list</a>
+
+    <a href="{{ path('app_customer_user_edit', {'id': customer_user.id}) }}">edit</a>
+
+    {{ include('customer_user/_delete_form.html.twig') }}
+{% endblock %}

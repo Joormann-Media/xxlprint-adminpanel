@@ -1,0 +1,72 @@
+{{ form_start(form, {'attr': {'autocomplete': 'off'}}) }}
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">
+            <i class="bi bi-building"></i>
+            {{ form.vars.value.id ? 'Partner-Firma bearbeiten' : 'Neue Partner-Firma anlegen' }}
+        </h4>
+    </div>
+
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-6">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.slug) }}
+                {{ form_widget(form.slug, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.address) }}
+                {{ form_widget(form.address, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_label(form.postalcode) }}
+                {{ form_widget(form.postalcode, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_label(form.city) }}
+                {{ form_widget(form.city, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.contactEmail) }}
+                {{ form_widget(form.contactEmail, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.contactPhone) }}
+                {{ form_widget(form.contactPhone, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-12">
+                {{ form_label(form.note) }}
+                {{ form_widget(form.note, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.createdAt) }}
+                {{ form_widget(form.createdAt, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.updatedAt) }}
+                {{ form_widget(form.updatedAt, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-4 pt-2">
+                <div class="form-check mt-4">
+                    {{ form_widget(form.isActive, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_label(form.isActive, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer bg-light text-end">
+        <button class="btn btn-success">
+            <i class="bi bi-save"></i> Speichern
+        </button>
+        <a href="{{ path('app_partner_company_index') }}" class="btn btn-outline-secondary ms-2">
+            <i class="bi bi-arrow-left"></i> Zurück
+        </a>
+    </div>
+</div>
+
+{{ form_end(form) }}

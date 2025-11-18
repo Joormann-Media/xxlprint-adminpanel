@@ -1,0 +1,119 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-md-6">
+        {{ form_row(form.tag) }}
+        {{ form_row(form.route) }}
+        {{ form_row(form.label) }}
+        {{ form_row(form.style) }}
+        {{ form_row(form.paramList) }}
+        {{ form_row(form.isActive) }}
+        {{ form_row(form.sortOrder) }}
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">🖼 Icon auswählen oder hochladen</label>
+
+        <div class="mb-3">
+            <div class="d-flex flex-wrap gap-2" id="iconPicker">
+                {% for icon in icons %}
+                    {% set iconName = icon|split('/')|last %}
+                    <img src="{{ icon }}"
+                         data-filename="{{ iconName }}"
+                         class="icon-option border rounded p-1 {% if form.iconPath.vars.value ends with(iconName) %}border-primary{% endif %}"
+                         style="height: 32px; cursor: pointer;" />
+                {% endfor %}
+            </div>
+        </div>
+
+        {{ form_row(form.iconPath) }}
+
+        <div class="mb-3 mt-3">
+            <label for="iconUpload" class="form-label">🆙 Neues Icon hochladen</label>
+            <input type="file" id="iconUpload" class="form-control" accept="image/*">
+        </div>
+
+        <div class="mb-3">
+            <label>🔍 Vorschau</label><br>
+            <img id="iconPreview" src="{{ asset(form.iconPath.vars.value) }}" alt="Icon-Vorschau" style="height: 48px;">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        {{ form_row(form.createdBy) }}
+        {{ form_row(form.createdAt) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.updatedBy) }}
+        {{ form_row(form.updatedAt) }}
+    </div>
+</div>
+
+<button class="btn btn-success mt-3">💾 {{ button_label|default('Save') }}</button>
+
+{{ form_end(form) }}
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const iconField = document.getElementById('shortcode_button_iconPath');
+    const iconPreview = document.getElementById('iconPreview');
+
+    // Klick auf vorhandenes Icon
+    document.querySelectorAll('.icon-option').forEach(img => {
+        img.addEventListener('click', () => {
+            document.querySelectorAll('.icon-option').forEach(i => i.classList.remove('border-primary'));
+            img.classList.add('border-primary');
+
+            const iconName = img.getAttribute('data-filename');
+            const fullPath = 'gfx/shortcode/' + iconName;
+            iconField.value = fullPath;
+            iconPreview.src = '/' + fullPath;
+        });
+    });
+
+    // Upload eines neuen Icons
+    document.getElementById('iconUpload').addEventListener('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('icon', file);
+
+        fetch('{{ path("app_shortcode_button_upload_icon") }}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                const iconPath = data.path;
+
+                const newIcon = document.createElement('img');
+                newIcon.src = '/' + iconPath;
+                newIcon.setAttribute('data-filename', data.filename);
+                newIcon.classList.add('icon-option', 'border', 'rounded', 'p-1', 'border-primary');
+                newIcon.style.height = '32px';
+                newIcon.style.cursor = 'pointer';
+
+                document.getElementById('iconPicker').appendChild(newIcon);
+
+                iconField.value = iconPath;
+                iconPreview.src = '/' + iconPath;
+
+                newIcon.addEventListener('click', () => {
+                    document.querySelectorAll('.icon-option').forEach(i => i.classList.remove('border-primary'));
+                    newIcon.classList.add('border-primary');
+                    iconField.value = iconPath;
+                    iconPreview.src = '/' + iconPath;
+                });
+            } else {
+                alert('❌ Upload fehlgeschlagen: ' + data.message);
+            }
+        });
+    });
+});
+</script>

@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container my-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">📊 Dashboard-Konfiguration #{{ user_dashboard_config.id }}</h5>
+        </div>
+        <div class="card-body">
+            <div class="row gy-3">
+                <div class="col-md-6">
+                    <strong>Sortierung:</strong><br>
+                    {{ user_dashboard_config.sortOrder }}
+                </div>
+                <div class="col-md-6">
+                    <strong>Sichtbar:</strong><br>
+                    {% if user_dashboard_config.isVisible %}
+                        <span class="badge bg-success">Ja</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Nein</span>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <strong>Position:</strong><br>
+                    {{ user_dashboard_config.position }}
+                </div>
+                <div class="col-md-6">
+                    <strong>Erstellt am:</strong><br>
+                    {{ user_dashboard_config.createdAt ? user_dashboard_config.createdAt|date('d.m.Y H:i') : '—' }}
+                </div>
+                <div class="col-md-6">
+                    <strong>Geändert am:</strong><br>
+                    {{ user_dashboard_config.updatedAt ? user_dashboard_config.updatedAt|date('d.m.Y H:i') : '—' }}
+                </div>
+                <div class="col-12">
+                    <strong>Einstellungen (JSON):</strong>
+                    <pre class="bg-light p-3 rounded" style="font-size: 0.9em;">{{ user_dashboard_config.settings ? user_dashboard_config.settings|json_encode(constant('JSON_PRETTY_PRINT')) : '—' }}</pre>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <a href="{{ path('app_user_dashboard_config_index') }}" class="btn btn-primary me-2">
+                ⬅️ Zurück zur Übersicht
+            </a>
+            <div>
+                <a href="{{ path('app_user_dashboard_config_edit', {'id': user_dashboard_config.id}) }}" class="btn btn-outline-secondary me-2" style="background-color: orange; color: white;">
+                    ✏️ Bearbeiten
+                </a>
+                {{ include('user_dashboard_config/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

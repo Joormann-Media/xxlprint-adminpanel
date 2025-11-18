@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit TranslationKey{% endblock %}
+
+{% block body %}
+    <h1>Edit TranslationKey</h1>
+
+    {{ include('translation_key/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_translation_key_index') }}">back to list</a>
+
+    {{ include('translation_key/_delete_form.html.twig') }}
+{% endblock %}

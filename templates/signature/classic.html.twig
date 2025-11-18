@@ -1,0 +1,39 @@
+<table style="font-family: Segoe UI, sans-serif; color: #444;">
+    <tr>
+        <td>
+            {% if signature.logoPath %}
+                <img src="{{ signature.logoPath }}" height="60" style="margin-right:15px;">
+            {% endif %}
+        </td>
+        <td>
+            <div style="font-size: 18px; font-weight: bold;">{{ signature.name }}</div>
+            <div style="color: #888;">{{ signature.position }} @ {{ signature.company }}</div>
+            <div><a href="mailto:{{ signature.email }}">{{ signature.email }}</a></div>
+            <div>📞 {{ signature.phone }} | 📱 {{ signature.mobile }}</div>
+            <div>🌐 <a href="{{ signature.website }}" target="_blank">{{ signature.website }}</a></div>
+            <div>🏠 {{ signature.address }}</div>
+
+            {% if signature.linkedin %}
+                <div>🔗 LinkedIn: <a href="{{ signature.linkedin }}">{{ signature.linkedin }}</a></div>
+            {% endif %}
+            {% if signature.facebook %}
+                <div>📘 Facebook: <a href="{{ signature.facebook }}">{{ signature.facebook }}</a></div>
+            {% endif %}
+            {% if signature.twitter %}
+                <div>🐦 Twitter: <a href="{{ signature.twitter }}">{{ signature.twitter }}</a></div>
+            {% endif %}
+
+            {% if signature.bannerPath %}
+                <div style="margin-top:10px;">
+                    <img src="{{ signature.bannerPath }}" height="80">
+                </div>
+            {% endif %}
+
+            {% if signature.disclaimer %}
+                <div style="margin-top:10px; font-size: 10px; color: #999;">
+                    {{ signature.disclaimer|nl2br }}
+                </div>
+            {% endif %}
+        </td>
+    </tr>
+</table>

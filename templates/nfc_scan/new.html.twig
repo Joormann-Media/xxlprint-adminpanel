@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New NFCScan{% endblock %}
+
+{% block body %}
+    <h1>Create new NFCScan</h1>
+
+    {{ include('nfc_scan/_form.html.twig') }}
+
+    <a href="{{ path('app_nfc_scan_index') }}">back to list</a>
+{% endblock %}

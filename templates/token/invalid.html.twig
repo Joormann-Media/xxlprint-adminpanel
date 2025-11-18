@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-danger shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">❌ Ungültiger oder abgelaufener Token</h4>
+                </div>
+                <div class="card-body text-center">
+                    <p class="lead">
+                        Der verwendete Link ist leider ungültig oder wurde bereits verwendet.
+                    </p>
+                    <p>
+                        Bitte fordere einen neuen Link an oder kontaktiere den Support.
+                    </p>
+                    <a href="{{ path('app_login') }}" class="btn btn-outline-primary mt-3">🔐 Zum Login</a>
+                    <a href="{{ path('request_reset_pin') }}" class="btn btn-outline-secondary mt-3 ms-2">🔁 PIN-Reset erneut anfordern</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

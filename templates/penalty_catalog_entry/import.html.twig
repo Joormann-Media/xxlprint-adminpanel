@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Bußgeldkatalog-Import</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="csv_file" class="form-label">CSV-Datei hochladen</label>
+            <input type="file" name="csv_file" class="form-control" required>
+        </div>
+        <button class="btn btn-primary">Importieren</button>
+    </form>
+
+    <p class="mt-4 text-muted">CSV erwartet Kopfzeile mit: <code>offenseTitle,description,paragraph,...</code></p>
+{% endblock %}

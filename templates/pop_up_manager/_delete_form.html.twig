@@ -1,0 +1,11 @@
+<form method="post"
+      action="{{ path('app_pop_up_manager_delete', {'id': pop_up_manager.id}) }}"
+      onsubmit="return confirm('❗ Willst du diese Benutzergruppe wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.');"
+      class="d-inline">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ pop_up_manager.id) }}">
+    <button class="btn btn-danger btn-sm"
+    data-bs-toggle="tooltip"
+    title="PopUp unwiderruflich löschen">
+🗑️ Löschen
+</button>
+</form>

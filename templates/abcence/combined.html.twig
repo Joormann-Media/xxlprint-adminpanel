@@ -1,0 +1,203 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Abmeldung (Schüler & Mitarbeiter){% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.6.2/dist/select2-bootstrap4.min.css" rel="stylesheet" />
+    <style>
+        .abmeldung-wrapper {
+            max-width: 1100px;
+            margin: 40px auto 0 auto;
+            padding: 35px 20px 28px 20px;
+            background: rgba(255,255,255,0.98);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px 0 #0a1b401c, 0 1.5px 9px 0 #0001;
+            border: 1.5px solid #d3d9e5;
+            position: relative;
+            z-index: 1;
+        }
+        .abmeldung-header {
+            background: linear-gradient(90deg, #2563eb 0%, #0ea5e9 100%);
+            color: #fff;
+            border-radius: 1.2rem 1.2rem 0 0;
+            padding: 28px 18px 18px 18px;
+            text-shadow: 0 2px 12px #0002;
+            text-align: center;
+            margin-bottom: 36px;
+        }
+        .abmeldung-header h1 {
+            font-weight: 700;
+            font-size: 2.15rem;
+            letter-spacing: 0.03em;
+            margin-bottom: .5rem;
+        }
+        .abmeldung-header p {
+            font-size: 1.1rem;
+            opacity: 0.75;
+            margin-bottom: 0;
+        }
+        .card {
+            border-radius: 1.1em;
+            background: #fafdff;
+        }
+        .card-header {
+            border-radius: 1.1em 1.1em 0 0;
+            font-size: 1.18em;
+        }
+        .shadow-xl { box-shadow: 0 2rem 3rem #0002, 0 2px 12px #0001; }
+        .select2-container--default .select2-selection--single {
+            height: 2.7em;
+            padding: 0.5em 1.1em;
+            font-size: 1.08em;
+            border-radius: 0.6em;
+            border-color: #b6b6c5;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 100%;
+        }
+        @media (min-width: 768px) {
+            .row-eq {
+                display: flex;
+            }
+            .row-eq > [class^="col-"] {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(function () {
+            // --- Schüler: Select2 Live-Autocomplete ---
+            $('#{{ schoolkid_form.schoolkid.vars.id }}').select2({
+                theme: 'bootstrap4',
+                width: '100%',
+                placeholder: 'Schüler suchen…',
+                minimumInputLength: 2,
+                ajax: {
+                    url: "{{ path('api_schoolkid_autocomplete') }}",
+                    dataType: 'json',
+                    delay: 150,
+                    data: params => ({ q: params.term }),
+                    processResults: data => ({ results: data.results })
+                }
+            });
+
+            // --- Mitarbeiter: Select2 Live-Autocomplete ---
+            $('#{{ employee_form.employee.vars.id }}').select2({
+                theme: 'bootstrap4',
+                width: '100%',
+                placeholder: 'Mitarbeiter suchen…',
+                minimumInputLength: 2,
+                ajax: {
+                    url: "{{ path('api_employee_autocomplete') }}",
+                    dataType: 'json',
+                    delay: 150,
+                    data: params => ({ q: params.term }),
+                    processResults: data => ({ results: data.results })
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+<div class="abmeldung-wrapper">
+    <div class="abmeldung-header">
+        <h1>
+            <i class="bi bi-arrow-left-right"></i>
+            Abmeldung: <span style="opacity:.88;">Schüler oder Mitarbeiter</span>
+        </h1>
+        <p>
+            Melde hier bequem einen Schüler <b>oder</b> Mitarbeiter für einen Zeitraum ab.<br>
+            Alle Eingaben werden im System protokolliert.
+        </p>
+    </div>
+
+    {% if submitted %}
+        <div class="alert alert-success my-4">
+            ✅ Abmeldung für <b>{{ type == 'schoolkid' ? 'Schüler' : 'Mitarbeiter' }}</b> gespeichert!
+        </div>
+    {% endif %}
+
+    <div class="row g-4 row-eq">
+        <!-- Schüler-Abmeldung -->
+        <div class="col-md-6">
+            <div class="card border-primary shadow-xl h-100">
+                <div class="card-header bg-primary text-white">
+                    <i class="bi bi-person-badge"></i> Schüler-Abmeldung
+                </div>
+                <div class="card-body pb-2">
+                    {{ form_start(schoolkid_form, {'attr': {'autocomplete': 'off'}}) }}
+                        <div class="mb-3">
+                            {{ form_label(schoolkid_form.schoolkid, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                            <select id="{{ schoolkid_form.schoolkid.vars.id }}"
+                                    name="{{ schoolkid_form.schoolkid.vars.full_name }}"
+                                    class="form-select select2-ajax-schoolkid"
+                                    data-autocomplete-url="{{ path('api_schoolkid_autocomplete') }}">
+                                {% if schoolkid_form.schoolkid.vars.value %}
+                                    <option value="{{ schoolkid_form.schoolkid.vars.value }}" selected>
+                                        {{ schoolkid_form.schoolkid.vars.data ? schoolkid_form.schoolkid.vars.data.getLastName ~ ' ' ~ schoolkid_form.schoolkid.vars.data.getFirstName : 'Ausgewählt' }}
+                                    </option>
+                                {% endif %}
+                            </select>
+                            {{ form_errors(schoolkid_form.schoolkid) }}
+                        </div>
+                        <div class="mb-3">{{ form_label(schoolkid_form.startAway) }}{{ form_widget(schoolkid_form.startAway, {'attr': {'class': 'form-control'}}) }}{{ form_errors(schoolkid_form.startAway) }}</div>
+                        <div class="mb-3">{{ form_label(schoolkid_form.endAway) }}{{ form_widget(schoolkid_form.endAway, {'attr': {'class': 'form-control'}}) }}{{ form_errors(schoolkid_form.endAway) }}</div>
+                        <div class="mb-3">{{ form_label(schoolkid_form.reasonAway) }}{{ form_widget(schoolkid_form.reasonAway, {'attr': {'class': 'form-control'}}) }}{{ form_errors(schoolkid_form.reasonAway) }}</div>
+                        <div class="mb-3">{{ form_label(schoolkid_form.reportedBy) }}{{ form_widget(schoolkid_form.reportedBy, {'attr': {'class': 'form-control'}}) }}{{ form_errors(schoolkid_form.reportedBy) }}</div>
+                        <div class="mb-3">{{ form_label(schoolkid_form.reportMethod) }}{{ form_widget(schoolkid_form.reportMethod, {'attr': {'class': 'form-select'}}) }}{{ form_errors(schoolkid_form.reportMethod) }}</div>
+                        <div class="mb-3">{{ form_label(schoolkid_form.receivedBy) }}{{ form_widget(schoolkid_form.receivedBy, {'attr': {'class': 'form-control'}}) }}{{ form_errors(schoolkid_form.receivedBy) }}</div>
+                        <div class="mb-3">{{ form_label(schoolkid_form.reportedAt) }}{{ form_widget(schoolkid_form.reportedAt, {'attr': {'class': 'form-control'}}) }}{{ form_errors(schoolkid_form.reportedAt) }}</div>
+                        <div class="mb-3">{{ form_label(schoolkid_form.createdAt) }}{{ form_widget(schoolkid_form.createdAt, {'attr': {'class': 'form-control'}}) }}{{ form_errors(schoolkid_form.createdAt) }}</div>
+                        <button type="submit" class="btn btn-primary mt-3 w-100">Schüler abmelden</button>
+                    {{ form_end(schoolkid_form) }}
+                </div>
+            </div>
+        </div>
+        <!-- Mitarbeiter-Abmeldung -->
+        <div class="col-md-6">
+            <div class="card border-info shadow-xl h-100">
+                <div class="card-header bg-info text-white">
+                    <i class="bi bi-people"></i> Mitarbeiter-Abmeldung
+                </div>
+                <div class="card-body pb-2">
+                    {{ form_start(employee_form, {'attr': {'autocomplete': 'off'}}) }}
+                        <div class="mb-3">
+                            {{ form_label(employee_form.employee, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                            <select id="{{ employee_form.employee.vars.id }}"
+                                    name="{{ employee_form.employee.vars.full_name }}"
+                                    class="form-select select2-ajax-employee"
+                                    data-autocomplete-url="{{ path('api_employee_autocomplete') }}">
+                                {% if employee_form.employee.vars.value %}
+                                    <option value="{{ employee_form.employee.vars.value }}" selected>
+                                        {{ employee_form.employee.vars.data ? employee_form.employee.vars.data.getLastName ~ ' ' ~ employee_form.employee.vars.data.getFirstName ~ ' (' ~ employee_form.employee.vars.data.getEmployeeNumber ~ ')' : 'Ausgewählt' }}
+                                    </option>
+                                {% endif %}
+                            </select>
+                            {{ form_errors(employee_form.employee) }}
+                        </div>
+                        <div class="mb-3">{{ form_label(employee_form.startAway) }}{{ form_widget(employee_form.startAway, {'attr': {'class': 'form-control'}}) }}{{ form_errors(employee_form.startAway) }}</div>
+                        <div class="mb-3">{{ form_label(employee_form.endAway) }}{{ form_widget(employee_form.endAway, {'attr': {'class': 'form-control'}}) }}{{ form_errors(employee_form.endAway) }}</div>
+                        <div class="mb-3">{{ form_label(employee_form.reasonAway) }}{{ form_widget(employee_form.reasonAway, {'attr': {'class': 'form-control'}}) }}{{ form_errors(employee_form.reasonAway) }}</div>
+                        <div class="mb-3">{{ form_label(employee_form.reportedBy) }}{{ form_widget(employee_form.reportedBy, {'attr': {'class': 'form-control'}}) }}{{ form_errors(employee_form.reportedBy) }}</div>
+                        <div class="mb-3">{{ form_label(employee_form.reportMethod) }}{{ form_widget(employee_form.reportMethod, {'attr': {'class': 'form-select'}}) }}{{ form_errors(employee_form.reportMethod) }}</div>
+                        <div class="mb-3">{{ form_label(employee_form.receivedBy) }}{{ form_widget(employee_form.receivedBy, {'attr': {'class': 'form-control'}}) }}{{ form_errors(employee_form.receivedBy) }}</div>
+                        <div class="mb-3">{{ form_label(employee_form.reportedAt) }}{{ form_widget(employee_form.reportedAt, {'attr': {'class': 'form-control'}}) }}{{ form_errors(employee_form.reportedAt) }}</div>
+                        <div class="mb-3">{{ form_label(employee_form.createdAt) }}{{ form_widget(employee_form.createdAt, {'attr': {'class': 'form-control'}}) }}{{ form_errors(employee_form.createdAt) }}</div>
+                        <button type="submit" class="btn btn-info mt-3 w-100">Mitarbeiter abmelden</button>
+                    {{ form_end(employee_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

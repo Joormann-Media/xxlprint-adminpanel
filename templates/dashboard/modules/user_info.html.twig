@@ -1,0 +1,14 @@
+<div class="d-flex align-items-center gap-3">
+    <img src="{{ user.avatar ? asset(user.avatar) : asset('gfx/user-default.png') }}"
+         alt="Avatar"
+         class="rounded-circle"
+         style="width: 60px; height: 60px; object-fit: cover;">
+
+    <div>
+        <strong>{{ user.username }}</strong><br>
+        <small class="text-muted">
+            Letzter Login:
+            {{ user.lastlogindate ? user.lastlogindate|date('d.m.Y H:i') : '—' }}
+        </small>
+    </div>
+</div>
