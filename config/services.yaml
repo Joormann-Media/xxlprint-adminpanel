@@ -28,9 +28,6 @@ services:
       $baseUrl: '%seven.base_url%'
       $defaultSender: '%seven.sender%'
 
-  App\Twig\MessageStatusExtension:
-    tags: ['twig.extension']
-
   App\Form\EMailSignatureForm:
     autowire: true
     arguments:
@@ -138,10 +135,6 @@ services:
     tags:
       - { name: 'twig.extension' }
 
-  App\Twig\ShortcodeExtension:
-    arguments: []
-    tags:
-      - { name: 'twig.extension' }
 
   App\Service\LdapUserService:
     autowire: true
@@ -154,12 +147,5 @@ services:
     arguments:
       $targetDirectory: '%release_upload_directory%'
 
-  App\Repository\CalendarRepository:
-    public: true
 
-  App\EventListener\VehicleMileageLogListener:
-    autowire: true
-    autoconfigure: false # weil du den Listener explizit taggst
-    tags:
-      - { name: 'doctrine.orm.entity_listener' }
 

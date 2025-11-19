@@ -154,9 +154,6 @@ private ?string $maxDevice = '5';
     #[ORM\OneToMany(mappedBy: 'docuMaintainer', targetEntity: Documentations::class)]
     private Collection $documentations;
 
-    #[ORM\OneToOne(mappedBy: 'user', targetEntity: DriverManager::class, cascade: ['persist', 'remove'])]
-    private ?DriverManager $driverManager = null;
-
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserOnlineStatus::class, cascade: ['persist', 'remove'])]
     private ?UserOnlineStatus $onlineStatus = null;
 
@@ -694,15 +691,7 @@ private ?string $maxDevice = '5';
         return $this;
     }
 
-    public function getDriverManager(): ?DriverManager
-{
-    return $this->driverManager;
-}
-public function setDriverManager(?DriverManager $driverManager): self
-{
-    $this->driverManager = $driverManager;
-    return $this;
-}
+    
 public function getFullName(): string
 {
     return trim(($this->prename ?? '') . ' ' . ($this->name ?? ''));

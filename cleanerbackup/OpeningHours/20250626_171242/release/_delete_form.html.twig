@@ -1,6 +1,0 @@
-<form method="post" action="{{ path('app_release_delete', {'id': release.id}) }}" onsubmit="return confirm('❌ Möchtest du dieses Release wirklich löschen?');" class="d-inline">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ release.id) }}">
-    <button class="btn btn-sm btn-outline-danger" title="Release löschen">
-        🗑️ Löschen
-    </button>
-</form>

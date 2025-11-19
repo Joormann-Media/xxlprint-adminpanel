@@ -1,4 +1,0 @@
-<form method="post" action="{{ path('app_nfc_scan_delete', {'id': nfc_scan.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ nfc_scan.id) }}">
-    <button class="btn">Delete</button>
-</form>

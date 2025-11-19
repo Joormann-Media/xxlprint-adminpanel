@@ -205,42 +205,7 @@ window.setCorrespondingFiles = function(files) {
 
     </script>
     {# in base.html.twig oder footer einfügen #}
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const badge = document.getElementById('globalMessageBadge');
 
-    window.updateMessageBadge = function () {
-    fetch('{{ path("app_message_unread_count") }}')
-        .then(r => r.json())
-        .then(data => {
-            console.log('[🔁 Update]', data);
-
-            const badge = document.getElementById('globalMessageBadge');
-            const unread = parseInt(data.unreadMessages || 0);
-            const urgent = parseInt(data.urgentNews || 0);
-
-            const hasContent = unread > 0 || urgent > 0;
-
-            if (hasContent) {
-                badge.textContent = (unread > 0 ? unread : '') + (urgent > 0 ? '!' : '');
-                badge.style.display = 'inline-block';
-                console.log(`[✅ Badge sichtbar] Inhalt: ${badge.textContent}`);
-            } else {
-                badge.textContent = '';
-                badge.style.display = 'none';
-                console.log('[📭 Kein Inhalt, Badge versteckt]');
-            }
-        })
-        .catch(err => console.error('[❌ Fehler beim Nachrichten-Check]:', err));
-};
-
-
-
-    // Starte Polling
-    updateMessageBadge();
-    setInterval(updateMessageBadge, 1000); // alle 15s
-});
-</script>
 
     {% include '_dev_overlay.html.twig' %}
     

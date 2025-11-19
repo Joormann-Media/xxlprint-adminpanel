@@ -77,4 +77,9 @@ public/Tekath-NFC-Importer.zip
 docker-compose.override.yml
 .env.local
 .env.*.local
+.env.local*
+.env.test*
 .envrc
+env/
+public/bundles/
+*.code-workspace

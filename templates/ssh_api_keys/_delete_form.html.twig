@@ -1,4 +1,0 @@
-<form method="post" action="{{ path('app_ssh_api_keys_delete', {'id': ssh_api_key.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ ssh_api_key.id) }}">
-    <button class="btn">Delete</button>
-</form>
