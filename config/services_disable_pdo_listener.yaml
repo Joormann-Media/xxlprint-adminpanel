@@ -1,0 +1,4 @@
+services:
+    doctrine.orm.listeners.pdo_session_handler_schema_listener:
+        class: null
+        public: false

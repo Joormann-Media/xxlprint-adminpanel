@@ -1,0 +1,9 @@
+# 🚫 Kill the old Symfony PDO Session system completely
+services:
+    Doctrine\Bundle\DoctrineBundle\EventListener\PdoSessionHandlerSchemaListener:
+        class: stdClass   # Ghost-Klasse statt Real-Listener
+        public: false
+
+    App\Session\Handler\UserAwarePdoSessionHandler:
+        class: stdClass
+        public: false

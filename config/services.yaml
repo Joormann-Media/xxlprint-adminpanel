@@ -1,3 +1,6 @@
+imports:
+    - { resource: services_disable_pdo_session.yaml }
+    
 parameters:
   release_upload_directory: '%kernel.project_dir%/var/releases'
   system_avatar_dir: '%kernel.project_dir%/public/system-gfx/system-avatars'
@@ -66,17 +69,12 @@ services:
       $baseUrl: '%seven.base_url%'
       $defaultSender: '%seven.sender%'
 
-  session.pdo_connection:
-    class: PDO
-    arguments:
-      - '%env(resolve:DATABASE_DSN)%'
-      - '%env(resolve:DATABASE_USER)%'
-      - '%env(resolve:DATABASE_PASSWORD)%'
-
   App\Service\CustomSessionHandler:
-      arguments:
-          $connection: '@doctrine.dbal.default_connection'
-
+    public: true
+    arguments:
+        $connection: '@doctrine.dbal.default_connection'
+        $tokenStorage: '@security.token_storage'
+        $requestStack: '@request_stack'
 
   Symfony\Component\Ldap\LdapInterface:
     factory: ['Symfony\Component\Ldap\Ldap', 'create']
@@ -138,6 +136,16 @@ services:
   App\Service\ReleaseFileUploader:
     arguments:
       $targetDirectory: '%release_upload_directory%'
+
+  doctrine.orm.listeners.pdo_session_handler_schema_listener:
+    class: Doctrine\Bundle\DoctrineBundle\EventListener\PdoSessionHandlerSchemaListener
+    tags: []   # alle Tags entfernen, listener ist damit tot
+    public: false
+
+  App\Session\Handler\UserAwarePdoSessionHandler:
+    public: false
+    autoconfigure: false
+    autowire: false
 
 
 

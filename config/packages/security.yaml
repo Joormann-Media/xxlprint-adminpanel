@@ -129,6 +129,7 @@ security:
 
     access_control:
         - { path: ^/gpx-studio/ors/, roles: PUBLIC_ACCESS }
+        - { path: ^/setup, roles: PUBLIC_ACCESS }
         - { path: ^/vehicle-tracking/live, roles: ROLE_USER }
         - { path: ^/live/map/data, roles: PUBLIC_ACCESS }
         - { path: ^/vehicle/import, roles: PUBLIC_ACCESS }

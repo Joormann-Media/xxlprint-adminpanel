@@ -1,13 +1,10 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
-
-        # IMPORTANT: You MUST configure your server version,
-        # either here or in the DATABASE_URL env var (see .env file)
-        #server_version: '16'
-
         profiling_collect_backtrace: '%kernel.debug%'
-        
+        # Verhindert, dass Doctrine versucht Tabellen wie user_session anzufassen
+        schema_filter: '~^(?!user_session|sessions).*~'
+
     orm:
         auto_mapping: true
         mappings:
@@ -17,12 +14,19 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+        # Wir deaktivieren _nur_ die Entity Listener Logik
+        entity_listeners: { }
+
+# Globaler Service-Override, NICHT unter "orm"
+services:
+    doctrine.orm.listeners.pdo_session_handler_schema_listener:
+        class: Doctrine\Bundle\DoctrineBundle\EventListener\PdoSessionHandlerSchemaListener
+        tags: []
 
 
 when@test:
     doctrine:
         dbal:
-            # "TEST_TOKEN" is typically set by ParaTest
             dbname_suffix: '_test%env(default::TEST_TOKEN)%'
 
 when@prod:

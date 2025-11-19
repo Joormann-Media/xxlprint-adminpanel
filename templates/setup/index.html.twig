@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<style>
+    .setup-wrapper {
+        max-width: 520px;
+        margin: 60px auto;
+    }
+
+    .setup-card {
+        background: #ffffff;
+        padding: 35px;
+        border-radius: 14px;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+        border: 1px solid #ececec;
+    }
+
+    .setup-logo {
+        width: 160px;
+        display: block;
+        margin: 0 auto 25px auto;
+    }
+
+    .setup-title {
+        font-weight: 700;
+        font-size: 1.7rem;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .setup-sub {
+        text-align: center;
+        color: #777;
+        margin-bottom: 25px;
+    }
+
+    .btn-setup {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 10px;
+        transition: 0.2s ease-in-out;
+    }
+
+    .btn-setup:hover {
+        transform: translateY(-2px);
+    }
+</style>
+
+<div class="setup-wrapper">
+
+    <img class="setup-logo" src="/gfx/xxl_logo_clean.png" alt="XXL Print - Wir Machen Ihre Werbung!">
+
+    <div class="setup-card">
+
+        <h1 class="setup-title">🔧 Erstinstallation</h1>
+        <p class="setup-sub">
+            Lege jetzt den ersten Administrator-Account an,<br>
+            um das System zu aktivieren.
+        </p>
+
+        {% for msg in app.flashes('success') %}
+            <div class="alert alert-success">{{ msg }}</div>
+        {% endfor %}
+
+        {% for msg in app.flashes('danger') %}
+            <div class="alert alert-danger">{{ msg }}</div>
+        {% endfor %}
+
+        <form method="post">
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Benutzername *</label>
+                <input name="username" type="text" class="form-control form-control-lg" required>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Vorname</label>
+                    <input name="prename" type="text" class="form-control form-control-lg">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Nachname</label>
+                    <input name="name" type="text" class="form-control form-control-lg">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">E-Mail *</label>
+                <input name="email" type="email" class="form-control form-control-lg" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Passwort *</label>
+                <input name="password" type="password" class="form-control form-control-lg" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">PIN *</label>
+                <input name="pin" type="password" class="form-control form-control-lg" required>
+            </div>
+
+            <button class="btn btn-primary btn-setup mt-2">
+                🚀 Setup durchführen
+            </button>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}

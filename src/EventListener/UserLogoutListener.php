@@ -31,18 +31,13 @@ class UserLogoutListener
             return;
         }
 
+        // Log
         $log = [
             'event' => 'logout',
             'sid' => $sessionId,
         ];
 
-        // Lösche aus `user_session`
-        $this->connection->executeStatement(
-            'DELETE FROM user_session WHERE session_id = :sid',
-            ['sid' => $sessionId]
-        );
-
-        // Lösche aus `sessions`
+        // Lösche NUR aus deiner eigenen Session-Tabelle
         $this->connection->executeStatement(
             'DELETE FROM sessions WHERE sess_id = :sid',
             ['sid' => $sessionId]

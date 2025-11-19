@@ -87,8 +87,7 @@
             {{ form_label(form.customerId) }}
             {{ form_widget(form.customerId, {'attr': {'class': 'form-control', 'readonly': not isAdmin}}) }}
             {{ form_errors(form.customerId) }}<br>
-            {{ '[[shortcode_button tag="password_reset" id=3 modal=true]]' | shortcode | raw }}
-            {{ '[[shortcode_button tag="PIN-Reset" id=4 modal=true]]' | shortcode | raw }}
+
         </div>
     </div>
 </div>

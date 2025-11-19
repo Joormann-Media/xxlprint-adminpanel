@@ -25,16 +25,7 @@
             <!-- User-Navigation -->
             <div class="col-md-2 d-flex justify-content-end align-items-center gap-2 Custom-Header_User">
                 {% if app.user %}
-                <!-- Nachrichten/News-Icon -->
-                    <a href="{{ path('app_message_inbox') }}" class="position-relative ms-1 me-1">
-    <img src="/gfx/SystemGFX/Icons/message-list.png" alt="Nachrichten" height="26">
-    <span id="globalMessageBadge"
-          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow"
-          style="font-size:0.9em; z-index:10; min-width:22px; display: {{ unreadMessagesCount > 0 or urgentNewsCount > 0 ? 'inline-block' : 'none' }};">
-        {{ unreadMessagesCount > 0 ? unreadMessagesCount : '' }}{{ urgentNewsCount > 0 ? '!' : '' }}
-        <span class="visually-hidden">Neue Nachrichten</span>
-    </span>
-</a>
+
 
                 <!-- User-Icon -->
                     <span class="text-dark small d-none d-lg-inline">👋 Hallo, {{ app.user.username }}</span>
