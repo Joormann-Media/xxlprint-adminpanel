@@ -74,17 +74,9 @@ services:
       - '%env(resolve:DATABASE_PASSWORD)%'
 
   App\Service\CustomSessionHandler:
-    autowire: false
-    autoconfigure: false
-    arguments:
-      $pdoConnection: '@session.pdo_connection'
-      $options: '%session_handler_options%'
-      $tokenStorage: '@security.token_storage'
-      $requestStack: '@request_stack'
+      arguments:
+          $connection: '@doctrine.dbal.default_connection'
 
-  Symfony\Component\HttpFoundation\Session\Storage\Handler\AbstractSessionHandler: '@App\Service\CustomSessionHandler'
-
-  PDO: '@session.pdo_connection'
 
   Symfony\Component\Ldap\LdapInterface:
     factory: ['Symfony\Component\Ldap\Ldap', 'create']

@@ -2,7 +2,7 @@ framework:
     secret: '%env(APP_SECRET)%'
 
     session:
-        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\AbstractSessionHandler
+        handler_id: App\Service\CustomSessionHandler
         cookie_secure: auto
         cookie_lifetime: 86400       # 0 = bis Browser geschlossen
         cookie_samesite: lax
@@ -20,15 +20,20 @@ framework:
         - '^pma\.joormann-media\.local$'
         - '^pma\.joormann-media\.de$'
 
-        # NEU: deine XXLPRINT lokale Domains
+        # XXLPRINT lokale Domains
         - '^admin\.xxlprint-wesel\.local$'
         - '^xxlprint-wesel\.local$'
-
-        # falls du später www nutzt:
         - '^www\.xxlprint-wesel\.local$'
 
-        # optional: direkte IP-Zugriffe erlauben
-        - '^192\.168\.178\.36$'
+        # 👉 HIER: der öffentliche Host
+        - '^admin\.xxlprint-wesel\.de$'
+
+        # Wenn du die Hauptdomain ebenfalls erlauben willst
+        - '^xxlprint-wesel\.de$'
+        - '^www\.xxlprint-wesel\.de$'
+
+
+
 
 
     http_client:

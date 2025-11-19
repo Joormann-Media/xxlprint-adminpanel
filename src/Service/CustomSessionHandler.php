@@ -5,6 +5,7 @@ namespace App\Service;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\AbstractSessionHandler;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Doctrine\DBAL\Connection;
 
 class CustomSessionHandler extends AbstractSessionHandler
 {
@@ -14,14 +15,14 @@ class CustomSessionHandler extends AbstractSessionHandler
     private $requestStack;
 
     public function __construct(
-        \PDO $pdoConnection,
+        Connection $connection,
         TokenStorageInterface $tokenStorage,
         RequestStack $requestStack
     ) {
-        $this->pdoConnection = $pdoConnection;
+        // Doctrine-Connection direkt, ohne eigenen PDO-Quatsch
+        $this->pdoConnection = $connection->getNativeConnection();
         $this->tokenStorage = $tokenStorage;
         $this->requestStack = $requestStack;
-        // $this->options = $options; // Falls du die brauchst, reaktivieren!
     }
 
     protected function doRead(string $sessionId): string
