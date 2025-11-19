@@ -52,17 +52,17 @@ class SetupController extends AbstractController
             // 1. Rollen anlegen
             // -------------------------
             $roleDefs = [
-                [1,  'ROLE_SUPREME_ADMIN',  'Supreme Administrator (volle Kontrolle)', 'supreme_admin'],
-                [2,  'ROLE_SYSADMIN',       'Systemadministrator',                      'sysadmin'],
-                [3,  'ROLE_ADMIN',          'Administrator',                             'admin'],
-                [4,  'ROLE_USERADMIN',      'Benutzerverwaltung',                        'useradmin'],
-                [5,  'ROLE_RELEASEMANAGER', 'Release-Manager',                           'release'],
-                [6,  'ROLE_WEBSITEADMIN',   'Website-Administrator',                     'webadmin'],
-                [7,  'ROLE_MODERATOR',      'Moderator',                                 'moderator'],
-                [8,  'ROLE_CUSTOMERADMIN',  'Kundenadministrator',                       'customeradmin'],
-                [9,  'ROLE_CUSTOMER',       'Kunde',                                     'customer'],
-                [10, 'ROLE_DEVELOPER',      'Entwickler',                                'developer'],
-                [20, 'ROLE_USER',           'Standard Benutzer',                         'user'],
+                [1,  'ROLE_SUPREME_ADMIN',  'Supreme Administrator (volle Kontrolle)', 'ROLE_SUPREME_ADMIN'],
+                [2,  'ROLE_SYSADMIN',       'Systemadministrator',                      'ROLE_SYSADMIN'],
+                [3,  'ROLE_ADMIN',          'Administrator',                             'ROLE_ADMIN'],
+                [4,  'ROLE_USERADMIN',      'Benutzerverwaltung',                        'ROLE_USERADMIN'],
+                [5,  'ROLE_RELEASEMANAGER', 'Release-Manager',                           'ROLE_RELEASEMANAGER'],
+                [6,  'ROLE_WEBSITEADMIN',   'Website-Administrator',                     'ROLE_WEBSITEADMIN'],
+                [7,  'ROLE_MODERATOR',      'Moderator',                                 'ROLE_MODERATOR'],
+                [8,  'ROLE_CUSTOMERADMIN',  'Kundenadministrator',                       'ROLE_CUSTOMERADMIN'],
+                [9,  'ROLE_CUSTOMER',       'Kunde',                                     'ROLE_CUSTOMER'],
+                [10, 'ROLE_DEVELOPER',      'Entwickler',                                'ROLE_DEVELOPER'],
+                [20, 'ROLE_USER',           'Standard Benutzer',                         'ROLE_USER'],
             ];
 
             foreach ($roleDefs as [$hier, $rName, $desc, $tag]) {
